@@ -42,6 +42,7 @@ class BirthProfile(Base):
     hour_pillar = Column(String(10), nullable=True)   # 시주
     day_master = Column(String(10), nullable=True)    # 일간 (ex. 갑, 을)
     dominant_element = Column(String(20), nullable=True)  # 강한 오행
+    lacking_element = Column(String(20), nullable=True)   # 약한 오행
     chart_strength = Column(String(20), nullable=True)    # Strong/Balanced/Scattered
 
     gender = Column(Enum(Gender), nullable=True)

@@ -9,7 +9,13 @@ from app.core.database import Base
 
 class ReportType(str, enum.Enum):
     general = "general"
+    life_cycle = "life_cycle"
+    year_ahead = "year_ahead"
+    daily = "daily"
     love = "love"
+    crush = "crush"
+    ex = "ex"
+    situationship = "situationship"
     career = "career"
     wealth = "wealth"
     health = "health"

@@ -22,9 +22,11 @@ Eastern Saju + Western Astrology 결합, English-first 서비스.
 - 배포: Railway
 
 ### 외부 서비스
-- Claude API (Anthropic) — AI 리포트 생성 (`ANTHROPIC_API_KEY`)
-- Lemonsqueezy — 결제
+- Google login API - 로그인
+- Gemini API (Anthropic) — AI 리포트 생성 (`ANTHROPIC_API_KEY`)
+- Paypal — 결제
 - Swiss Ephemeris (pyswisseph) — 천체 계산
+- manseryeok - 사주 계산
 
 ---
 
@@ -180,16 +182,9 @@ ENV=local
 ---
 
 ## 미완성 (TODO)
-
-- [ ] Claude API 연동 (`integrations/claude/`)
-- [ ] 사주 계산 로직 (`integrations/saju/`)
-- [ ] 서양 점성술 계산 (`integrations/astrology/`)
-- [ ] Redis 캐시 연동
+- 디자인 
+- 프롬포트 작성
 - [ ] 프론트 전체 화면 구현
 
 ## 개발일정
-- 4/11 reports.py 수정 -결제 시 리포트 생성하도록 구현
-- 4/11 구글로그인 연동 테스트 완료 - 백/프
-
-- 플로우차트랑 사주 프롬포트 작성 완료하면 클로드AI 연동 등 백엔드 작업 할 수 있음
-- 프론트는 AI 사용하면 금방만들듯 . 디자인만 정해지면
+-5/9까지 1차 개발 완료 

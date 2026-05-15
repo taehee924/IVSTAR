@@ -52,14 +52,17 @@ def calculate_chart(
     moon_pos, _ = swe.calc_ut(jd, swe.MOON)
     moon_sign = get_zodiac_sign(moon_pos[0])
 
-    # Rising (Ascendant) 계산 - 출생 시간 있을 때만
+    # Rising (Ascendant) + MC 계산 - 출생 시간 있을 때만
     rising_sign = None
+    mc_sign = None
     if birth_time:
         houses, ascmc = swe.houses(jd, latitude, longitude, b"P")
         rising_sign = get_zodiac_sign(ascmc[0])
+        mc_sign = get_zodiac_sign(ascmc[1])
 
     return {
         "sun_sign": sun_sign,
         "moon_sign": moon_sign,
         "rising_sign": rising_sign,
+        "mc_sign": mc_sign,
     }

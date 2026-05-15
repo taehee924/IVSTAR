@@ -8,7 +8,7 @@ from app.models.user import User
 from app.models.report import Report, ReportType
 from app.models.payment import Payment, PaymentStatus
 from app.models.birth_profile import BirthProfile
-from app.core.gemini import generate_report
+from app.core.gemini import generate_report, generate_pair_report
 
 router = APIRouter(prefix="/reports", tags=["reports"])
 
@@ -78,7 +78,7 @@ def format_report(report: Report, db: Session) -> dict:
 
 # ── 라우트 ────────────────────────────────────────────────
 
-@router.get("/", response_model=list[ReportResponse])
+@router.get("/")
 def get_my_reports(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -89,17 +89,15 @@ def get_my_reports(
     return [format_report(r, db) for r in reports]
 
 
-@router.get("/{report_id}", response_model=ReportResponse)
-def get_report(
-    report_id: int,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db),
-):
-    report = get_report_or_404(report_id, current_user.id, db)
-    return format_report(report, db)
+# 테스트용 - 로그인 없이 리포트 조회
+@router.get("/test-list")
+def test_list_reports(db: Session = Depends(get_db)):
+    """테스트용 - 로그인 없이 리포트 목록 조회"""
+    reports = db.query(Report).order_by(Report.created_at.desc()).limit(10).all()
+    return [{"id": r.id, "report_type": r.report_type.value, "content": r.content, "created_at": str(r.created_at)} for r in reports]
 
 
-@router.post("/preview", response_model=ReportResponse)
+@router.post("/preview")
 async def create_free_preview(
     body: ReportCreateRequest,
     current_user: User = Depends(get_current_user),
@@ -113,25 +111,30 @@ async def create_free_preview(
     if not profile:
         raise HTTPException(status_code=404, detail="Birth profile not found")
 
-    # Gemini API 호출
-    content = await generate_report(
-        report_type=body.report_type.value,
-        birth_date=str(profile.birth_date),
-        birth_time=str(profile.birth_time) if profile.birth_time else None,
-        birth_place=profile.birth_place,
-        gender=profile.gender.value if profile.gender else None,
-        sun_sign=profile.sun_sign,
-        moon_sign=profile.moon_sign,
-        rising_sign=profile.rising_sign,
-        mc_sign=profile.mc_sign,
-        year_pillar=profile.year_pillar,
-        month_pillar=profile.month_pillar,
-        day_pillar=profile.day_pillar,
-        hour_pillar=profile.hour_pillar,
-        day_master=profile.day_master,
-        dominant_element=profile.dominant_element,
-        chart_strength=profile.chart_strength,
-)
+    try:
+        content = await generate_report(
+            report_type=body.report_type.value,
+            birth_date=str(profile.birth_date),
+            birth_time=str(profile.birth_time) if profile.birth_time else None,
+            birth_place=profile.birth_place,
+            gender=profile.gender.value if profile.gender else None,
+            sun_sign=profile.sun_sign,
+            moon_sign=profile.moon_sign,
+            rising_sign=profile.rising_sign,
+            mc_sign=profile.mc_sign,
+            year_pillar=profile.year_pillar,
+            month_pillar=profile.month_pillar,
+            day_pillar=profile.day_pillar,
+            hour_pillar=profile.hour_pillar,
+            day_master=profile.day_master,
+            dominant_element=profile.dominant_element,
+            lacking_element=profile.lacking_element,
+            chart_strength=profile.chart_strength,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except RuntimeError as e:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
 
     report = Report(
         user_id=current_user.id,
@@ -146,7 +149,7 @@ async def create_free_preview(
     return format_report(report, db)
 
 
-@router.post("/full", response_model=ReportResponse)
+@router.post("/full")
 async def create_full_report(
     body: ReportCreateRequest,
     current_user: User = Depends(get_current_user),
@@ -160,25 +163,30 @@ async def create_full_report(
     if not profile:
         raise HTTPException(status_code=404, detail="Birth profile not found")
 
-    # Gemini API 호출
-    content = await generate_report(
-        report_type=body.report_type.value,
-        birth_date=str(profile.birth_date),
-        birth_time=str(profile.birth_time) if profile.birth_time else None,
-        birth_place=profile.birth_place,
-        gender=profile.gender.value if profile.gender else None,
-        sun_sign=profile.sun_sign,
-        moon_sign=profile.moon_sign,
-        rising_sign=profile.rising_sign,
-        mc_sign=profile.mc_sign,
-        year_pillar=profile.year_pillar,
-        month_pillar=profile.month_pillar,
-        day_pillar=profile.day_pillar,
-        hour_pillar=profile.hour_pillar,
-        day_master=profile.day_master,
-        dominant_element=profile.dominant_element,
-        chart_strength=profile.chart_strength,
-    )
+    try:
+        content = await generate_report(
+            report_type=body.report_type.value,
+            birth_date=str(profile.birth_date),
+            birth_time=str(profile.birth_time) if profile.birth_time else None,
+            birth_place=profile.birth_place,
+            gender=profile.gender.value if profile.gender else None,
+            sun_sign=profile.sun_sign,
+            moon_sign=profile.moon_sign,
+            rising_sign=profile.rising_sign,
+            mc_sign=profile.mc_sign,
+            year_pillar=profile.year_pillar,
+            month_pillar=profile.month_pillar,
+            day_pillar=profile.day_pillar,
+            hour_pillar=profile.hour_pillar,
+            day_master=profile.day_master,
+            dominant_element=profile.dominant_element,
+            lacking_element=profile.lacking_element,
+            chart_strength=profile.chart_strength,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except RuntimeError as e:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
 
     report = Report(
         user_id=current_user.id,
@@ -190,6 +198,122 @@ async def create_full_report(
     db.add(report)
     db.commit()
     db.refresh(report)
+    return format_report(report, db)
+
+
+PAIR_TYPES = {"crush", "ex", "situationship", "love"}
+
+
+class PairReportCreateRequest(BaseModel):
+    birth_profile_id: int
+    report_type: ReportType
+    price: float = 0.99
+    # 상대방 기본 정보
+    partner_name: str | None = None
+    partner_birth_date: str | None = None
+    partner_birth_time: str | None = None
+    partner_birth_place: str | None = None
+    partner_gender: str | None = None
+    # 서양 점성술
+    partner_sun_sign: str | None = None
+    partner_moon_sign: str | None = None
+    partner_rising_sign: str | None = None
+    partner_venus_sign: str | None = None
+    # 사주
+    partner_year_pillar: str | None = None
+    partner_month_pillar: str | None = None
+    partner_day_pillar: str | None = None
+    partner_hour_pillar: str | None = None
+    partner_day_master: str | None = None
+    partner_dominant_element: str | None = None
+    partner_lacking_element: str | None = None
+    partner_chart_strength: str | None = None
+
+
+@router.post("/pair/preview")
+async def create_pair_preview(
+    body: PairReportCreateRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """2인 리딩 무료 미리보기 (crush / situationship / ex / love)"""
+    if body.report_type.value not in PAIR_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"'{body.report_type.value}' is not a pair reading type.",
+        )
+
+    profile = db.query(BirthProfile).filter(
+        BirthProfile.id == body.birth_profile_id,
+        BirthProfile.user_id == current_user.id,
+    ).first()
+    if not profile:
+        raise HTTPException(status_code=404, detail="Birth profile not found")
+
+    try:
+        content = await generate_pair_report(
+            report_type=body.report_type.value,
+            user_name=current_user.email.split("@")[0] if current_user.email else None,
+            birth_date=str(profile.birth_date),
+            birth_time=str(profile.birth_time) if profile.birth_time else None,
+            birth_place=profile.birth_place,
+            gender=profile.gender.value if profile.gender else None,
+            sun_sign=profile.sun_sign,
+            moon_sign=profile.moon_sign,
+            rising_sign=profile.rising_sign,
+            mc_sign=profile.mc_sign,
+            venus_sign=None,
+            year_pillar=profile.year_pillar,
+            month_pillar=profile.month_pillar,
+            day_pillar=profile.day_pillar,
+            hour_pillar=profile.hour_pillar,
+            day_master=profile.day_master,
+            dominant_element=profile.dominant_element,
+            lacking_element=profile.lacking_element,
+            chart_strength=profile.chart_strength,
+            partner_name=body.partner_name,
+            partner_birth_date=body.partner_birth_date,
+            partner_birth_time=body.partner_birth_time,
+            partner_birth_place=body.partner_birth_place,
+            partner_gender=body.partner_gender,
+            partner_sun_sign=body.partner_sun_sign,
+            partner_moon_sign=body.partner_moon_sign,
+            partner_rising_sign=body.partner_rising_sign,
+            partner_venus_sign=body.partner_venus_sign,
+            partner_year_pillar=body.partner_year_pillar,
+            partner_month_pillar=body.partner_month_pillar,
+            partner_day_pillar=body.partner_day_pillar,
+            partner_hour_pillar=body.partner_hour_pillar,
+            partner_day_master=body.partner_day_master,
+            partner_dominant_element=body.partner_dominant_element,
+            partner_lacking_element=body.partner_lacking_element,
+            partner_chart_strength=body.partner_chart_strength,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+    except RuntimeError as e:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
+
+    report = Report(
+        user_id=current_user.id,
+        birth_profile_id=profile.id,
+        report_type=body.report_type,
+        content=content,
+        price=0.00,
+    )
+    db.add(report)
+    db.commit()
+    db.refresh(report)
+    return format_report(report, db)
+
+
+@router.get("/{report_id}")
+def get_report(
+    report_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    report = get_report_or_404(report_id, current_user.id, db)
     return format_report(report, db)
 
 
