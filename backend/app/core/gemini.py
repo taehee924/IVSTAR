@@ -11,7 +11,9 @@ from app.core.prompts.Couple import build_couple_prompt
 
 client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
-_RETRY_DELAYS = [2, 5, 10]  # seconds between retries
+_RETRY_DELAYS = [3, 7, 15, 30]  # seconds between retries
+
+_TRANSIENT_CODES = ("503", "529", "UNAVAILABLE", "overloaded", "429", "RESOURCE_EXHAUSTED", "quota")
 
 
 async def generate_report(
@@ -102,7 +104,7 @@ async def generate_report(
             last_error = e
             err_str = str(e)
             # 503 / 529 / UNAVAILABLE → transient, retry
-            if any(code in err_str for code in ("503", "529", "UNAVAILABLE", "overloaded")):
+            if any(code in err_str for code in _TRANSIENT_CODES):
                 print(f"Gemini transient error (attempt {attempt + 1}): {e}")
                 continue
             # Other errors → fail immediately
@@ -281,7 +283,7 @@ async def generate_pair_report(
         except Exception as e:
             last_error = e
             err_str = str(e)
-            if any(code in err_str for code in ("503", "529", "UNAVAILABLE", "overloaded")):
+            if any(code in err_str for code in _TRANSIENT_CODES):
                 print(f"Gemini transient error (attempt {attempt + 1}): {e}")
                 continue
             print(f"Gemini API error: {e}")

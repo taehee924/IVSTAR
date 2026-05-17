@@ -253,7 +253,7 @@ async def create_pair_preview(
     try:
         content = await generate_pair_report(
             report_type=body.report_type.value,
-            user_name=current_user.email.split("@")[0] if current_user.email else None,
+            user_name=current_user.name,
             birth_date=str(profile.birth_date),
             birth_time=str(profile.birth_time) if profile.birth_time else None,
             birth_place=profile.birth_place,

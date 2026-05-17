@@ -17,6 +17,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",  # Next.js 로컬
+        "http://saju.com",  # 배포도메인 (구매 후 변경)
+        "https://www.saju.com",  # www 포함 (구매 후 변경)
     ],
     allow_credentials=True,
     allow_methods=["*"],
