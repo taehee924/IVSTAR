@@ -6,17 +6,15 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
 
 const REPORT_TYPES = [
-  { type: "daily", label: "Daily Horoscope", description: "Today's cosmic forecast", price: "Free", category: "about" },
-  { type: "general", label: "About Me", description: "Who you are, really", price: "$0.99", category: "about" },
-  { type: "year_ahead", label: "YourYearAhead", description: "YourYearAhead", price: "$0.99", category: "about" },
-  { type: "life_cycle", label: "LifeCycle", description: "LifeCycle", price: "$0.99", category: "about" },
-  { type: "love", label: "Couple", description: "Your heart decoded", price: "$0.99", category: "love" },
-  { type: "crush", label: "Crush", description: "Crush", price: "$0.99", category: "love" },
-  { type: "ex", label: "Ex", description: "Ex", price: "$0.99", category: "love" },
-  { type: "situationship", label: "Situationship", description: "situationship", price: "$0.99", category: "love" },
-  { type: "career", label: "Career", description: "Your path ahead", price: "$0.99", category: "money" },
-  { type: "wealth", label: "Wealth", description: "Money & abundance", price: "$0.99", category: "money" },
-  { type: "health", label: "Health", description: "Body & energy", price: "$0.99", category: "other" }
+  { type: "daily", label: "2026 Horoscope", description: "#MonthlyFlow #TurningPoints #WhatsAhead", price: "$1.99", category: "about" },
+  { type: "general", label: "About Me", description: "#Personality #Strengths #LifePath", price: "$0.99", category: "about" },
+  { type: "life_cycle", label: "Life Cycle", description: "#BigPicture #LifeSeasons #TurningPoint", price: "$0.99", category: "about" },
+  { type: "love", label: "Couple", description: "#Chemistry #Tension #Compatibility", price: "$0.99", category: "love" },
+  { type: "crush", label: "Crush", description: "#CrushEnergy #SecretFeelings #NextMove", price: "$0.99", category: "love" },
+  { type: "ex", label: "Ex", description: "#YourEx #LingeringFeelings #SecondChance", price: "$0.99", category: "love" },
+  { type: "situationship", label: "Situationship", description: "#MixedSignals #RedFlags #NextStep", price: "$0.99", category: "love" },
+  { type: "career", label: "Career", description: "#CareerPath #SuccessFlow #Potential", price: "$0.99", category: "money" },
+  { type: "wealth", label: "Wealth", description: "#WealthFlow #MoneyMindset #Abundance", price: "$0.99", category: "money" },
 ];
 
 const TABS = [
