@@ -16,9 +16,9 @@ app = FastAPI(title="Spirit Tech API", version="0.1.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",  # Next.js 로컬
-        "http://saju.com",  # 배포도메인 (구매 후 변경)
-        "https://www.saju.com",  # www 포함 (구매 후 변경)
+        "http://localhost:3000",       # Next.js 로컬
+        "https://www.4fourstar.com",   # 프로덕션 도메인
+        "https://4fourstar.com",       # www 없는 버전
     ],
     allow_credentials=True,
     allow_methods=["*"],
