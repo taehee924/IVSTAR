@@ -8,7 +8,7 @@ export default function Home() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg shadow-violet-500/30">
             <span className="text-3xl text-white">☽</span>
           </div>
-          <h1 className="text-3xl font-semibold text-gray-900">SAJUJU</h1>
+          <h1 className="text-3xl font-semibold text-gray-900">IVSTAR</h1>
           <p className="text-sm text-gray-500">
             Your personalized Saju & astrology readings
           </p>
