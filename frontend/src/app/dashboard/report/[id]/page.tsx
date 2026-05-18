@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, use } from "react";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { Components } from "react-markdown";
 import Header from "@/components/layout/Header";
 
 interface Report {
@@ -101,8 +101,8 @@ function parseReportSections(
 }
 
 // ── 마크다운 semi-bold 오버라이드 ────────────────────────────
-const mdComponents = {
-  strong: ({ children }: { children: React.ReactNode }) => (
+const mdComponents: Components = {
+  strong: ({ children }) => (
     <span style={{ fontWeight: 600 }}>{children}</span>
   ),
 };

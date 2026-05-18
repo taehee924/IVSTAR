@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import {
   calculateFourPillars,
   getHeavenlyStemElement,
@@ -87,8 +87,8 @@ function calculateChartStrength(pillars: any): string {
   return "Balanced";
 }
 
-// ── 컴포넌트 ──────────────────────────────────────────────────────
-export default function PairReportPage() {
+// ── useSearchParams를 사용하는 컴포넌트 분리 ──
+function PairReportContent() {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -371,5 +371,14 @@ export default function PairReportPage() {
         </button>
       </div>
     </main>
+  );
+}
+
+// ── 메인 export: Suspense로 감싸기 ──
+export default function PairReportPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#F5F0E6]">Loading...</div>}>
+      <PairReportContent />
+    </Suspense>
   );
 }

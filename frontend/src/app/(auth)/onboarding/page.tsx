@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
@@ -76,7 +76,8 @@ function getDominantElement(pillars: any): string {
   return Object.entries(elements).sort((a, b) => b[1] - a[1])[0][0];
 }
 
-export default function OnboardingPage() {
+// ── useSearchParams를 사용하는 컴포넌트 분리 ──
+function OnboardingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") ?? "/dashboard";
@@ -331,5 +332,14 @@ export default function OnboardingPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+// ── 메인 export: Suspense로 감싸기 ──
+export default function OnboardingPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#F5F0E6]">Loading...</div>}>
+      <OnboardingContent />
+    </Suspense>
   );
 }

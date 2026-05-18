@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 
 const REPORT_LABELS: Record<string, string> = {
   general: "About Me",
@@ -20,7 +20,8 @@ const REPORT_LABELS: Record<string, string> = {
 
 const PAIR_TYPES = new Set(["crush", "ex", "situationship", "love"]);
 
-export default function NewReportPage() {
+// ── useSearchParams를 사용하는 컴포넌트 분리 ──
+function NewReportContent() {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -142,5 +143,14 @@ export default function NewReportPage() {
         </button>
       </div>
     </main>
+  );
+}
+
+// ── 메인 export: Suspense로 감싸기 ──
+export default function NewReportPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white">Loading...</div>}>
+      <NewReportContent />
+    </Suspense>
   );
 }
