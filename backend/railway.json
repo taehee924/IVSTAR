@@ -3,6 +3,6 @@
       "builder": "nixpacks"
     },
     "deploy": {
-      "startCommand": "python backend/app/main.py"
+      "startCommand": "python app/main.py"
     }
   }
