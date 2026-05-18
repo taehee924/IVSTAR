@@ -14,8 +14,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SAJUJU",
-  description: "Your cosmic journey begins here",
+  title: "IVSTAR",
+  description: "Your personalized Saju & astrology readings",
+  openGraph: {
+    title: "IVSTAR",
+    description: "Your personalized Saju & astrology readings",
+    url: "https://www.4fourstar.com",
+    siteName: "IVSTAR",
+  },
 };
 
 export default function RootLayout({
