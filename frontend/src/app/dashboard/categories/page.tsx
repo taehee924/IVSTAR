@@ -73,9 +73,9 @@ export default function CategoriesPage() {
               <div className="bg-[#EAE2D0] h-32 lg:h-40 flex items-center justify-center">
                 <span className="text-[#A89880] text-3xl">✦</span>
               </div>
-              <div className="bg-[#EDE8DC] p-3">
+              <div className="bg-[#EDE8DC] p-3 flex flex-col">
                 <p className="font-medium text-sm text-gray-800">{r.label}</p>
-                <p className="text-xs text-gray-500">{r.description}</p>
+                <p className="text-xs text-gray-500 min-h-[2.5rem]">{r.description}</p>
                 <p className="text-xs font-semibold text-gray-700 mt-1">{r.price}</p>
               </div>
             </div>
