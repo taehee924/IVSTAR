@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState, use } from "react";
+import { useEffect, useState, use, useRef } from "react";
 import ReactMarkdown, { Components } from "react-markdown";
 import Header from "@/components/layout/Header";
 
@@ -188,6 +188,44 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [error, setError] = useState("");
   const [paypalReady, setPaypalReady] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const reportRef = useRef<HTMLDivElement>(null);
+
+  const handleSave = async () => {
+    if (!reportRef.current || saving) return;
+    setSaving(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(reportRef.current, {
+        backgroundColor: "#F5F0E6",
+        scale: 2,
+        useCORS: true,
+        logging: false,
+      });
+
+      const blob = await new Promise<Blob>((resolve) =>
+        canvas.toBlob((b) => resolve(b!), "image/png")
+      );
+      const file = new File([blob], `ivstar-reading-${id}.png`, { type: "image/png" });
+
+      // iOS: Web Share API
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: "My IVSTAR Reading" });
+      } else {
+        // Android / Desktop: 직접 다운로드
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = file.name;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const fetchReport = async () => {
     try {
@@ -326,18 +364,54 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
 
         {/* ── 언락된 리포트 콘텐츠 ── */}
         {report.is_unlocked && (
-          REPORT_SECTION_EMOJIS[report.report_type] ? (
-            // 섹션 이모지가 정의된 타입: 아코디언 토글
-            <ReportAccordion
-              content={report.content}
-              reportType={report.report_type}
-            />
-          ) : (
-            // 그 외(career, wealth 등 미완성): 마크다운 전체 렌더링
-            <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5 prose prose-sm max-w-none text-gray-700">
-              <ReactMarkdown components={mdComponents}>{report.content}</ReactMarkdown>
+          <>
+            <div ref={reportRef}>
+              {REPORT_SECTION_EMOJIS[report.report_type] ? (
+                <ReportAccordion
+                  content={report.content}
+                  reportType={report.report_type}
+                />
+              ) : (
+                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5 prose prose-sm max-w-none text-gray-700">
+                  <ReactMarkdown components={mdComponents}>{report.content}</ReactMarkdown>
+                </div>
+              )}
             </div>
-          )
+
+            {/* ── 저장 / 공유 버튼 ── */}
+            <div className="flex gap-3 pt-2 pb-4">
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-[#DDD8CE] bg-[#EDE8DC] py-3 text-sm font-medium text-gray-700 hover:bg-[#E4DDD0] transition-colors disabled:opacity-50"
+              >
+                {saving ? (
+                  <span className="text-xs text-gray-400">Saving...</span>
+                ) : (
+                  <>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                      <polyline points="7 10 12 15 17 10"/>
+                      <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Save
+                  </>
+                )}
+              </button>
+              <button
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-[#DDD8CE] bg-[#EDE8DC] py-3 text-sm font-medium text-gray-700 hover:bg-[#E4DDD0] transition-colors"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="18" cy="5" r="3"/>
+                  <circle cx="6" cy="12" r="3"/>
+                  <circle cx="18" cy="19" r="3"/>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                </svg>
+                Share
+              </button>
+            </div>
+          </>
         )}
 
       </div>
