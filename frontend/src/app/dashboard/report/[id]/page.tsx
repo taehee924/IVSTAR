@@ -241,7 +241,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
       URL.revokeObjectURL(url);
     } catch (e) {
       console.error("Save failed:", e);
-      alert("저장 중 오류가 발생했어요.");
+      alert("Error: " + (e instanceof Error ? e.message : String(e)));
     } finally {
       setSaving(false);
     }
