@@ -32,7 +32,7 @@ const COUNTRIES = [
   { name: "Other", city_placeholder: "e.g. Your city" },
 ];
 
-const YEARS = Array.from({ length: 100 }, (_, i) => 2006 - i);
+const YEARS = Array.from({ length: 100 }, (_, i) => 2026 - i);
 const MONTHS = [
   { value: 1, label: "January" }, { value: 2, label: "February" },
   { value: 3, label: "March" }, { value: 4, label: "April" },
@@ -304,7 +304,7 @@ function OnboardingContent() {
               Gender <span className="text-red-400">*</span>
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {(["male", "female"] as Gender[]).map((g) => (
+              {(["male", "female","other"] as Gender[]).map((g) => (
                 <button
                   key={g}
                   onClick={() => setGender(g)}

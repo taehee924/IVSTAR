@@ -223,7 +223,7 @@ function PairReportContent() {
             {readingLabel} Reading
           </h1>
           <p className="mt-2 text-sm text-gray-500">
-            {partnerLabel}의 정보를 입력하면 AI가 두 사람의 차트를 함께 읽어드려요.
+            {partnerLabel}의 정보를 입력해주세요.
           </p>
         </div>
 
@@ -232,7 +232,7 @@ function PairReportContent() {
           {/* 이름 */}
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-gray-700">
-              {partnerLabel} 이름 <span className="text-gray-400 text-xs">(optional)</span>
+              {partnerLabel} Name <span className="text-gray-400 text-xs"></span>
             </label>
             <input
               type="text"
