@@ -185,17 +185,13 @@ function NewReportContent() {
           <h1 className="text-2xl font-semibold text-gray-800">
             {REPORT_LABELS[type]} Reading
           </h1>
-          <p className="text-sm text-gray-500">
-            Get your personalized {REPORT_LABELS[type]?.toLowerCase()} reading powered by AI.
-          </p>
         </div>
 
-        <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4 space-y-2">
+        <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-gray-700">{REPORT_LABELS[type]} Reading</p>
             <p className="text-lg font-bold text-green-600">Free</p>
           </div>
-          <p className="text-xs text-gray-400">AI-powered · Instant access</p>
         </div>
 
         {WHAT_INSIDE[type] && (
