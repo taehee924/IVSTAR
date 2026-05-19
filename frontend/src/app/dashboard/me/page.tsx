@@ -320,7 +320,7 @@ export default function MePage() {
         {/* My Info */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-medium text-gray-700">🌙 My Info</h2>
+            <h2 className="text-sm font-medium text-gray-700"> My Info</h2>
             {profile && !isEditing && (
               <button
                 onClick={handleStartEdit}
@@ -491,7 +491,7 @@ export default function MePage() {
 
         {/* My Readings */}
         <div className="space-y-2">
-          <h2 className="text-sm font-medium text-gray-700">📖 My Readings ({reports.length})</h2>
+          <h2 className="text-sm font-medium text-gray-700"> My Readings ({reports.length})</h2>
           <div className="rounded-2xl border border-gray-200 overflow-hidden divide-y divide-gray-100">
             {loading ? (
               <div className="p-4 text-sm text-gray-400">Loading...</div>
@@ -519,7 +519,7 @@ export default function MePage() {
 
         {/* My Credits */}
         <div className="space-y-2">
-          <h2 className="text-sm font-medium text-gray-700">💎 My Credits</h2>
+          <h2 className="text-sm font-medium text-gray-700"> My Credits</h2>
           <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] px-4 py-3 flex items-center justify-between">
             <p className="text-sm text-gray-600">0 readings remaining</p>
             <Link
@@ -545,7 +545,7 @@ export default function MePage() {
           disabled={deleteLoading}
           className="flex items-center gap-2 text-sm text-red-400 hover:text-red-600 transition-colors disabled:opacity-50"
         >
-          🗑 {deleteLoading ? "Processing..." : "Delete Account"}
+           {deleteLoading ? "Processing..." : "↪ Delete Account"}
         </button>
 
       </div>
