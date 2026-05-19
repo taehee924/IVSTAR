@@ -195,29 +195,21 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
     if (!reportRef.current || saving) return;
     setSaving(true);
     try {
-      const html2canvas = (await import("html2canvas")).default;
+      // html-to-image uses SVG foreignObject → browser handles oklch/modern CSS
+      const { toPng } = await import("html-to-image");
 
-      // img 태그 제거 후 캡처 (CORS tainted canvas 방지)
-      const canvas = await html2canvas(reportRef.current, {
+      const dataUrl = await toPng(reportRef.current, {
         backgroundColor: "#F5F0E6",
-        scale: 2,
-        logging: false,
-        useCORS: false,
-        allowTaint: false,
-        ignoreElements: (el) => el.tagName === "IMG",
+        pixelRatio: 2,
       });
 
       const fileName = `ivstar-reading-${id}.png`;
 
-      // dataURL → Blob 변환
-      const dataUrl = canvas.toDataURL("image/png");
-      const byteString = atob(dataUrl.split(",")[1]);
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
-      const blob = new Blob([ab], { type: "image/png" });
+      // dataURL → Blob
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
 
-      // iOS Safari: Web Share API
+      // iOS Safari: Web Share API (파일 공유)
       if (typeof navigator.share === "function") {
         try {
           const file = new File([blob], fileName, { type: "image/png" });
@@ -226,7 +218,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
             return;
           }
         } catch {
-          // fallback
+          // share 실패 시 다운로드로 fallback
         }
       }
 
@@ -239,9 +231,9 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-    } catch (e) {
+    } catch (e: any) {
       console.error("Save failed:", e);
-      alert("Error: " + (e instanceof Error ? e.message : String(e)));
+      alert("Save failed: " + (e?.message || e?.name || String(e)));
     } finally {
       setSaving(false);
     }
