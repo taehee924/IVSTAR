@@ -200,28 +200,38 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
         backgroundColor: "#F5F0E6",
         scale: 2,
         useCORS: true,
+        allowTaint: true,
         logging: false,
       });
 
-      const blob = await new Promise<Blob>((resolve) =>
-        canvas.toBlob((b) => resolve(b!), "image/png")
-      );
-      const file = new File([blob], `ivstar-reading-${id}.png`, { type: "image/png" });
+      const dataUrl = canvas.toDataURL("image/png");
+      const fileName = `ivstar-reading-${id}.png`;
 
-      // iOS: Web Share API
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: "My IVSTAR Reading" });
-      } else {
-        // Android / Desktop: 직접 다운로드
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = file.name;
-        a.click();
-        URL.revokeObjectURL(url);
+      // iOS Safari: Web Share API (파일 공유 지원 여부 확인)
+      try {
+        const blob = await (await fetch(dataUrl)).blob();
+        const file = new File([blob], fileName, { type: "image/png" });
+        if (
+          typeof navigator.share === "function" &&
+          navigator.canShare?.({ files: [file] })
+        ) {
+          await navigator.share({ files: [file], title: "My IVSTAR Reading" });
+          return;
+        }
+      } catch {
+        // Web Share API 미지원 → fallback
       }
+
+      // Android / Desktop: 직접 다운로드
+      const a = document.createElement("a");
+      a.href = dataUrl;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     } catch (e) {
-      console.error(e);
+      console.error("Save failed:", e);
+      alert("저장 중 오류가 발생했어요.");
     } finally {
       setSaving(false);
     }
