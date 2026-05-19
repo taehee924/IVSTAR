@@ -83,6 +83,7 @@ export default function MePage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deletingReportId, setDeletingReportId] = useState<number | null>(null);
 
   // Birth Profile
   const [profile, setProfile] = useState<BirthProfile | null>(null);
@@ -237,6 +238,29 @@ export default function MePage() {
       alert("저장 중 오류가 발생했어요.");
     } finally {
       setSaveLoading(false);
+    }
+  };
+
+  const handleDeleteReport = async (reportId: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!confirm("Delete this reading?")) return;
+    setDeletingReportId(reportId);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/${reportId}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
+        }
+      );
+      if (!res.ok) throw new Error("삭제 실패");
+      setReports((prev) => prev.filter((r) => r.id !== reportId));
+    } catch (e) {
+      console.error(e);
+      alert("삭제 중 오류가 발생했어요.");
+    } finally {
+      setDeletingReportId(null);
     }
   };
 
@@ -499,19 +523,22 @@ export default function MePage() {
               <div className="p-4 text-sm text-gray-400">No readings yet.</div>
             ) : (
               reports.map((r) => (
-                <Link
-                  key={r.id}
-                  href={`/dashboard/report/${r.id}`}
-                  className="flex items-center justify-between px-4 py-3 hover:bg-[#EDE8DC] transition-colors"
-                >
-                  <div>
+                <div key={r.id} className="flex items-center justify-between px-4 py-3 hover:bg-[#EDE8DC] transition-colors">
+                  <Link href={`/dashboard/report/${r.id}`} className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-700">
                       {REPORT_LABELS[r.report_type] ?? r.report_type}
                     </p>
                     <p className="text-xs text-gray-400">{formatDate(r.created_at)}</p>
-                  </div>
-                  <span className="text-gray-400">›</span>
-                </Link>
+                  </Link>
+                  <button
+                    onClick={(e) => handleDeleteReport(r.id, e)}
+                    disabled={deletingReportId === r.id}
+                    className="ml-3 text-gray-300 hover:text-red-400 transition-colors text-lg leading-none disabled:opacity-30"
+                    aria-label="Delete reading"
+                  >
+                    {deletingReportId === r.id ? "..." : "×"}
+                  </button>
+                </div>
               ))
             )}
           </div>
