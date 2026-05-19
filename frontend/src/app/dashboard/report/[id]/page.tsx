@@ -196,39 +196,49 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
     setSaving(true);
     try {
       const html2canvas = (await import("html2canvas")).default;
+
+      // img 태그 제거 후 캡처 (CORS tainted canvas 방지)
       const canvas = await html2canvas(reportRef.current, {
         backgroundColor: "#F5F0E6",
         scale: 2,
-        useCORS: true,
-        allowTaint: true,
         logging: false,
+        useCORS: false,
+        allowTaint: false,
+        ignoreElements: (el) => el.tagName === "IMG",
       });
 
-      const dataUrl = canvas.toDataURL("image/png");
       const fileName = `ivstar-reading-${id}.png`;
 
-      // iOS Safari: Web Share API (파일 공유 지원 여부 확인)
-      try {
-        const blob = await (await fetch(dataUrl)).blob();
-        const file = new File([blob], fileName, { type: "image/png" });
-        if (
-          typeof navigator.share === "function" &&
-          navigator.canShare?.({ files: [file] })
-        ) {
-          await navigator.share({ files: [file], title: "My IVSTAR Reading" });
-          return;
+      // dataURL → Blob 변환
+      const dataUrl = canvas.toDataURL("image/png");
+      const byteString = atob(dataUrl.split(",")[1]);
+      const ab = new ArrayBuffer(byteString.length);
+      const ia = new Uint8Array(ab);
+      for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+      const blob = new Blob([ab], { type: "image/png" });
+
+      // iOS Safari: Web Share API
+      if (typeof navigator.share === "function") {
+        try {
+          const file = new File([blob], fileName, { type: "image/png" });
+          if (navigator.canShare?.({ files: [file] })) {
+            await navigator.share({ files: [file], title: "My IVSTAR Reading" });
+            return;
+          }
+        } catch {
+          // fallback
         }
-      } catch {
-        // Web Share API 미지원 → fallback
       }
 
       // Android / Desktop: 직접 다운로드
+      const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = dataUrl;
+      a.href = url;
       a.download = fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     } catch (e) {
       console.error("Save failed:", e);
       alert("저장 중 오류가 발생했어요.");
