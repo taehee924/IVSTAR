@@ -20,6 +20,17 @@ const REPORT_LABELS: Record<string, string> = {
 
 const PAIR_TYPES = new Set(["crush", "ex", "situationship", "love"]);
 
+const WHAT_INSIDE: Record<string, string[]> = {
+  daily: [
+    "Your energy and mood month by month",
+    "Key turning points and important timing",
+    "Love, career, and money shifts throughout the year",
+    "The months where opportunities grow strongest",
+    "Challenges or emotional patterns to watch for",
+    "A final message for your 2026 journey",
+  ],
+};
+
 // ── useSearchParams를 사용하는 컴포넌트 분리 ──
 function NewReportContent() {
   const { data: session } = useSession();
@@ -122,6 +133,20 @@ function NewReportContent() {
           </div>
           <p className="text-xs text-gray-400">AI-powered · Instant access</p>
         </div>
+
+        {WHAT_INSIDE[type] && (
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">What's inside</p>
+            <ul className="space-y-1.5">
+              {WHAT_INSIDE[type].map((item, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                  <span className="mt-0.5 text-gray-400">✦</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {error && (
           <p className="text-sm text-red-500">{error}</p>
