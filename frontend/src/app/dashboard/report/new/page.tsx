@@ -188,25 +188,15 @@ function NewReportContent() {
         </div>
 
         {WHAT_INSIDE[type] && (
-          <div className="space-y-2">
-            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">What's inside</p>
-            <ul className="space-y-1.5">
-              {WHAT_INSIDE[type].map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                  <span className="mt-0.5 text-gray-400">✦</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="space-y-1.5">
+            {WHAT_INSIDE[type].map((item, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                <span className="mt-0.5 text-gray-400">✦</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         )}
-
-        <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-gray-700">{REPORT_LABELS[type]} Reading</p>
-            <p className="text-lg font-bold text-green-600">Free</p>
-          </div>
-        </div>
 
         {error && (
           <p className="text-sm text-red-500">{error}</p>
