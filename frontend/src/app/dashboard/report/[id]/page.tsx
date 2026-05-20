@@ -335,7 +335,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
 
         <div className="flex items-center gap-3">
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push("/dashboard/categories")}
             className="text-gray-400 hover:text-gray-600 transition-colors"
           >
             ←
