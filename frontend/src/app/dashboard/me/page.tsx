@@ -42,7 +42,7 @@ const COUNTRIES = [
   { name: "Other", city_placeholder: "e.g. Your city" },
 ];
 
-const YEARS = Array.from({ length: 100 }, (_, i) => 2006 - i);
+const YEARS = Array.from({ length: 107 }, (_, i) => 2026 - i);
 const MONTHS = [
   { value: 1, label: "January" }, { value: 2, label: "February" },
   { value: 3, label: "March" }, { value: 4, label: "April" },
@@ -460,21 +460,16 @@ export default function MePage() {
                 {/* 성별 */}
                 <div className="space-y-1">
                   <label className="text-xs text-gray-500">Gender</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {["male", "female"].map((g) => (
-                      <button
-                        key={g}
-                        onClick={() => setEditGender(g)}
-                        className={`rounded-lg border py-2 text-sm font-medium capitalize transition-colors ${
-                          editGender === g
-                            ? "border-violet-500 bg-violet-500/10 text-violet-700"
-                            : "border-[#DDD8CE] bg-[#F5F0E6] text-gray-600"
-                        }`}
-                      >
-                        {g === "male" ? "Male" : "Female"}
-                      </button>
-                    ))}
-                  </div>
+                  <select
+                    value={editGender}
+                    onChange={(e) => setEditGender(e.target.value)}
+                    className={selectClass}
+                  >
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
                 </div>
 
                 {/* 버튼 */}

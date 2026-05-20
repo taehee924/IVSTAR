@@ -45,7 +45,7 @@ const COUNTRIES = [
   { name: "Other", city_placeholder: "e.g. Your city" },
 ];
 
-const YEARS = Array.from({ length: 100 }, (_, i) => 2006 - i);
+const YEARS = Array.from({ length: 107 }, (_, i) => 2026 - i);
 const MONTHS = [
   { value: 1, label: "January" }, { value: 2, label: "February" },
   { value: 3, label: "March" }, { value: 4, label: "April" },
@@ -334,22 +334,16 @@ function PairReportContent() {
             <label className="text-sm font-medium text-gray-700">
               Gender <span className="text-gray-400 text-xs">(optional)</span>
             </label>
-            <div className="grid grid-cols-2 gap-2">
-              {(["male", "female"] as const).map((g) => (
-                <button
-                  key={g}
-                  type="button"
-                  onClick={() => setPartnerGender(partnerGender === g ? "" : g)}
-                  className={`rounded-lg border py-2.5 text-sm font-medium capitalize transition-colors ${
-                    partnerGender === g
-                      ? "border-violet-500 bg-violet-500/10 text-violet-700"
-                      : "border-[#DDD8CE] bg-[#EDE8DC] text-gray-600 hover:bg-[#E4DFCF]"
-                  }`}
-                >
-                  {g === "male" ? "Male" : "Female"}
-                </button>
-              ))}
-            </div>
+            <select
+              value={partnerGender}
+              onChange={(e) => setPartnerGender(e.target.value)}
+              className={selectClass}
+            >
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
           </div>
 
           {error && <p className="text-sm text-red-500">{error}</p>}
