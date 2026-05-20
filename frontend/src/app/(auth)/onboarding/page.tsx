@@ -304,7 +304,7 @@ function OnboardingContent() {
               Gender <span className="text-red-400">*</span>
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {(["male", "female","other"] as Gender[]).map((g) => (
+              {(["male", "female"] as Gender[]).map((g) => (
                 <button
                   key={g}
                   onClick={() => setGender(g)}
