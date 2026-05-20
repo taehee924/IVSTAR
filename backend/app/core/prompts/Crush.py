@@ -593,6 +593,7 @@ NOTE: 점수 없이 내용만.
 ════════════════════════════════════════════════════════════════
 
 [ ] Language determined by USER's birth country?
+[ ] 출력이 한 언어로만 되어 있는가? (Korean/English 혼용 없음)
 [ ] Foreign birth times converted to local time?
 [ ] Korean output: 한국어 별자리 이름 사용? (처녀자리, 천칭자리 등)
 [ ] English output: English zodiac names only?
@@ -611,14 +612,17 @@ NOTE: 점수 없이 내용만.
 [ ] Section 5: 용어 최소화, 케미/감정 패턴 중심 서술?
 [ ] Section 7: 점수 없는가?
 [ ] Crush pronouns correct for language?
+[ ] Section 3: 점성술 먼저, 사주 보조로 서술되었는가?
 [ ] Section 3: blend line for 첫인상 있는가?
 [ ] Section 3: "다가오려다가도 망설이는 이유" 라인 있는가?
+[ ] 점성술 70% / 사주 30% 비율인가?
+[ ] 사주만 단독으로 이끄는 단락이 없는가?
 [ ] Bold: 섹션당 1~2개, 구절 단위, 용어에 사용 안 함?
 [ ] 이모지: 섹션 소제목 앞에만 있는가?
 [ ] 소제목이 SECTION HEADER TABLE에서 올바른 언어 버전으로 선택되었는가?
 [ ] 한국어 리포트에 영어 소제목 없는가?
 [ ] 글자 크기: 제목 ### 만, 나머지 통일 (# ## 미사용)?
-[ ] 섹션 구분선 없는가?
+[ ] 구분선(──────, ════ 등) 출력에 없는가?
 [ ] em dash (—) 전혀 없는가?
 [ ] 말투가 자연스럽고 따뜻한가? AI 보고서 말투 아닌가?
 [ ] 총 글자수 공백 포함 3,000자 이내인가?
