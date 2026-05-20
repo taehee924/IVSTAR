@@ -131,7 +131,7 @@ function NewReportContent() {
           },
         }
       );
-      if (!profileRes.ok) throw new Error("출생 정보 조회 실패");
+      if (!profileRes.ok) throw new Error("Failed to load birth profiles.");
       const profiles = await profileRes.json();
       if (profiles.length === 0) {
         // 온보딩 완료 후 다시 이 페이지로 돌아오도록 redirect 파라미터 추가
@@ -159,19 +159,19 @@ function NewReportContent() {
       if (!reportRes.ok) {
         const errData = await reportRes.json().catch(() => ({}));
         if (reportRes.status === 503) {
-          throw new Error("AI가 잠시 바쁜 상태예요. 잠시 후 다시 시도해주세요.");
+          throw new Error("Please try again in a minute or two.");
         }
         if (reportRes.status === 400) {
-          throw new Error(errData.detail ?? "잘못된 요청이에요.");
+          throw new Error(errData.detail ?? "Invalid request. Please check your input and try again.");
         }
-        throw new Error(errData.detail ?? "리포트 생성 실패");
+        throw new Error(errData.detail ?? "Failed to create report. Please try again.");
       }
       const report = await reportRes.json();
 
       // 결제 없이 바로 리포트 상세로 이동
       router.push(`/dashboard/report/${report.id}`);
     } catch (e: any) {
-      setError(e.message ?? "오류가 발생했어요.");
+      setError(e.message ?? "Error");
     } finally {
       setLoading(false);
     }
