@@ -224,8 +224,8 @@ export default function MePage() {
 
       const [profileRes, userRes] = await Promise.all(requests);
 
-      if (!profileRes.ok) throw new Error("출생정보 저장 실패");
-      if (userRes && !userRes.ok) throw new Error("이름 저장 실패");
+      if (!profileRes.ok) throw new Error("Error saving birth profile");
+      if (userRes && !userRes.ok) throw new Error("Error saving user info");
 
       const updated = await profileRes.json();
       setProfile(updated);
@@ -235,7 +235,7 @@ export default function MePage() {
       setIsEditing(false);
     } catch (e) {
       console.error(e);
-      alert("저장 중 오류가 발생했어요.");
+      alert("Error saving profile. Please try again.");
     } finally {
       setSaveLoading(false);
     }
@@ -254,18 +254,18 @@ export default function MePage() {
           headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
         }
       );
-      if (!res.ok) throw new Error("삭제 실패");
+      if (!res.ok) throw new Error("Failed to delete report");
       setReports((prev) => prev.filter((r) => r.id !== reportId));
     } catch (e) {
       console.error(e);
-      alert("삭제 중 오류가 발생했어요.");
+      alert("Error deleting report. Please try again.");
     } finally {
       setDeletingReportId(null);
     }
   };
 
   const handleDeleteAccount = async () => {
-    if (!confirm("정말 탈퇴하시겠어요? 모든 데이터가 삭제됩니다.")) return;
+    if (!confirm("Are you sure you want to leave? All data will be deleted.")) return;
     setDeleteLoading(true);
     try {
       const res = await fetch(
@@ -275,11 +275,11 @@ export default function MePage() {
           headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
         }
       );
-      if (!res.ok) throw new Error("탈퇴 실패");
+      if (!res.ok) throw new Error("Failed to delete account");
       await signOut({ callbackUrl: "/" });
     } catch (e) {
       console.error(e);
-      alert("탈퇴 처리 중 오류가 발생했어요.");
+      alert("Error deleting account. Please try again.");
     } finally {
       setDeleteLoading(false);
     }
