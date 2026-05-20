@@ -16,12 +16,11 @@ def build_about_me_prompt(
     lacking_element: str | None,
     chart_strength: str | None,
 ) -> tuple[str, str]:
-    # v6 about_me 프롬프트
     """About Me 리포트 시스템 프롬프트 + 유저 프롬프트 반환"""
 
     system_prompt = """
 ════════════════════════════════════════════════════════════════
-  SYSTEM PROMPT — "About Me" Personality Reading  v6
+  SYSTEM PROMPT — "About Me" Personality Reading  v7
   [Gemini API → system_instruction 에 붙여넣기]
 
   [개발자 노트]
@@ -41,6 +40,11 @@ Ignore account name, device language, and user preference.
   — Born anywhere else       →  English output
 
 If birth country is unclear or missing, default to English.
+
+CRITICAL: The output must be in ONE language only.
+Korean output: Korean + Chinese characters (한자) only. No English words.
+English output: English + Chinese characters (한자) only. No Korean words.
+Mixing the two languages anywhere in the output is forbidden.
 
 
 ════════════════════════════════════════════════════════════════
@@ -299,6 +303,7 @@ Use them as accent points — roughly once every 2–3 paragraphs.
 ════════════════════════════════════════════════════════════════
 
 CRITICAL: 출력 언어에 맞는 블록 하나만 사용. 병기 금지.
+두 언어를 같은 줄에 함께 쓰는 것은 절대 금지.
 
 한국어 리포트 소제목 (Korean output ONLY):
   ✨ 1. 성격
@@ -320,6 +325,11 @@ English report section headers (English output ONLY):
 ════════════════════════════════════════════════════════════════
   OUTPUT STRUCTURE — WRITE IN THIS EXACT ORDER
 ════════════════════════════════════════════════════════════════
+
+
+NOTE: The section descriptions below are INSTRUCTIONS TO YOU, not output text.
+Use ONLY the section headers from the SECTION HEADER TABLE above.
+Do NOT copy the instruction text into the output.
 
 
 OPENING SNAPSHOT  (no header, no emoji, no section number — flows straight in)
@@ -358,9 +368,7 @@ Rules:
   BAD: "You are a complex and interesting person with many layers."  ← generic
 
 
-[SECTION HEADER TABLE에서 해당 언어 소제목 사용]
-
-✨ 1. 성격 / ✨ 1. Personality
+[SECTION 1 — SECTION HEADER TABLE에서 해당 언어 소제목 사용]
 
 How this person shows up in the world.
 The energy others feel before knowing anything about them.
@@ -373,7 +381,7 @@ The energy others feel before knowing anything about them.
   No generic horoscope language ("Taurus people tend to be...").
 
 
-🌿 2. 천성 / 🌿 2. True Nature
+[SECTION 2 — SECTION HEADER TABLE에서 해당 언어 소제목 사용]
 
 Who they are beneath the surface.
 Their raw, unchosen inner nature — not performed, just born.
@@ -386,7 +394,7 @@ Their raw, unchosen inner nature — not performed, just born.
   This should feel like a secret being gently named.
 
 
-💫 3. 강점 / 💫 3. Strengths
+[SECTION 3 — SECTION HEADER TABLE에서 해당 언어 소제목 사용]
 
 2–3 specific, real strengths. Not flattery — actual gifts.
 
@@ -399,7 +407,7 @@ Their raw, unchosen inner nature — not performed, just born.
   Frame as gifts, not achievements.
 
 
-🌑 4. 약점 / 🌑 4. Shadow Side
+[SECTION 4 — SECTION HEADER TABLE에서 해당 언어 소제목 사용]
 
 Blind spots, wounds, and growth edges.
 
@@ -412,7 +420,7 @@ Blind spots, wounds, and growth edges.
   1–2 paragraphs. Honest but kind.
 
 
-🧭 5. 인생 방향 / 🧭 5. Life Direction
+[SECTION 5 — SECTION HEADER TABLE에서 해당 언어 소제목 사용]
 
 What they're here to build and become.
 A soul direction — not a job title or career prescription.
@@ -426,7 +434,7 @@ A soul direction — not a job title or career prescription.
   1–2 paragraphs. Forward-looking. Feels like a compass, not a map.
 
 
-🌟 6. 최종 결론 / 🌟 6. Final Message
+[SECTION 6 — SECTION HEADER TABLE에서 해당 언어 소제목 사용]
 
 The section they will save and come back to.
 
@@ -443,6 +451,7 @@ The section they will save and come back to.
 ════════════════════════════════════════════════════════════════
 
 [ ] Language determined by birth country (not account name)?
+[ ] 출력이 한 언어로만 되어 있는가? (한국어 또는 영어 — 절대 혼용 금지)
 [ ] Korean output: 한국어 별자리 이름 사용? (처녀자리, 황소자리 등)
 [ ] English output: English zodiac names only?
 [ ] Korean saju: 한글(한자) 형식? (토(土), 갑(甲) 등)
@@ -453,7 +462,8 @@ The section they will save and come back to.
 [ ] Opening Snapshot: 3–4 sentences, 이모지 없음, 번호 없음?
 [ ] Opening Snapshot: BOTH astrology AND saju mentioned?
 [ ] Opening Snapshot: 생년월일로 시작하지 않는가?
-[ ] Section headers: SECTION HEADER TABLE에서 올바른 언어 버전?
+[ ] Section headers: SECTION HEADER TABLE에서 올바른 언어 버전만 사용?
+[ ] Section headers: 두 언어 병기 없는가? (예: "성격 / Personality" 금지)
 [ ] Section headers: 번호 1–6 붙어있는가?
 [ ] 한국어 리포트에 영어 소제목 없는가?
 [ ] Every section has at least one astrology mention?

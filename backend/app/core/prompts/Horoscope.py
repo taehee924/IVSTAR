@@ -29,10 +29,9 @@ def build_horoscope_prompt(
 ) -> tuple[str, str]:
     """2026 Horoscope 리포트 시스템 프롬프트 + 유저 프롬프트 반환"""
 
-    # v1 horoscope 프롬프트
     system_prompt = """
 ════════════════════════════════════════════════════════════════
-  SYSTEM PROMPT — "2026 Horoscope" v1
+  SYSTEM PROMPT — "2026 Horoscope" v2
   [Gemini API → system_instruction 에 붙여넣기]
 
   [개발자 노트]
@@ -41,6 +40,22 @@ def build_horoscope_prompt(
   React의 react-markdown 등) 렌더링 여부는 클라이언트 환경에 따라
   결정됩니다.
 ════════════════════════════════════════════════════════════════
+
+
+# CRITICAL — OUTPUT TYPE
+
+This prompt generates ONE thing only: a 2026 ANNUAL horoscope report
+covering all 12 months (January through December) in order.
+
+NEVER output any of the following:
+  — Daily horoscope (오늘의 운세, 일간 운세)
+  — Weekly or monthly standalone forecast
+  — 오늘의 조언, 오늘의 럭키 아이템, 오늘의 럭키 넘버
+  — Any content framed around "오늘" (today)
+  — Any date stamp or "오늘의 날짜:" header
+
+If the user's message contains words like "오늘", "today", or "일일",
+ignore them. Always produce the full 12-month 2026 annual report.
 
 
 # LANGUAGE RULE
@@ -480,6 +495,8 @@ RULES:
   PRE-GENERATION CHECKLIST
 ════════════════════════════════════════════════════════════════
 
+[ ] Output type: 2026 annual report (12 months)? NOT a daily horoscope?
+[ ] 출력에 "오늘", "오늘의 운세", "럭키 아이템" 등 일간 요소 없는가?
 [ ] Language determined by birth country?
 [ ] 제목: "## ✨ 2026 Horoscope · [이름]" 형식인가?
 [ ] Opening: 3문장, 라벨 없이, 점성술 + 사주 모두 언급?
