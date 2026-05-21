@@ -4,6 +4,7 @@ from google.genai import types
 from app.core.config import settings
 from app.core.prompts.about_me import build_about_me_prompt
 from app.core.prompts.LifeCycles import build_life_cycles_prompt
+from app.core.daewoon import calculate_current_daewoon, calculate_current_age
 from app.core.prompts.Crush import build_crush_prompt
 from app.core.prompts.Situationship import build_situationship_prompt
 from app.core.prompts.Ex import build_ex_prompt
@@ -61,13 +62,19 @@ async def generate_report(
         system_prompt, user_prompt = build_about_me_prompt(**kwargs)
 
     elif report_type == "life_cycle":
-        # LifeCycles에는 추가 파라미터가 있으나, 현재 BirthProfile에 없으므로 None 처리
+        current_age = calculate_current_age(birth_date)
+        current_daewoon, daewoon_age_range = calculate_current_daewoon(
+            birth_date_str=birth_date,
+            gender=gender,
+            year_pillar=year_pillar,
+            month_pillar=month_pillar,
+        )
         system_prompt, user_prompt = build_life_cycles_prompt(
             **kwargs,
             venus_sign=None,
-            current_age=None,
-            current_daewoon=None,
-            daewoon_age_range=None,
+            current_age=current_age,
+            current_daewoon=current_daewoon,
+            daewoon_age_range=daewoon_age_range,
         )
 
     elif report_type in ("crush", "ex", "situationship", "love"):
