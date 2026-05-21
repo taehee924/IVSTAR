@@ -4,6 +4,7 @@ from google.genai import types
 from app.core.config import settings
 from app.core.prompts.about_me import build_about_me_prompt
 from app.core.prompts.LifeCycles import build_life_cycles_prompt
+from app.core.prompts.Horoscope import build_horoscope_prompt
 from app.core.daewoon import calculate_current_daewoon, calculate_current_age
 from app.core.prompts.Crush import build_crush_prompt
 from app.core.prompts.Situationship import build_situationship_prompt
@@ -77,6 +78,41 @@ async def generate_report(
             daewoon_age_range=daewoon_age_range,
         )
 
+    elif report_type == "year_ahead":
+        current_daewoon, daewoon_age_range = calculate_current_daewoon(
+            birth_date_str=birth_date,
+            gender=gender,
+            year_pillar=year_pillar,
+            month_pillar=month_pillar,
+        )
+        daeun_stem   = current_daewoon[0] if current_daewoon else None
+        daeun_branch = current_daewoon[1] if current_daewoon else None
+        system_prompt, user_prompt = build_horoscope_prompt(
+            user_name=None,
+            birth_date=birth_date,
+            birth_time=birth_time,
+            birth_place=birth_place,
+            gender=gender,
+            sun_sign=sun_sign,
+            moon_sign=moon_sign,
+            rising_sign=rising_sign,
+            mc_sign=mc_sign,
+            venus_sign=None,
+            year_pillar=year_pillar,
+            month_pillar=month_pillar,
+            day_pillar=day_pillar,
+            hour_pillar=hour_pillar,
+            day_master=day_master,
+            dominant_element=dominant_element,
+            lacking_element=lacking_element,
+            chart_strength=chart_strength,
+            daeun_stem=daeun_stem,
+            daeun_branch=daeun_branch,
+            daeun_age_range=daewoon_age_range,
+            saeun_stem="병(丙)",
+            saeun_branch="오(午)",
+        )
+
     elif report_type in ("crush", "ex", "situationship", "love"):
         # 두 사람 데이터가 필요한 리딩 — 전용 엔드포인트(/reports/pair) 사용
         raise ValueError(
@@ -85,7 +121,7 @@ async def generate_report(
         )
 
     else:
-        # career / wealth / health / daily / year_ahead — 프롬프트 파일 미완성
+        # career / wealth / health — 프롬프트 파일 미완성
         system_prompt = "You are a professional astrologer and saju reader."
         user_prompt = (
             f"Write a {report_type} reading in Korean for someone born on "
