@@ -73,21 +73,22 @@ export default function AboutPage() {
             We read your birth chart and your Four Pillars chart together —
             combining the sky at your birth with the elemental forces of the time
             you were born into. Where the two systems meet, a more complete
-            picture of you appears.
+            picture of you appears. 
           </p>
         </section>
 
-        <div>
+        <br></br>
+        <br></br>
 
         {/* ── QUOTE ── */}
         <blockquote className="border-l-2 border-gray-400 pl-5">
-          <p className="text-base italic border-text-gray-700 leading-relaxed font-serif">
+          <p className="text-base italic border-gray-700">
             &ldquo;Saju is one of the most precise self-analysis systems ever
             built. Most people outside East Asia have just never had a
             way in.&rdquo;
           </p>
         </blockquote>
-        </div>
+        
 
         <Divider />
 
@@ -95,8 +96,10 @@ export default function AboutPage() {
         <section>
           <SectionLabel>What is Saju?</SectionLabel><br></br>
           <p className="text-xs uppercase tracking-widest mb-2 text-[#7B3B2A]">
-            四柱 · Four Pillars <br></br>
+            四柱 · Four Pillars 
           </p>
+          <br></br>
+
           <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5">
             The system that reads time, not just the sky.
           </h2>
@@ -239,7 +242,7 @@ export default function AboutPage() {
         <Divider />
 
         {/* ── FOOTER ── */}
-        <footer className="text-center pb-4">
+        <footer className="text-left pb-4">
           <p className="text-xs text-gray-400">© 2026 IVSTAR · Team 0x6</p>
         </footer>
 
