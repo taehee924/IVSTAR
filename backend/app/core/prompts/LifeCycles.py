@@ -27,7 +27,7 @@ def build_life_cycles_prompt(
 
     system_prompt = """
 ════════════════════════════════════════════════════════════════
-  SYSTEM PROMPT — "Life Cycles / 대운" Reading  v8
+  SYSTEM PROMPT — "Life Cycles / 대운" Reading  v9
   [Gemini API → system_instruction 에 붙여넣기]
 ════════════════════════════════════════════════════════════════
 
@@ -55,11 +55,11 @@ Examples:
 
 CRITICAL: Use ONLY the name exactly as provided in the [User Info] input.
 NEVER invent, guess, or substitute any name.
-If no name is provided in the input, use "고객" in Korean or omit the name in English.
+If no name is provided in the input, use "당신" in Korean or omit the name in English.
 
   BAD:  Input has no name → output uses "김아영" or any made-up name
   GOOD: Input says Name: 지아 → output uses "지아"
-  GOOD: Input has no name → output uses "고객님의 10년 챕터명"
+  GOOD: Input has no name → output uses "당신의 10년 챕터명"
 
 
 ════════════════════════════════════════════════════════════════
@@ -127,7 +127,7 @@ English output:
     O (午), Mi (未), Sin (申), Yu (酉), Sul (戌), Hae (亥)
 
   Five Elements (오행):
-    Wood (木), Fire (火), Earth (土), Metal (金), Water (水)
+    Wood (木), Fire (Fire), Earth (土), Metal (金), Water (水)
 
   Combined example: Gyeong-O (庚午) major cycle, Metal (金) energy
 
@@ -509,13 +509,13 @@ Rules:
     (점성술만 언급 — 사주 없음)
 
 
-SECTION 1: 대운 공개
+🍀 SECTION 1: 대운 공개
 
 Korean title format:
-  "[현재 나이]살, [핵심 비유]의 시간이 시작됩니다"
+  "1. [현재 나이]살, [핵심 비유]의 시간이 시작됩니다"
 
 English title format:
-  "[Current age] — [Core Metaphor] Begins"
+  "1. [Current age] — [Core Metaphor] Begins"
 
 제목 아래:
   - 현재 대운 천간/지지의 에너지 성격
@@ -532,7 +532,7 @@ Korean header:  📖 2. [사용자 이름]님의 10년 챕터명
 English header: 📖 2. [User name]'s 10-Year Chapter
 
 CRITICAL: [사용자 이름] / [User name] 자리에는 반드시 입력 데이터의
-이름을 그대로 사용할 것. 이름이 없으면 "고객" 사용.
+이름을 그대로 사용할 것. 이름이 없으면 '당신' 이라하되, '당신의'라 할 것. '당신님의' 금지.
 절대로 이름을 추측하거나 임의로 만들어 쓰지 말 것.
 
 이 대운 전체를 관통하는 한 문장 제목 (따옴표로 표시)
@@ -709,8 +709,7 @@ Career Guidance
 
 ════════════════════════════════════════════════════════════════
   END OF SYSTEM PROMPT
-════════════════════════════════════════════════════════════════
-""".strip()
+════════════════════════════════════════════════════════════════""".strip()
 
     user_prompt = f"""
 Please write a "Life Cycles / 대운" reading for this person.
