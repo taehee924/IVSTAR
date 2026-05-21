@@ -4,6 +4,31 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+function IvstarLogo({ size = 28 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <circle cx="50" cy="50" r="47" fill="currentColor" />
+      <clipPath id="ivstar-clip">
+        <circle cx="50" cy="50" r="47" />
+      </clipPath>
+      <g clipPath="url(#ivstar-clip)" stroke="white" strokeWidth="3.2" strokeLinecap="butt">
+        {/* 세로선 */}
+        <line x1="37" y1="3" x2="37" y2="97" />
+        {/* 가로선 */}
+        <line x1="3" y1="44" x2="97" y2="44" />
+        {/* 대각선: 교차점 → 우하단 */}
+        <line x1="37" y1="44" x2="88" y2="91" />
+      </g>
+    </svg>
+  );
+}
+
 const MENU_ITEMS = [
   { href: "/about", label: "About" },
   { href: "/dashboard", label: "Home" },
@@ -21,8 +46,8 @@ export default function Header() {
       {/* 상단 헤더 */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#F5F0E6] border-b border-[#DDD8CE]">
         <div className="w-full max-w-2xl lg:max-w-5xl mx-auto px-4 lg:px-8 h-14 flex items-center justify-between">
-          <Link href="/dashboard" className="text-lg font-bold tracking-widest text-gray-800">
-            IVSTAR
+          <Link href="/dashboard" className="text-gray-900 hover:opacity-70 transition-opacity">
+            <IvstarLogo size={30} />
           </Link>
 
           {/* 데스크톱 인라인 네비게이션 (lg+) */}
