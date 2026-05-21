@@ -354,7 +354,7 @@ Write around them using commas, periods, or line breaks.
 
 ── Korean output ONLY ──
   (Opening Snapshot — 소제목 없음)
-  [나이]살, [핵심 비유]의 시간이 시작됩니다
+  🍀 1. [나이]살, [핵심 비유]의 시간이 시작됩니다
   📖 2. [이름]님의 10년 챕터명
   🧠 3. 내면과 멘탈
   💞 4. 사랑과 인연
@@ -364,7 +364,7 @@ Write around them using commas, periods, or line breaks.
 
 ── English output ONLY ──
   (Opening Snapshot — no header)
-  [age] — [Core Metaphor] Begins
+  🍀 1. [age] — [Core Metaphor] Begins
   📖 2. [Name]'s 10-Year Chapter
   🧠 3. Mind & Confidence
   💞 4. Love & Connection
@@ -512,10 +512,10 @@ Rules:
 🍀 SECTION 1: 대운 공개
 
 Korean title format:
-  "1. [현재 나이]살, [핵심 비유]의 시간이 시작됩니다"
+  "🍀 1. [현재 나이]살, [핵심 비유]의 시간이 시작됩니다"
 
 English title format:
-  "1. [Current age] — [Core Metaphor] Begins"
+  "🍀 1. [Current age] — [Core Metaphor] Begins"
 
 제목 아래:
   - 현재 대운 천간/지지의 에너지 성격

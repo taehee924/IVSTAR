@@ -33,7 +33,7 @@ const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!;
 // ── 리포트 타입별 섹션 이모지 설정 ──────────────────────────────
 const REPORT_SECTION_EMOJIS: Record<string, string[]> = {
   general:       ["✨", "🌿", "💫", "🌑", "🧭", "🌟"],
-  life_cycle:    ["📖", "🧠", "💞", "💰", "🧭"],
+  life_cycle:    ["🍀","📖", "🧠", "💞", "💰", "🧭"],
   crush:         ["👀", "💭", "🫧", "📊", "💕", "💌", "🔮"],
   ex:            ["🌊","✨", "💫","🏠","🔍","⚡", "💞", "🧭", "🔮"],
   situationship: ["👀", "🫧", "💞", "💌", "🚩", "💕", "🔮"],
