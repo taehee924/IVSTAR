@@ -78,7 +78,7 @@ async def generate_report(
             daewoon_age_range=daewoon_age_range,
         )
 
-    elif report_type in ("year_ahead", "daily"):
+    elif report_type == "daily":
         current_daewoon, daewoon_age_range = calculate_current_daewoon(
             birth_date_str=birth_date,
             gender=gender,

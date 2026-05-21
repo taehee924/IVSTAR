@@ -18,7 +18,6 @@ interface Report {
 const REPORT_LABELS: Record<string, string> = {
   general: "About Me",
   life_cycle: "Life Cycles",
-  year_ahead: "Your Year Ahead",
   daily: "2026 Horoscope",
   love: "Couple",
   crush: "Crush",
@@ -174,7 +173,7 @@ function ReportAccordion({
   content: string;
   reportType: string;
 }) {
-  const isMonthly = reportType === "year_ahead" || reportType === "daily";
+  const isMonthly = reportType === "daily";
   const { opening, sections } = isMonthly
     ? parseMonthlyReportSections(content)
     : parseReportSections(content, REPORT_SECTION_EMOJIS[reportType] ?? []);
@@ -439,7 +438,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
         {report.is_unlocked && (
           <>
             <div ref={reportRef}>
-              {(REPORT_SECTION_EMOJIS[report.report_type] || report.report_type === "year_ahead" || report.report_type === "daily") ? (
+              {(REPORT_SECTION_EMOJIS[report.report_type] || report.report_type === "daily") ? (
                 <ReportAccordion
                   content={report.content}
                   reportType={report.report_type}
