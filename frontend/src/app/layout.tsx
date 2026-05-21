@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "IVSTAR",
   description: "Your personalized Saju & astrology readings",
+  icons: {
+    icon: "/icon.svg",
+  },
   openGraph: {
     title: "IVSTAR",
     description: "Your personalized Saju & astrology readings",
