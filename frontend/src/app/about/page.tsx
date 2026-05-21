@@ -77,17 +77,17 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <br>
-        </br>
+        <div>
 
         {/* ── QUOTE ── */}
         <blockquote className="border-l-2 border-gray-400 pl-5">
-          <p className="text-base italic text-gray-700 leading-relaxed font-serif">
+          <p className="text-base italic border-text-gray-700 leading-relaxed font-serif">
             &ldquo;Saju is one of the most precise self-analysis systems ever
             built. Most people outside East Asia have just never had a
             way in.&rdquo;
           </p>
         </blockquote>
+        </div>
 
         <Divider />
 
@@ -95,7 +95,7 @@ export default function AboutPage() {
         <section>
           <SectionLabel>What is Saju?</SectionLabel><br></br>
           <p className="text-xs uppercase tracking-widest mb-2 text-[#7B3B2A]">
-            四柱 · Four Pillars
+            四柱 · Four Pillars <br></br>
           </p>
           <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5">
             The system that reads time, not just the sky.
