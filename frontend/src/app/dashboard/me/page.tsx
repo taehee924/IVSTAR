@@ -5,6 +5,37 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
+import {
+  calculateFourPillars,
+  getHeavenlyStemElement,
+  getEarthlyBranchElement,
+} from "manseryeok";
+
+function getDominantElement(pillars: any): string {
+  const elements: Record<string, number> = { 목: 0, 화: 0, 토: 0, 금: 0, 수: 0 };
+  for (const p of [pillars.year, pillars.month, pillars.day, pillars.hour]) {
+    const s = getHeavenlyStemElement(p.heavenlyStem);
+    const b = getEarthlyBranchElement(p.earthlyBranch);
+    if (s && elements[s] !== undefined) elements[s]++;
+    if (b && elements[b] !== undefined) elements[b]++;
+  }
+  return Object.entries(elements).sort((a, b) => b[1] - a[1])[0][0];
+}
+
+function calculateChartStrength(pillars: any): string {
+  const elements: Record<string, number> = { 목: 0, 화: 0, 토: 0, 금: 0, 수: 0 };
+  for (const p of [pillars.year, pillars.month, pillars.day, pillars.hour]) {
+    const s = getHeavenlyStemElement(p.heavenlyStem);
+    const b = getEarthlyBranchElement(p.earthlyBranch);
+    if (s && elements[s] !== undefined) elements[s]++;
+    if (b && elements[b] !== undefined) elements[b]++;
+  }
+  const total = Object.values(elements).reduce((a, b) => a + b, 0);
+  const max = Math.max(...Object.values(elements));
+  if (max >= total * 0.4) return "Strong";
+  if (max <= total * 0.2) return "Scattered";
+  return "Balanced";
+}
 
 interface Report {
   id: number;
@@ -188,6 +219,24 @@ export default function MePage() {
 
       const birthPlace = editCity && editCountry ? `${editCity}, ${editCountry}` : null;
 
+      // 사주 재계산
+      let sajuPayload = {};
+      if (birthDate) {
+        const [y, m, d] = birthDate.split("-").map(Number);
+        const h = birthTime ? parseInt(birthTime.split(":")[0]) : 12;
+        const min = birthTime ? parseInt(birthTime.split(":")[1]) : 0;
+        const pillars = calculateFourPillars({ year: y, month: m, day: d, hour: h, minute: min });
+        sajuPayload = {
+          year_pillar:  `${pillars.year.heavenlyStem}${pillars.year.earthlyBranch}`,
+          month_pillar: `${pillars.month.heavenlyStem}${pillars.month.earthlyBranch}`,
+          day_pillar:   `${pillars.day.heavenlyStem}${pillars.day.earthlyBranch}`,
+          hour_pillar:  `${pillars.hour.heavenlyStem}${pillars.hour.earthlyBranch}`,
+          day_master:   pillars.day.heavenlyStem,
+          dominant_element: getDominantElement(pillars),
+          chart_strength:   calculateChartStrength(pillars),
+        };
+      }
+
       // 이름 수정 + 출생정보 수정 동시 요청
       const requests: Promise<Response>[] = [
         fetch(
@@ -203,6 +252,7 @@ export default function MePage() {
               birth_time: birthTime,
               birth_place: birthPlace,
               gender: editGender || null,
+              ...sajuPayload,
             }),
           }
         ),
