@@ -93,7 +93,7 @@ export default function AboutPage() {
         {/* ── WHAT IS SAJU ── */}
         <section>
           <SectionLabel>What is Saju?</SectionLabel><br></br>
-          <p className="text-xs text-brown-400 uppercase tracking-widest mb-2">
+          <p className="text-xs uppercase tracking-widest mb-2 text-[#F5F0E6]">
             四柱 · Four Pillars
           </p>
           <h2 className="text-3xl font-bold leading-tight text-gray-900 mb-5">
@@ -128,7 +128,7 @@ export default function AboutPage() {
           </div>
 
           {/* 천간 · Heavenly Stems */}
-          <p className="text-[10px] text-black-400">
+          <p className="text-sm text-black">
             천간 · Heavenly Stems
           </p>
           <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-4">
@@ -157,7 +157,7 @@ export default function AboutPage() {
           <Divider />
 
           {/* 지지 · Earthly Branches */}
-          <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">
+          <p className="text-sm text-gray-600">
             지지 · Earthly Branches
           </p>
           <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-4">
@@ -208,7 +208,6 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <Divider />
 
         {/* ── ARCHIVE ── */}
         <section>

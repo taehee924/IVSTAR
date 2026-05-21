@@ -93,7 +93,7 @@ const REPORT_LABELS: Record<string, string> = {
   general: "About Me",
   life_cycle: "Life Cycles",
   year_ahead: "Your Year Ahead",
-  daily: "Daily Horoscope",
+  daily: "2026 Horoscope",
   love: "Couple Reading",
   crush: "Crush Reading",
   ex: "Ex Reading",
