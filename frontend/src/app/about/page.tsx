@@ -2,15 +2,15 @@ import Header from "@/components/layout/Header";
 
 const STEMS = [
   { char: "甲", roman: "Gap", element: "Wood", polarity: "Yang", symbol: "☀" },
-  { char: "乙", roman: "Eul", element: "Wood", polarity: "Yin",  symbol: "☽" },
+  { char: "乙", roman: "Eul", element: "Wood", polarity: "Yin",  symbol: "☾" },
   { char: "丙", roman: "Byeong", element: "Fire", polarity: "Yang", symbol: "☀" },
-  { char: "丁", roman: "Jeong", element: "Fire", polarity: "Yin",  symbol: "☽" },
+  { char: "丁", roman: "Jeong", element: "Fire", polarity: "Yin",  symbol: "☾" },
   { char: "戊", roman: "Mu",  element: "Earth", polarity: "Yang", symbol: "☀" },
-  { char: "己", roman: "Ki",  element: "Earth", polarity: "Yin",  symbol: "☽" },
+  { char: "己", roman: "Ki",  element: "Earth", polarity: "Yin",  symbol: "☾" },
   { char: "庚", roman: "Gyeong", element: "Metal", polarity: "Yang", symbol: "☀" },
-  { char: "辛", roman: "Sin", element: "Metal", polarity: "Yin",  symbol: "☽" },
+  { char: "辛", roman: "Sin", element: "Metal", polarity: "Yin",  symbol: "☾" },
   { char: "壬", roman: "Im",  element: "Water", polarity: "Yang", symbol: "☀" },
-  { char: "癸", roman: "Gye", element: "Water", polarity: "Yin",  symbol: "☽" },
+  { char: "癸", roman: "Gye", element: "Water", polarity: "Yin",  symbol: "☾" },
 ];
 
 const BRANCHES = [
@@ -50,7 +50,7 @@ export default function AboutPage() {
         <section>
           <SectionLabel>About</SectionLabel>
           <h1 className="text-4xl font-bold leading-tight text-gray-900 mb-5">
-            Two ancient systems.{" "}
+            Two ancient systems. <br></br>
             <span className="italic text-[#7B3B2A]">One complete picture</span>
             {" "}of you.
           </h1>
@@ -64,9 +64,8 @@ export default function AboutPage() {
 
         <Divider />
 
-        {/* ── WHAT THIS IS ── */}
+      
         <section>
-          <SectionLabel>What this is</SectionLabel>
           <h2 className="text-3xl font-bold leading-tight text-gray-900 mb-5">
             Not a horoscope.<br />A portrait.
           </h2>
@@ -93,8 +92,8 @@ export default function AboutPage() {
 
         {/* ── WHAT IS SAJU ── */}
         <section>
-          <SectionLabel>What is Saju?</SectionLabel>
-          <p className="text-xs text-gray-400 uppercase tracking-widest mb-2">
+          <SectionLabel>What is Saju?</SectionLabel><br></br>
+          <p className="text-xs text-brown-400 uppercase tracking-widest mb-2">
             四柱 · Four Pillars
           </p>
           <h2 className="text-3xl font-bold leading-tight text-gray-900 mb-5">
@@ -129,7 +128,7 @@ export default function AboutPage() {
           </div>
 
           {/* 천간 · Heavenly Stems */}
-          <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">
+          <p className="text-[10px] text-black-400">
             천간 · Heavenly Stems
           </p>
           <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-4">
@@ -137,7 +136,7 @@ export default function AboutPage() {
           </p>
           <p className="text-sm text-gray-600 leading-relaxed mb-6">
             Each Stem is a blend of one of the Five Elements and a polarity — Yang (☀ active)
-            or Yin (☽ receptive). The Stem of your birth <em>day</em> is your Day Master:
+            or Yin (☾receptive). The Stem of your birth <em>day</em> is your Day Master:
             the core energy you were born with.
           </p>
 
