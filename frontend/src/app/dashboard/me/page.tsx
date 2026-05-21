@@ -609,7 +609,7 @@ export default function MePage() {
           <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] px-4 py-3 flex items-center justify-between">
             <p className="text-sm text-gray-600">Questions or issues?</p>
             <a
-              href="mailto:support@4fourstar.com"
+              href="mailto:sajuju0401@gmail.com"
               className="text-xs font-medium border border-[#DDD8CE] rounded-lg px-3 py-1.5 hover:bg-[#F5F0E6] transition-colors text-gray-600"
             >
               Contact us →
