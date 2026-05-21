@@ -18,7 +18,10 @@ export const metadata: Metadata = {
   title: "IVSTAR",
   description: "Your personalized Saju & astrology readings",
   icons: {
-    icon: "/icon.svg",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
   },
   openGraph: {
     title: "IVSTAR",
