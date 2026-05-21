@@ -77,7 +77,8 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <br></br>
+        <br>
+        </br>
 
         {/* ── QUOTE ── */}
         <blockquote className="border-l-2 border-gray-400 pl-5">
@@ -93,7 +94,7 @@ export default function AboutPage() {
         {/* ── WHAT IS SAJU ── */}
         <section>
           <SectionLabel>What is Saju?</SectionLabel><br></br>
-          <p className="text-xs uppercase tracking-widest mb-2 text-[#F5F0E6]">
+          <p className="text-xs uppercase tracking-widest mb-2 text-[#7B3B2A]">
             四柱 · Four Pillars
           </p>
           <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5">
@@ -136,7 +137,7 @@ export default function AboutPage() {
           </p>
           <p className="text-sm text-gray-600 leading-relaxed mb-6">
             Each Stem is a blend of one of the Five Elements and a polarity — Yang (☀ active)
-            or Yin (☾receptive). The Stem of your birth <em>day</em> is your Day Master:
+            or Yin (☾ receptive). The Stem of your birth <em>day</em> is your Day Master:
             the core energy you were born with.
           </p>
 
