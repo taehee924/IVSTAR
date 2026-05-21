@@ -66,7 +66,7 @@ export default function AboutPage() {
 
       
         <section>
-          <h2 className="text-3xl font-bold leading-tight text-gray-900 mb-5">
+          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5">
             Not a horoscope.<br />A portrait.
           </h2>
           <p className="text-sm text-gray-600 leading-relaxed">
@@ -77,7 +77,7 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <Divider />
+        <br></br>
 
         {/* ── QUOTE ── */}
         <blockquote className="border-l-2 border-gray-400 pl-5">
@@ -96,7 +96,7 @@ export default function AboutPage() {
           <p className="text-xs uppercase tracking-widest mb-2 text-[#F5F0E6]">
             四柱 · Four Pillars
           </p>
-          <h2 className="text-3xl font-bold leading-tight text-gray-900 mb-5">
+          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5">
             The system that reads time, not just the sky.
           </h2>
           <p className="text-sm text-gray-600 leading-relaxed mb-4">
@@ -200,20 +200,21 @@ export default function AboutPage() {
         {/* ── AI · REPORTS ── */}
         <section>
           <SectionLabel>AI · Reports</SectionLabel>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">Built to be trusted</h2>
+          <h2 className="text-sm font-bold text-gray-900 mb-3">Built to be trusted</h2>
           <p className="text-sm text-gray-600 leading-relaxed">
             Our AI engine runs on a framework built specifically for cosmic analysis —
-            delivering precise, consistent reports that feel like they were written only
+            delivering precise, consistent reports that feel like the y were written only
             for you.
           </p>
         </section>
 
+        <br></br>
 
         {/* ── ARCHIVE ── */}
         <section>
           <SectionLabel>Archive</SectionLabel>
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">Your readings, always there</h2>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <h2 className="text-sm font-bold text-gray-900 mb-3">Your readings, always there</h2>
+          <p className="text-sm text-gray-900 leading-relaxed">
             Every report is saved. Look back at past readings, track how your energy
             shifts over time, and share results with the people you trust.
           </p>
@@ -224,7 +225,7 @@ export default function AboutPage() {
         {/* ── WHO IT'S FOR ── */}
         <section>
           <SectionLabel>Who it&apos;s for</SectionLabel>
-          <h2 className="text-3xl font-bold leading-tight text-gray-900 mb-5">
+          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5">
             If astrology ever felt like only half the picture.
           </h2>
           <p className="text-sm text-gray-600 leading-relaxed">
