@@ -20,8 +20,10 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
       { url: "/favicon.ico", sizes: "any" },
     ],
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     title: "IVSTAR",
