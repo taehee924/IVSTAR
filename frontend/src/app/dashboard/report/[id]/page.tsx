@@ -19,7 +19,7 @@ const REPORT_LABELS: Record<string, string> = {
   general: "About Me",
   life_cycle: "Life Cycles",
   year_ahead: "Your Year Ahead",
-  daily: "Daily Horoscope",
+  daily: "2026 Horoscope",
   love: "Couple",
   crush: "Crush",
   ex: "Ex",
@@ -100,6 +100,65 @@ function parseReportSections(
   };
 }
 
+// ── 올해 운세 월별 섹션 파서 (동적 이모지 감지) ──────────────
+const MONTH_NAMES_EN = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December",
+];
+const MONTH_PATTERN = new RegExp(
+  `^(\\S+)\\s+(?:\\d{1,2}월|${MONTH_NAMES_EN.join("|")})\\s*:`
+);
+
+function parseMonthlyReportSections(
+  content: string
+): { opening: string; sections: ParsedSection[] } {
+  const lines = content.split("\n");
+  const sections: ParsedSection[] = [];
+  let currentEmoji = "";
+  let currentTitle = "";
+  let currentLines: string[] = [];
+  let openingLines: string[] = [];
+  let inSection = false;
+
+  for (const line of lines) {
+    const stripped = line.replace(/^[#*\s─]+/, "").trim();
+    const match = stripped.match(MONTH_PATTERN);
+
+    if (match) {
+      if (inSection) {
+        sections.push({
+          emoji: currentEmoji,
+          title: currentTitle,
+          content: currentLines.join("\n").trim(),
+        });
+        currentLines = [];
+      }
+      // emoji = first non-whitespace token; title = rest of the stripped line
+      const spaceIdx = stripped.indexOf(" ");
+      currentEmoji = spaceIdx > 0 ? stripped.slice(0, spaceIdx) : "📅";
+      currentTitle = spaceIdx > 0 ? stripped.slice(spaceIdx + 1).trim() : stripped;
+      inSection = true;
+    } else if (inSection) {
+      currentLines.push(line);
+    } else {
+      openingLines.push(line);
+    }
+  }
+
+  if (inSection) {
+    sections.push({
+      emoji: currentEmoji,
+      title: currentTitle,
+      content: currentLines.join("\n").trim(),
+    });
+  }
+
+  return {
+    opening: openingLines.join("\n").trim(),
+    sections,
+  };
+}
+
 // ── 마크다운 semi-bold 오버라이드 ────────────────────────────
 const mdComponents: Components = {
   strong: ({ children }) => (
@@ -115,8 +174,10 @@ function ReportAccordion({
   content: string;
   reportType: string;
 }) {
-  const sectionEmojis = REPORT_SECTION_EMOJIS[reportType] ?? [];
-  const { opening, sections } = parseReportSections(content, sectionEmojis);
+  const { opening, sections } =
+    reportType === "year_ahead"
+      ? parseMonthlyReportSections(content)
+      : parseReportSections(content, REPORT_SECTION_EMOJIS[reportType] ?? []);
   const [openSet, setOpenSet] = useState<Set<number>>(new Set());
 
   const toggle = (i: number) => {
@@ -378,7 +439,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
         {report.is_unlocked && (
           <>
             <div ref={reportRef}>
-              {REPORT_SECTION_EMOJIS[report.report_type] ? (
+              {(REPORT_SECTION_EMOJIS[report.report_type] || report.report_type === "year_ahead") ? (
                 <ReportAccordion
                   content={report.content}
                   reportType={report.report_type}
