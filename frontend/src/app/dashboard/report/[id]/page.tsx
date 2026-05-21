@@ -174,10 +174,10 @@ function ReportAccordion({
   content: string;
   reportType: string;
 }) {
-  const { opening, sections } =
-    reportType === "year_ahead"
-      ? parseMonthlyReportSections(content)
-      : parseReportSections(content, REPORT_SECTION_EMOJIS[reportType] ?? []);
+  const isMonthly = reportType === "year_ahead" || reportType === "daily";
+  const { opening, sections } = isMonthly
+    ? parseMonthlyReportSections(content)
+    : parseReportSections(content, REPORT_SECTION_EMOJIS[reportType] ?? []);
   const [openSet, setOpenSet] = useState<Set<number>>(new Set());
 
   const toggle = (i: number) => {
@@ -439,7 +439,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
         {report.is_unlocked && (
           <>
             <div ref={reportRef}>
-              {(REPORT_SECTION_EMOJIS[report.report_type] || report.report_type === "year_ahead") ? (
+              {(REPORT_SECTION_EMOJIS[report.report_type] || report.report_type === "year_ahead" || report.report_type === "daily") ? (
                 <ReportAccordion
                   content={report.content}
                   reportType={report.report_type}
