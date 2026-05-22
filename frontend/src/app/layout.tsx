@@ -15,12 +15,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "4Fourstar",
+  title: "IVSTAR",
   description: "Your personalized Saju & astrology readings",
   icons: {
     icon: [
-      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
-      { url: "/favicon16x16.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon16x16.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon32x32.png", type: "image/png", sizes: "32x32" },
       { url: "/favicon.ico", sizes: "any" },
     ],
     apple: "/apple-touch-icon.png",
