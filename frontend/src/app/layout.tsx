@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "4Fourstar",
+  title: "IVSTAR",
   description: "Your personalized Saju & astrology readings",
   icons: {
     icon: [
@@ -27,10 +27,10 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
   },
   openGraph: {
-    title: "4Fourstar",
+    title: "IVSTAR",
     description: "Your personalized Saju & astrology readings",
     url: "https://www.4fourstar.com",
-    siteName: "4Fourstar",
+    siteName: "IVSTAR",
   },
 };
 
