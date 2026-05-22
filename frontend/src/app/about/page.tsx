@@ -161,7 +161,7 @@ export default function AboutPage() {
           <Divider />
 
           {/* 지지 · Earthly Branches */}
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-black">
             지지 · Earthly Branches
           </p>
           <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-4">
