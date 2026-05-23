@@ -52,7 +52,7 @@ export default function CategoriesPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F5F0E6] pt-14 pb-8">
+    <main className="min-h-screen bg-[#F6F1E7] pt-14 pb-8">
       <Header />
       <div className="w-full max-w-2xl lg:max-w-5xl mx-auto px-4 lg:px-8 pt-8 space-y-4">
         <h1 className="text-lg font-semibold text-gray-800">Theme</h1>

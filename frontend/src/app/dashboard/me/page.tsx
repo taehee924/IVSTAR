@@ -339,11 +339,11 @@ export default function MePage() {
   const email = session?.user?.email ?? "";
   const image = session?.user?.image;
 
-  const selectClass = "w-full rounded-lg border border-[#DDD8CE] bg-[#F5F0E6] px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-400";
+  const selectClass = "w-full rounded-lg border border-[#DDD8CE] bg-[#F6F1E7] px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-400";
 
   if (status !== "loading" && !session) {
     return (
-      <main className="min-h-screen bg-[#F5F0E6] pt-14 pb-8">
+      <main className="min-h-screen bg-[#F6F1E7] pt-14 pb-8">
         <Header />
         <div className="w-full max-w-2xl lg:max-w-3xl mx-auto px-4 lg:px-8 pt-8 space-y-6">
           <h1 className="text-lg font-semibold text-gray-800">Me</h1>
@@ -372,7 +372,7 @@ export default function MePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#F5F0E6] pt-14 pb-8">
+    <main className="min-h-screen bg-[#F6F1E7] pt-14 pb-8">
       <Header />
       <div className="w-full max-w-2xl lg:max-w-3xl mx-auto px-4 lg:px-8 pt-8 space-y-6">
 
@@ -533,7 +533,7 @@ export default function MePage() {
                   </button>
                   <button
                     onClick={() => setIsEditing(false)}
-                    className="flex-1 rounded-lg border border-[#DDD8CE] py-2 text-sm text-gray-600 hover:bg-[#F5F0E6] transition-colors"
+                    className="flex-1 rounded-lg border border-[#DDD8CE] py-2 text-sm text-gray-600 hover:bg-[#F6F1E7] transition-colors"
                   >
                     Cancel
                   </button>
@@ -610,7 +610,7 @@ export default function MePage() {
             <p className="text-sm text-gray-600">Questions or issues?</p>
             <a
               href="mailto:sajuju0401@gmail.com"
-              className="text-xs font-medium border border-[#DDD8CE] rounded-lg px-3 py-1.5 hover:bg-[#F5F0E6] transition-colors text-gray-600"
+              className="text-xs font-medium border border-[#DDD8CE] rounded-lg px-3 py-1.5 hover:bg-[#F6F1E7] transition-colors text-gray-600"
             >
               Contact us →
             </a>

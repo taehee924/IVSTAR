@@ -19,7 +19,7 @@ export default function Header() {
   return (
     <>
       {/* 상단 헤더 */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#F5F0E6] border-b border-[#DDD8CE]">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#F6F1E7] border-b border-[#DDD8CE]">
         <div className="w-full max-w-2xl lg:max-w-5xl mx-auto px-4 lg:px-8 h-14 flex items-center justify-between">
           <Link href="/dashboard" className="text-lg font-bold tracking-widest text-gray-800">
             IVSTAR
@@ -60,7 +60,7 @@ export default function Header() {
       {/* 모바일 전체화면 오버레이 (lg 미만) */}
       {open && (
         <div
-          className="lg:hidden fixed inset-0 z-50 bg-[#F5F0E6]"
+          className="lg:hidden fixed inset-0 z-50 bg-[#F6F1E7]"
           onClick={() => setOpen(false)}
         >
           <div className="max-w-md mx-auto px-6 pt-6" onClick={(e) => e.stopPropagation()}>

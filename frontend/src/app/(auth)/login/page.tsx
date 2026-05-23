@@ -2,7 +2,7 @@ import { LoginButtons } from "@/components/auth/LoginButtons";
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-[#F5F0E6] p-6">
+    <main className="min-h-screen flex items-center justify-center bg-[#F6F1E7] p-6">
       <div className="w-full max-w-sm space-y-6">
 
         {/* 로고 / 타이틀 */}
