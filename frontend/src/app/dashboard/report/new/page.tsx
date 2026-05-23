@@ -224,14 +224,14 @@ function NewReportContent() {
     <main className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
 
-        <div className="space-y-1">
+        <div className="space-y-1 text-center">
           <h1 className="text-2xl font-semibold text-gray-800">
             {REPORT_LABELS[type]} Reading
           </h1>
         </div>
 
         {WHAT_INSIDE[type] && (
-          <ul className="space-y-1.5">
+          <ul className="space-y-1.5 flex flex-col items-center">
             {WHAT_INSIDE[type].map((item, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
                 <span className="mt-0.5 text-gray-400">✦</span>
