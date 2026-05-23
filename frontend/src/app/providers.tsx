@@ -18,23 +18,43 @@ function TokenErrorWatcher() {
   return null;
 }
 
-/** 파비콘 동적 설정 */
+/** 파비콘 동적 설정 - Hash 기반 캐시 버스팅 */
 function FaviconSetter() {
   useEffect(() => {
-    // 파비콘 캐시 방지를 위해 타임스탐프 추가
-    const timestamp = new Date().getTime();
-    
-    // 기존 icon 링크 업데이트
-    const link = document.querySelector("link[rel='icon']") as HTMLLinkElement;
-    if (link) {
-      link.href = `/favicon-32x32.png?v=${timestamp}`;
-    }
-    
-    // Apple 파비콘도 설정
-    const appleLink = document.querySelector("link[rel='apple-touch-icon']") as HTMLLinkElement;
-    if (appleLink) {
-      appleLink.href = `/apple-touch-icon.png?v=${timestamp}`;
-    }
+    const updateFavicon = async () => {
+      try {
+        // 파비콘 파일의 last-modified 헤더로 해시 생성
+        const res = await fetch("/favicon-32x32.png", { method: "HEAD" });
+        const lastModified = res.headers.get("last-modified") || new Date().toISOString();
+        const hash = new Date(lastModified).getTime();
+
+        // 기존 icon 제거
+        document.querySelectorAll("link[rel='icon']").forEach((el) => el.remove());
+
+        // 새로운 icon 추가
+        const link = document.createElement("link");
+        link.rel = "icon";
+        link.href = `/favicon-32x32.png?v=${hash}`;
+        link.type = "image/png";
+        document.head.appendChild(link);
+
+        // Apple icon도 동일하게
+        const appleRes = await fetch("/apple-touch-icon.png", { method: "HEAD" });
+        const appleLastModified = appleRes.headers.get("last-modified") || new Date().toISOString();
+        const appleHash = new Date(appleLastModified).getTime();
+
+        const appleLink = document.createElement("link");
+        appleLink.rel = "apple-touch-icon";
+        appleLink.href = `/apple-touch-icon.png?v=${appleHash}`;
+        document.head.appendChild(appleLink);
+
+        console.log("[Favicon] Updated with hash:", { favicon: hash, apple: appleHash });
+      } catch (error) {
+        console.error("[Favicon] Update failed:", error);
+      }
+    };
+
+    updateFavicon();
   }, []);
 
   return null;
