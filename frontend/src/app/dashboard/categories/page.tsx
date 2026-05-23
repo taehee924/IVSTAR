@@ -13,8 +13,8 @@ const REPORT_TYPES = [
   { type: "crush", label: "Crush", description: "#CrushEnergy #SecretFeelings #NextMove", price: "Free", category: "love" },
   { type: "ex", label: "Ex", description: "#YourEx #LingeringFeelings #SecondChance", price: "Free", category: "love" },
   { type: "situationship", label: "Situationship", description: "#MixedSignals #RedFlags #NextStep", price: "Free", category: "love" },
-  { type: "career", label: "Career", description: "#CareerPath #SuccessFlow #Potential", price: "Free", category: "money" },
-  { type: "wealth", label: "Wealth", description: "#WealthFlow #MoneyMindset #Abundance", price: "Free", category: "money" },
+  { type: "career", label: "Career", description: "#CareerPath #SuccessFlow #Potential", price: "Coming Soon", category: "money" },
+  { type: "wealth", label: "Wealth", description: "#WealthFlow #MoneyMindset #Abundance", price: "Coming Soon", category: "money" },
 ];
 
 const TABS = [
