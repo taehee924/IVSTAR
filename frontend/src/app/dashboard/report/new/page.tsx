@@ -231,11 +231,10 @@ function NewReportContent() {
         </div>
 
         {WHAT_INSIDE[type] && (
-          <ul className="space-y-1.5 flex flex-col items-center">
+          <ul className="space-y-1.5 text-center">
             {WHAT_INSIDE[type].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                <span className="mt-0.5 text-gray-400">✦</span>
-                <span>{item}</span>
+              <li key={i} className="text-sm text-gray-600">
+                <span className="text-gray-400 mr-1.5">✦</span>{item}
               </li>
             ))}
           </ul>
