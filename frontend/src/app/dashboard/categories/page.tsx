@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Header from "@/components/layout/Header";
 
 const REPORT_TYPES = [
-  { type: "daily", label: "2026 Horoscope", description: "#MonthlyFlow #TurningPoints #WhatsAhead", price: "Free", category: "about" },
+  { type: "daily", label: "2026 Horoscope", description: "", price: "Free", category: "about" },
   { type: "general", label: "About Me", description: "#Personality #Strengths #LifePath", price: "Free", category: "about" },
   { type: "life_cycle", label: "Life Cycle", description: "#BigPicture #LifeSeasons #TurningPoint", price: "Free", category: "about" },
   { type: "love", label: "Couple", description: "#Chemistry #Tension #Compatibility", price: "Free", category: "love" },
@@ -71,12 +72,18 @@ export default function CategoriesPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {filtered.map((r) => (
             <div key={r.type + r.label} onClick={() => handleCardClick(r.type)} className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow">
-              <div className="bg-[#EAE2D0] h-32 lg:h-40 flex items-center justify-center">
-                <span className="text-[#A89880] text-3xl">✦</span>
-              </div>
+              {r.type === "daily" ? (
+                <div className="relative aspect-[3/4] w-full">
+                  <Image src="/horoscope.png" alt="2026 Horoscope" fill style={{ objectFit: "cover" }} />
+                </div>
+              ) : (
+                <div className="bg-[#EAE2D0] h-32 lg:h-40 flex items-center justify-center">
+                  <span className="text-[#A89880] text-3xl">✦</span>
+                </div>
+              )}
               <div className="bg-[#EDE8DC] p-3 flex flex-col">
                 <p className="font-medium text-sm text-gray-800">{r.label}</p>
-                <p className="text-xs text-gray-500 min-h-[2.5rem]">{r.description}</p>
+                {r.description && <p className="text-xs text-gray-500 min-h-[2.5rem]">{r.description}</p>}
                 <p className="text-xs font-semibold text-gray-700 mt-1">{r.price}</p>
               </div>
             </div>
