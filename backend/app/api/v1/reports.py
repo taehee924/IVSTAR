@@ -9,6 +9,7 @@ from app.models.report import Report, ReportType
 from app.models.payment import Payment, PaymentStatus
 from app.models.birth_profile import BirthProfile
 from app.core.gemini import generate_report, generate_pair_report
+from app.core.config import settings
 
 router = APIRouter(prefix="/reports", tags=["reports"])
 
@@ -34,6 +35,11 @@ class ReportCreateRequest(BaseModel):
     birth_profile_id: int
     report_type: ReportType
     price: float = 0.99
+    promo_code: str | None = None  # 프로모 코드
+
+
+class CouponValidateRequest(BaseModel):
+    code: str
 
 
 # ── 헬퍼 ──────────────────────────────────────────────────
@@ -76,6 +82,13 @@ def format_report(report: Report, db: Session) -> dict:
     }
 
 
+def is_valid_promo(code: str | None) -> bool:
+    """프로모 코드 유효성 검사"""
+    if not code:
+        return False
+    return code.strip() == settings.PROMO_CODE
+
+
 # ── 라우트 ────────────────────────────────────────────────
 
 @router.get("/")
@@ -95,6 +108,15 @@ def test_list_reports(db: Session = Depends(get_db)):
     """테스트용 - 로그인 없이 리포트 목록 조회"""
     reports = db.query(Report).order_by(Report.created_at.desc()).limit(10).all()
     return [{"id": r.id, "report_type": r.report_type.value, "content": r.content, "created_at": str(r.created_at)} for r in reports]
+
+
+# 쿠폰 코드 검증
+@router.post("/validate-coupon")
+def validate_coupon(body: CouponValidateRequest):
+    """프로모 코드 유효성 검사"""
+    if is_valid_promo(body.code):
+        return {"valid": True}
+    return {"valid": False}
 
 
 @router.post("/preview")
@@ -155,7 +177,7 @@ async def create_full_report(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """유료 전체 리포트 생성"""
+    """유료 전체 리포트 생성 (프로모 코드 적용 시 무료)"""
     profile = db.query(BirthProfile).filter(
         BirthProfile.id == body.birth_profile_id,
         BirthProfile.user_id == current_user.id,
@@ -188,12 +210,15 @@ async def create_full_report(
     except RuntimeError as e:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
 
+    # 프로모 코드 유효하면 무료
+    final_price = 0.00 if is_valid_promo(body.promo_code) else body.price
+
     report = Report(
         user_id=current_user.id,
         birth_profile_id=profile.id,
         report_type=body.report_type,
         content=content,
-        price=body.price,
+        price=final_price,
     )
     db.add(report)
     db.commit()
@@ -208,18 +233,16 @@ class PairReportCreateRequest(BaseModel):
     birth_profile_id: int
     report_type: ReportType
     price: float = 0.99
-    # 상대방 기본 정보
+    promo_code: str | None = None  # 프로모 코드
     partner_name: str | None = None
     partner_birth_date: str | None = None
     partner_birth_time: str | None = None
     partner_birth_place: str | None = None
     partner_gender: str | None = None
-    # 서양 점성술
     partner_sun_sign: str | None = None
     partner_moon_sign: str | None = None
     partner_rising_sign: str | None = None
     partner_venus_sign: str | None = None
-    # 사주
     partner_year_pillar: str | None = None
     partner_month_pillar: str | None = None
     partner_day_pillar: str | None = None
@@ -294,12 +317,15 @@ async def create_pair_preview(
     except RuntimeError as e:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
 
+    # 프로모 코드 유효하면 무료
+    final_price = 0.00 if is_valid_promo(body.promo_code) else body.price
+
     report = Report(
         user_id=current_user.id,
         birth_profile_id=profile.id,
         report_type=body.report_type,
         content=content,
-        price=0.00,
+        price=final_price,
     )
     db.add(report)
     db.commit()

@@ -95,7 +95,8 @@ const WHAT_INSIDE: Record<string, string[]> = {
   ],
 };
 
-// ── useSearchParams를 사용하는 컴포넌트 분리 ──
+const PRICE = 0.99;
+
 function NewReportContent() {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
@@ -105,12 +106,37 @@ function NewReportContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // 2인 리딩은 pair 페이지로 즉시 리다이렉트
+  // 쿠폰
+  const [promoCode, setPromoCode] = useState("");
+  const [promoValid, setPromoValid] = useState<boolean | null>(null);
+  const [promoLoading, setPromoLoading] = useState(false);
+
   useEffect(() => {
     if (PAIR_TYPES.has(type)) {
       router.replace(`/dashboard/report/pair?type=${type}`);
     }
   }, [type]);
+
+  const handleValidateCoupon = async () => {
+    if (!promoCode.trim()) return;
+    setPromoLoading(true);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/validate-coupon`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: promoCode.trim() }),
+        }
+      );
+      const data = await res.json();
+      setPromoValid(data.valid);
+    } catch {
+      setPromoValid(false);
+    } finally {
+      setPromoLoading(false);
+    }
+  };
 
   const handleCreate = async () => {
     if (!session) {
@@ -122,7 +148,6 @@ function NewReportContent() {
     setError("");
 
     try {
-      // 출생 정보 조회
       const profileRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`,
         {
@@ -134,15 +159,14 @@ function NewReportContent() {
       if (!profileRes.ok) throw new Error("Failed to load birth profiles.");
       const profiles = await profileRes.json();
       if (profiles.length === 0) {
-        // 온보딩 완료 후 다시 이 페이지로 돌아오도록 redirect 파라미터 추가
         router.push(`/onboarding?redirect=/dashboard/report/new?type=${type}`);
         return;
       }
       const profile = profiles[0];
 
-      // 무료 리포트 생성
+      // 쿠폰 유효하면 무료, 아니면 유료
       const reportRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/preview`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/full`,
         {
           method: "POST",
           headers: {
@@ -152,24 +176,43 @@ function NewReportContent() {
           body: JSON.stringify({
             birth_profile_id: profile.id,
             report_type: type,
-            price: 0,
+            price: PRICE,
+            promo_code: promoValid ? promoCode.trim() : null,
           }),
         }
       );
+
       if (!reportRes.ok) {
         const errData = await reportRes.json().catch(() => ({}));
-        if (reportRes.status === 503) {
-          throw new Error("Please try again in a minute or two.");
-        }
-        if (reportRes.status === 400) {
-          throw new Error(errData.detail ?? "Invalid request. Please check your input and try again.");
-        }
+        if (reportRes.status === 503) throw new Error("Please try again in a minute or two.");
+        if (reportRes.status === 400) throw new Error(errData.detail ?? "Invalid request.");
         throw new Error(errData.detail ?? "Failed to create report. Please try again.");
       }
       const report = await reportRes.json();
 
-      // 결제 없이 바로 리포트 상세로 이동
-      router.push(`/dashboard/report/${report.id}`);
+      if (promoValid) {
+        // 쿠폰 적용 → 바로 리포트 페이지로
+        router.push(`/dashboard/report/${report.id}`);
+      } else {
+        // 결제 필요 → PayPal 결제 페이지로
+        const orderRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/create`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${(session as any)?.id_token}`,
+            },
+            body: JSON.stringify({
+              report_id: report.id,
+              currency: "USD",
+            }),
+          }
+        );
+        if (!orderRes.ok) throw new Error("Failed to create payment.");
+        const order = await orderRes.json();
+        router.push(`/dashboard/report/${report.id}?order_id=${order.paypal_order_id}`);
+      }
     } catch (e: any) {
       setError(e.message ?? "Error");
     } finally {
@@ -198,6 +241,44 @@ function NewReportContent() {
           </ul>
         )}
 
+        {/* 가격 */}
+        <div className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 flex items-center justify-between">
+          <p className="text-sm text-gray-600">{REPORT_LABELS[type]} Reading</p>
+          <p className="text-lg font-bold text-gray-800">
+            {promoValid ? <span className="text-green-600">Free</span> : `$${PRICE.toFixed(2)}`}
+          </p>
+        </div>
+
+        {/* 쿠폰 입력 */}
+        <div className="space-y-2">
+          <p className="text-xs text-gray-400">Have a promo code?</p>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Enter promo code"
+              value={promoCode}
+              onChange={(e) => {
+                setPromoCode(e.target.value);
+                setPromoValid(null);
+              }}
+              className="flex-1 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+            />
+            <button
+              onClick={handleValidateCoupon}
+              disabled={promoLoading || !promoCode.trim()}
+              className="rounded-lg border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 disabled:opacity-50 transition-colors"
+            >
+              {promoLoading ? "..." : "Apply"}
+            </button>
+          </div>
+          {promoValid === true && (
+            <p className="text-xs text-green-600">✓ Promo code applied. This reading is free!</p>
+          )}
+          {promoValid === false && (
+            <p className="text-xs text-red-500">Invalid promo code. Please try again.</p>
+          )}
+        </div>
+
         {error && (
           <p className="text-sm text-red-500">{error}</p>
         )}
@@ -207,7 +288,11 @@ function NewReportContent() {
           disabled={loading}
           className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
         >
-          {loading ? "Generating..." : "Get Free Reading"}
+          {loading
+            ? "Generating..."
+            : promoValid
+            ? "Get Free Reading"
+            : `Pay $${PRICE.toFixed(2)}`}
         </button>
 
         <button
@@ -221,7 +306,6 @@ function NewReportContent() {
   );
 }
 
-// ── 메인 export: Suspense로 감싸기 ──
 export default function NewReportPage() {
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white">Loading...</div>}>

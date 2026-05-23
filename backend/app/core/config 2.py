@@ -7,12 +7,21 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "change-this-secret"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
-    OPENAI_API_KEY: str | None = None
-    STRIPE_SECRET_KEY: str | None = None
-    STRIPE_WEBHOOK_SECRET: str | None = None
+    ANTHROPIC_API_KEY: str | None = None
+    GEMINI_API_KEY: str | None = None
+
+    PAYPAL_CLIENT_ID: str | None = None
+    PAYPAL_CLIENT_SECRET: str | None = None
+
+    GOOGLE_CLIENT_ID: str | None = None
+    GOOGLE_CLIENT_SECRET: str | None = None
+    GOOGLE_REDIRECT_URI: str | None = None
+
     REDIS_URL: str | None = None
 
-    ENV: str = "local"
+    ENV: str = "local"  # "local" | "production"
+
+    PROMO_CODE: str = "0x6X4star"
 
     model_config = ConfigDict(env_file=".env", extra="ignore")
 
