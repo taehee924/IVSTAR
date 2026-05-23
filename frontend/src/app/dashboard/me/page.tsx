@@ -2,11 +2,9 @@
 
 import { useSession, signOut, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
-import { LoginButtons } from "@/components/auth/LoginButtons";
 import {
   calculateFourPillars,
   getHeavenlyStemElement,
@@ -344,24 +342,8 @@ export default function MePage() {
   const selectClass = "w-full rounded-lg border border-[#DDD8CE] bg-[#F6F1E7] px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-400";
 
   if (status !== "loading" && !session) {
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-[#F6F1E7] p-6">
-        <div className="w-full max-w-sm space-y-6">
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-0">
-              <Image src="/icon.png" alt="IVSTAR Logo" width={160} height={160} priority />
-            </div>
-            <h1 className="text-3xl font-semibold text-black tracking-tight">IVSTAR</h1>
-            <p className="mt-2 text-sm text-gray-500">This service is available after logging in.</p>
-          </div>
-          <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] p-6 shadow-sm space-y-4">
-            <p className="text-center text-sm text-gray-500">Sign in to access your personalized Saju & astrology insights</p>
-            <LoginButtons />
-          </div>
-          <p className="text-center text-xs text-gray-400">By signing in, you agree to our Terms of Service and Privacy Policy.</p>
-        </div>
-      </main>
-    );
+    router.replace("/login");
+    return null;
   }
 
   return (
