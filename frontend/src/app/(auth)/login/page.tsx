@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { LoginButtons } from "@/components/auth/LoginButtons";
 
 export default function LoginPage() {
@@ -8,7 +9,7 @@ export default function LoginPage() {
         {/* 로고 / 타이틀 */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-0">
-            <img src="icon.png" alt="IVSTAR Logo" className="w-40 h-40 object-contain" />
+            <Image src="/icon.png" alt="IVSTAR Logo" width={160} height={160} priority />
           </div>
           <h1 className="text-3xl font-semibold text-black tracking-tight">
             IVSTAR
