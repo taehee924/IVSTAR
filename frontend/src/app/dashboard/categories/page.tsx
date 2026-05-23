@@ -8,7 +8,7 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 
 const REPORT_TYPES = [
-  { type: "daily", label: "2026 Horoscope", description: "", price: "$0.99", category: "about" },
+  { type: "daily", label: "2026 Horoscope", description: "", price: "$1.99", category: "about" },
   { type: "general", label: "About Me", description: "", price: "$0.99", category: "about" },
   { type: "life_cycle", label: "Life Cycle", description: "", price: "$0.99", category: "about" },
   { type: "love", label: "Couple", description: "", price: "$0.99", category: "love" },

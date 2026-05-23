@@ -10,3 +10,4 @@ CLAUDE.md
 venv/
 node_modules/
 *.log
+.vercel
