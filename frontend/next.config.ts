@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   headers: async () => {
     return [
       {
-        source: "/favicon:params*",
+        source: "/favicon(.*)",
         headers: [
           {
             key: "Cache-Control",
