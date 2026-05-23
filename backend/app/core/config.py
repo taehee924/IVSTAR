@@ -21,7 +21,7 @@ class Settings(BaseSettings):
 
     ENV: str = "local"  # "local" | "production"
 
-    PROMO_CODE: str = "0x6X4star"
+    PROMO_CODE: str = "THANKS4USING"
 
     model_config = ConfigDict(env_file=".env", extra="ignore")
 
