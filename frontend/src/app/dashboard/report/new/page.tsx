@@ -221,7 +221,7 @@ function NewReportContent() {
   };
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center p-4">
+    <main className="min-h-screen bg-[#FFFBF5] flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
 
         <div className="space-y-1">
@@ -300,7 +300,7 @@ function NewReportContent() {
 
 export default function NewReportPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-white">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#FFFBF5]">Loading...</div>}>
       <NewReportContent />
     </Suspense>
   );
