@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -21,8 +22,8 @@ export default function Header() {
       {/* 상단 헤더 */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#F6F1E7] border-b border-[#DDD8CE]">
         <div className="w-full max-w-2xl lg:max-w-5xl mx-auto px-4 lg:px-8 h-14 flex items-center justify-between">
-          <Link href="/dashboard" className="text-lg font-bold tracking-widest text-gray-800">
-            IVSTAR
+          <Link href="/dashboard">
+            <Image src="/logo.png" alt="IVSTAR" height={32} width={120} priority />
           </Link>
 
           {/* 데스크톱 인라인 네비게이션 (lg+) */}
