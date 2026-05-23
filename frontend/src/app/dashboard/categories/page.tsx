@@ -46,11 +46,7 @@ export default function CategoriesPage() {
       router.push("/login");
       return;
     }
-    if (PAIR_TYPES.has(type)) {
-      router.push(`/dashboard/report/pair?type=${type}`);
-    } else {
-      router.push(`/dashboard/report/new?type=${type}`);
-    }
+    router.push(`/dashboard/report/new?type=${type}`);
   };
 
   return (

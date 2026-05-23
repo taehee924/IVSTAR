@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 
 const REPORT_LABELS: Record<string, string> = {
   general: "About Me",
@@ -111,12 +111,6 @@ function NewReportContent() {
   const [promoValid, setPromoValid] = useState<boolean | null>(null);
   const [promoLoading, setPromoLoading] = useState(false);
 
-  useEffect(() => {
-    if (PAIR_TYPES.has(type)) {
-      router.replace(`/dashboard/report/pair?type=${type}`);
-    }
-  }, [type]);
-
   const handleValidateCoupon = async () => {
     if (!promoCode.trim()) return;
     setPromoLoading(true);
@@ -148,12 +142,22 @@ function NewReportContent() {
     setError("");
 
     try {
+      // PAIR 타입은 파트너 정보 입력 페이지로 이동
+      if (PAIR_TYPES.has(type)) {
+        const params = new URLSearchParams({ type });
+        if (promoValid && promoCode.trim()) {
+          params.set("promo_code", promoCode.trim());
+        } else {
+          params.set("needs_payment", "true");
+        }
+        router.push(`/dashboard/report/pair?${params.toString()}`);
+        return;
+      }
+
       const profileRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`,
         {
-          headers: {
-            Authorization: `Bearer ${(session as any)?.id_token}`,
-          },
+          headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
         }
       );
       if (!profileRes.ok) throw new Error("Failed to load birth profiles.");
@@ -164,7 +168,6 @@ function NewReportContent() {
       }
       const profile = profiles[0];
 
-      // 쿠폰 유효하면 무료, 아니면 유료
       const reportRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/full`,
         {
@@ -191,10 +194,8 @@ function NewReportContent() {
       const report = await reportRes.json();
 
       if (promoValid) {
-        // 쿠폰 적용 → 바로 리포트 페이지로
         router.push(`/dashboard/report/${report.id}`);
       } else {
-        // 결제 필요 → PayPal 결제 페이지로
         const orderRes = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/create`,
           {
@@ -203,10 +204,7 @@ function NewReportContent() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${(session as any)?.id_token}`,
             },
-            body: JSON.stringify({
-              report_id: report.id,
-              currency: "USD",
-            }),
+            body: JSON.stringify({ report_id: report.id, currency: "USD" }),
           }
         );
         if (!orderRes.ok) throw new Error("Failed to create payment.");

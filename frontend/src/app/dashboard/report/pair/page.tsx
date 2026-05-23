@@ -93,6 +93,8 @@ function PairReportContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const type = searchParams.get("type") ?? "crush";
+  const promoCode = searchParams.get("promo_code") ?? null;
+  const needsPayment = searchParams.get("needs_payment") === "true";
 
   const partnerLabel = PARTNER_LABELS[type] ?? "상대방";
   const readingLabel = REPORT_LABELS[type] ?? type;
@@ -181,7 +183,8 @@ function PairReportContent() {
           body: JSON.stringify({
             birth_profile_id: profile.id,
             report_type: type,
-            price: 0,
+            price: 0.99,
+            promo_code: promoCode,
             partner_name: partnerName || null,
             partner_birth_date: partnerBirthDate,
             partner_birth_time: partnerBirthTime,
@@ -206,7 +209,25 @@ function PairReportContent() {
       }
 
       const report = await reportRes.json();
-      router.push(`/dashboard/report/${report.id}`);
+
+      if (needsPayment) {
+        const orderRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/create`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${(session as any)?.id_token}`,
+            },
+            body: JSON.stringify({ report_id: report.id, currency: "USD" }),
+          }
+        );
+        if (!orderRes.ok) throw new Error("Failed to create payment.");
+        const order = await orderRes.json();
+        router.push(`/dashboard/report/${report.id}?order_id=${order.paypal_order_id}`);
+      } else {
+        router.push(`/dashboard/report/${report.id}`);
+      }
     } catch (e: any) {
       setError(e.message ?? "오류가 발생했어요.");
     } finally {
