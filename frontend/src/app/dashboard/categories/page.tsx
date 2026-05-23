@@ -72,18 +72,30 @@ export default function CategoriesPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {filtered.map((r) => (
             <div key={r.type + r.label} onClick={() => handleCardClick(r.type)} className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow">
-              {r.type === "daily" ? (
+              {["daily", "general", "love", "life_cycle", "ex", "crush"].includes(r.type) ? (
                 <div className="relative aspect-[3/4] w-full">
-                  <Image src="/horoscope.png" alt="2026 Horoscope" fill style={{ objectFit: "cover" }} />
+                  <Image
+                    src={
+                      r.type === "daily" ? "/horoscope.png" :
+                      r.type === "general" ? "/aboutme.png" :
+                      r.type === "love" ? "/couple.png" :
+                      r.type === "life_cycle" ? "/lifecycle.png" :
+                      r.type === "ex" ? "/ex.png" :
+                      "/crush.png"
+                    }
+                    alt={r.label}
+                    fill
+                    style={{ objectFit: "cover" }}
+                  />
                 </div>
               ) : (
                 <div className="bg-[#EAE2D0] h-32 lg:h-40 flex items-center justify-center">
                   <span className="text-[#A89880] text-3xl">✦</span>
                 </div>
               )}
-              <div className="bg-[#EDE8DC] p-3 flex items-center justify-between">
-                <p className="font-medium text-sm text-gray-800">{r.label}</p>
-                <p className="text-xs font-semibold text-gray-700">{r.price}</p>
+              <div className="bg-[#EDE8DC] p-3 flex flex-col">
+                <p className="font-medium text-sm text-gray-800">{r.label}
+                className="text-xs font-semibold text-gray-700 mt-1" {r.price}</p>
               </div>
             </div>
           ))}
