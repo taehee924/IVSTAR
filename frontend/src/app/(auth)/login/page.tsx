@@ -7,14 +7,18 @@ export default function LoginPage() {
 
         {/* 로고 / 타이틀 */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 mb-5 shadow-lg shadow-violet-500/30">
-            <span className="text-2xl text-white">☽</span>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-5 ">
+           <img>
+           src = "/favicon-32x32.png"
+           alt = "IVSTAR Logo"
+           classname = "w-12 h-12"
+           </img>
           </div>
           <h1 className="text-2xl font-semibold text-black tracking-tight">
-            SAJUJU (서비스명)
+            IVSTAR
           </h1>
           <p className="mt-2 text-sm text-gray-500">
-            서비스 설명
+            This service is available after logging in.
           </p>
         </div>
 
