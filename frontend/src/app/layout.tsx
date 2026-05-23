@@ -14,6 +14,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// 환경에 따라 URL 결정
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.4fourstar.com";
+
 export const metadata: Metadata = {
   title: "IVSTAR",
   description: "Your personalized Saju & astrology readings",
@@ -30,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "IVSTAR",
     description: "Your personalized Saju & astrology readings",
-    url: "https://www.4fourstar.com",
+    url: baseUrl,
     siteName: "IVSTAR",
   },
 };
