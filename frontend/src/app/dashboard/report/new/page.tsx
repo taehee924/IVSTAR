@@ -231,16 +231,14 @@ function NewReportContent() {
         </div>
 
         {WHAT_INSIDE[type] && (
-          <div className="flex justify-center">
-            <ul className="space-y-1.5 inline-block">
-              {WHAT_INSIDE[type].map((item, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
-                  <span className="text-gray-400">✦</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="space-y-1.5">
+            {WHAT_INSIDE[type].map((item, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                <span className="mt-0.5 text-gray-400">✦</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         )}
 
         {/* 쿠폰 입력 */}
