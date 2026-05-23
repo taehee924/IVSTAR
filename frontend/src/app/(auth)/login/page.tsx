@@ -7,8 +7,8 @@ export default function LoginPage() {
 
         {/* 로고 / 타이틀 */}
         <div className="text-center mb-8">
-          <div className="flex justify-center mb-5">
-            <img src="icon.png" alt="IVSTAR Logo" className="w-20 h-20 object-contain" />
+          <div className="flex justify-center mb-3">
+            <img src="icon.png" alt="IVSTAR Logo" className="w-28 h-28 object-contain" />
           </div>
           <h1 className="text-2xl font-semibold text-black tracking-tight">
             IVSTAR
