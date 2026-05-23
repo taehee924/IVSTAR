@@ -241,14 +241,6 @@ function NewReportContent() {
           </ul>
         )}
 
-        {/* 가격 */}
-        <div className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 flex items-center justify-between">
-          <p className="text-sm text-gray-600">{REPORT_LABELS[type]} Reading</p>
-          <p className="text-lg font-bold text-gray-800">
-            {promoValid ? <span className="text-green-600">Free</span> : `$${PRICE.toFixed(2)}`}
-          </p>
-        </div>
-
         {/* 쿠폰 입력 */}
         <div className="space-y-2">
           <p className="text-xs text-gray-400">Have a promo code?</p>
