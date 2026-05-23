@@ -225,7 +225,7 @@ function NewReportContent() {
       <div className="w-full max-w-md space-y-6">
 
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold text-gray-800 text-center">
+          <h1 className="text-2xl font-semibold text-gray-800">
             {REPORT_LABELS[type]} Reading
           </h1>
         </div>
