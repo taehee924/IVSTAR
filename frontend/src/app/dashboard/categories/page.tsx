@@ -8,15 +8,15 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 
 const REPORT_TYPES = [
-  { type: "daily", label: "2026 Horoscope", description: "", price: "Free", category: "about" },
-  { type: "general", label: "About Me", description: "#Personality #Strengths #LifePath", price: "Free", category: "about" },
-  { type: "life_cycle", label: "Life Cycle", description: "#BigPicture #LifeSeasons #TurningPoint", price: "Free", category: "about" },
-  { type: "love", label: "Couple", description: "#Chemistry #Tension #Compatibility", price: "Free", category: "love" },
-  { type: "crush", label: "Crush", description: "#CrushEnergy #SecretFeelings #NextMove", price: "Free", category: "love" },
-  { type: "ex", label: "Ex", description: "#YourEx #LingeringFeelings #SecondChance", price: "Free", category: "love" },
-  { type: "situationship", label: "Situationship", description: "#MixedSignals #RedFlags #NextStep", price: "Free", category: "love" },
-  { type: "career", label: "Career", description: "#CareerPath #SuccessFlow #Potential", price: "Coming Soon", category: "money" },
-  { type: "wealth", label: "Wealth", description: "#WealthFlow #MoneyMindset #Abundance", price: "Coming Soon", category: "money" },
+  { type: "daily", label: "2026 Horoscope", description: "", price: "$0.99", category: "about" },
+  { type: "general", label: "About Me", description: "", price: "$0.99", category: "about" },
+  { type: "life_cycle", label: "Life Cycle", description: "", price: "$0.99", category: "about" },
+  { type: "love", label: "Couple", description: "", price: "$0.99", category: "love" },
+  { type: "crush", label: "Crush", description: "", price: "$0.99", category: "love" },
+  { type: "ex", label: "Ex", description: "", price: "$0.99", category: "love" },
+  { type: "situationship", label: "Situationship", description: "", price: "$0.99", category: "love" },
+  { type: "career", label: "Career", description: "", price: "Coming Soon", category: "money" },
+  { type: "wealth", label: "Wealth", description: "", price: "Coming Soon", category: "money" },
 ];
 
 const TABS = [
@@ -81,10 +81,9 @@ export default function CategoriesPage() {
                   <span className="text-[#A89880] text-3xl">✦</span>
                 </div>
               )}
-              <div className="bg-[#EDE8DC] p-3 flex flex-col">
+              <div className="bg-[#EDE8DC] p-3 flex items-center justify-between">
                 <p className="font-medium text-sm text-gray-800">{r.label}</p>
-                {r.description && <p className="text-xs text-gray-500 min-h-[2.5rem]">{r.description}</p>}
-                <p className="text-xs font-semibold text-gray-700 mt-1">{r.price}</p>
+                <p className="text-xs font-semibold text-gray-700">{r.price}</p>
               </div>
             </div>
           ))}
