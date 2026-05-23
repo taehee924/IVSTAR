@@ -544,7 +544,7 @@ export default function MePage() {
                 {[
                   { label: "Name", value: displayName ?? session?.user?.name ?? "Unknown" },
                   { label: "Date of Birth", value: profile.birth_date },
-                  { label: "Time of Birth", value: profile.birth_time ?? "Unknown" },
+                  { label: "Time of Birth", value: profile.birth_time ? profile.birth_time.slice(0, 5) : "Unknown" },
                   { label: "Birth Place", value: profile.birth_place ?? "Unknown" },
                   { label: "Gender", value: profile.gender ?? "Unknown" },
                 ].map((item) => (
