@@ -1,4 +1,3 @@
-#환경변수를 불러오는 설정 파일 -> .env 파일에서 환경변수를 불러와서 사용할 수 있도록 설정.
 from pydantic_settings import BaseSettings
 from pydantic import ConfigDict
 
@@ -22,10 +21,9 @@ class Settings(BaseSettings):
 
     ENV: str = "local"  # "local" | "production"
 
+    PROMO_CODE: str = "0x6X4star"
+
     model_config = ConfigDict(env_file=".env", extra="ignore")
 
 
 settings = Settings()
-
-# config.py 맨 아래에 임시 추가
-print(f"GOOGLE_CLIENT_ID: '{settings.GOOGLE_CLIENT_ID}'")
