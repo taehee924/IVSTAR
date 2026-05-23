@@ -42,7 +42,7 @@ function Divider() {
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-[#F6F1E7] pt-14 pb-16">
+    <main className="min-h-screen bg-[#FFFBF5] pt-14 pb-16">
       <Header />
       <div className="max-w-lg mx-auto px-6 pt-12 space-y-0 font-serif">
 

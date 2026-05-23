@@ -184,7 +184,7 @@ function OnboardingContent() {
   const selectClass = "w-full rounded-lg border border-[#DDD8CE] bg-[#EDE8DC] px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-400";
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-[#F6F1E7] p-6">
+    <main className="min-h-screen flex items-center justify-center bg-[#FFFBF5] p-6">
       <div className="w-full max-w-sm space-y-6">
 
         <div className="text-center">
@@ -333,7 +333,7 @@ function OnboardingContent() {
 // ── 메인 export: Suspense로 감싸기 ──
 export default function OnboardingPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#F6F1E7]">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#FFFBF5]">Loading...</div>}>
       <OnboardingContent />
     </Suspense>
   );

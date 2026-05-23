@@ -259,7 +259,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
       const { toPng } = await import("html-to-image");
 
       const dataUrl = await toPng(reportRef.current, {
-        backgroundColor: "#F6F1E7",
+        backgroundColor: "#FFFBF5",
         pixelRatio: 2,
       });
 
@@ -389,7 +389,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
   }
 
   return (
-    <main className="min-h-screen bg-[#F6F1E7] pt-14 pb-10">
+    <main className="min-h-screen bg-[#FFFBF5] pt-14 pb-10">
       <Header />
       <div className="max-w-md mx-auto px-4 pt-8 space-y-6">
 
