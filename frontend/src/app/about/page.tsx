@@ -83,7 +83,7 @@ export default function AboutPage() {
 
         {/* ── QUOTE ── */}
         <blockquote className="border-l-2 border-gray-400 pl-5">
-          <p className="text-base italic border-gray-700">
+          <p className="text-base italic border-gray-700 font-serif">
             &ldquo;Saju is one of the most precise self-analysis systems ever
             built. Most people outside East Asia have just never had a
             way in.&rdquo;
