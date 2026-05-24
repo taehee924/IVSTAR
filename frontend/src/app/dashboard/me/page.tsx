@@ -42,6 +42,7 @@ export default function MePage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingReportId, setDeletingReportId] = useState<number | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
 
@@ -93,6 +94,26 @@ export default function MePage() {
       alert("Error deleting report. Please try again.");
     } finally {
       setDeletingReportId(null);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!confirm("Are you sure you want to leave? All data will be deleted.")) return;
+    setDeleteLoading(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
+      });
+      if (!res.ok) throw new Error("Failed to delete account");
+      localStorage.removeItem(AVATAR_KEY);
+      localStorage.removeItem(NAME_KEY);
+      await signOut({ callbackUrl: "/" });
+    } catch (e) {
+      console.error(e);
+      alert("Error deleting account. Please try again.");
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -203,6 +224,15 @@ export default function MePage() {
           className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors"
         >
           ↪ Logout
+        </button>
+
+        {/* Delete Account */}
+        <button
+          onClick={handleDeleteAccount}
+          disabled={deleteLoading}
+          className="flex items-center gap-2 text-sm text-red-400 hover:text-red-600 transition-colors disabled:opacity-50"
+        >
+          {deleteLoading ? "Processing..." : "↪ Delete Account"}
         </button>
 
       </div>
