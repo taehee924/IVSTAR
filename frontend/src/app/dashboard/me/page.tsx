@@ -14,6 +14,14 @@ interface Report {
   is_unlocked: boolean;
 }
 
+interface BirthProfile {
+  id: number;
+  birth_date: string;
+  birth_time: string | null;
+  birth_place: string | null;
+  gender: string | null;
+}
+
 const AVATAR_KEY = "ivstar_avatar";
 const NAME_KEY = "ivstar_display_name";
 
@@ -36,6 +44,14 @@ function formatDate(dateStr: string) {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
+function formatBirthDate(birth_date: string, birth_time: string | null) {
+  // "2005-09-02" → "09-02-2005"
+  const [y, m, d] = birth_date.split("-");
+  const datePart = `${m}-${d}-${y}`;
+  const timePart = birth_time ? " " + birth_time.slice(0, 5) : "";
+  return datePart + timePart;
+}
+
 export default function MePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -45,6 +61,7 @@ export default function MePage() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
+  const [profile, setProfile] = useState<BirthProfile | null>(null);
 
   useEffect(() => {
     const avatar = localStorage.getItem(AVATAR_KEY);
@@ -54,14 +71,23 @@ export default function MePage() {
   }, []);
 
   useEffect(() => {
-    const fetchReports = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/`, {
-          headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
-        });
-        if (res.ok) {
-          const data = await res.json();
+        const [reportsRes, profileRes] = await Promise.all([
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/`, {
+            headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`, {
+            headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
+          }),
+        ]);
+        if (reportsRes.ok) {
+          const data = await reportsRes.json();
           setReports(data);
+        }
+        if (profileRes.ok) {
+          const data = await profileRes.json();
+          if (data.length > 0) setProfile(data[0]);
         }
       } catch (e) {
         console.error(e);
@@ -70,7 +96,7 @@ export default function MePage() {
       }
     };
 
-    if (session) fetchReports();
+    if (session) fetchData();
     else setLoading(false);
   }, [session]);
 
@@ -118,7 +144,6 @@ export default function MePage() {
   };
 
   const name = displayName ?? session?.user?.name ?? "";
-  const email = session?.user?.email ?? "";
 
   if (status !== "loading" && !session) {
     router.replace("/login");
@@ -142,12 +167,21 @@ export default function MePage() {
             </Link>
           </div>
           <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] p-4 flex items-center gap-4">
-            <div className="relative w-14 h-14 rounded-full overflow-hidden bg-[#EDE8DC] flex items-center justify-center shrink-0">
+            <div className="relative w-14 h-14 rounded-full overflow-hidden bg-[#D8D2C4] shrink-0">
               <Image src={selectedAvatar ?? "/avatars/dragon.png"} alt={name} fill style={{ objectFit: "cover" }} />
             </div>
-            <div>
-              <p className="font-semibold text-base text-gray-800">{name}</p>
-              <p className="text-sm text-gray-500">{email}</p>
+            <div className="space-y-0.5">
+              <p className="font-semibold text-sm text-gray-800">
+                {name}{profile?.gender ? ` (${profile.gender})` : ""}
+              </p>
+              {profile?.birth_date && (
+                <p className="text-xs text-gray-600">
+                  {formatBirthDate(profile.birth_date, profile.birth_time)}
+                </p>
+              )}
+              {profile?.birth_place && (
+                <p className="text-xs text-gray-500">{profile.birth_place}</p>
+              )}
             </div>
           </div>
         </div>
