@@ -1,8 +1,116 @@
 export default function ConstellationLoader() {
   return (
-    <main className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0a0a]">
-      <div className="w-full max-w-[340px] px-8">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" style={{ width: "100%", height: "auto" }}>
+    <main className="fixed inset-0 z-50 flex flex-col items-center justify-center" style={{ background: "#060d18" }}>
+
+      {/* ── 전체화면 배경 별 ── */}
+      <svg
+        className="absolute inset-0 w-full h-full"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 100 200"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <defs>
+          <filter id="bgsg" x="-200%" y="-200%" width="500%" height="500%">
+            <feGaussianBlur stdDeviation="0.8" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+        </defs>
+        {/* row 1 */}
+        <circle cx="4"   cy="6"   r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="14"  cy="3"   r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="26"  cy="10"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
+        <circle cx="38"  cy="4"   r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="52"  cy="8"   r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="63"  cy="2"   r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="74"  cy="11"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="85"  cy="5"   r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
+        <circle cx="95"  cy="14"  r="0.4" fill="#fff" opacity="0.65"filter="url(#bgsg)" />
+        {/* row 2 */}
+        <circle cx="8"   cy="24"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="20"  cy="18"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="33"  cy="28"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="47"  cy="20"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
+        <circle cx="60"  cy="30"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="72"  cy="22"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="84"  cy="32"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="93"  cy="19"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        {/* row 3 */}
+        <circle cx="3"   cy="45"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
+        <circle cx="16"  cy="40"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="29"  cy="52"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="43"  cy="44"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="57"  cy="55"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="69"  cy="42"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="80"  cy="50"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
+        <circle cx="91"  cy="47"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        {/* row 4 */}
+        <circle cx="6"   cy="68"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="19"  cy="74"  r="0.4" fill="#fff" opacity="0.65"filter="url(#bgsg)" />
+        <circle cx="32"  cy="65"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="45"  cy="78"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="58"  cy="70"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
+        <circle cx="70"  cy="80"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="82"  cy="67"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="94"  cy="75"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        {/* row 5 */}
+        <circle cx="10"  cy="90"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="23"  cy="95"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="36"  cy="88"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
+        <circle cx="50"  cy="98"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="63"  cy="92"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="76"  cy="100" r="0.4" fill="#fff" opacity="0.65"filter="url(#bgsg)" />
+        <circle cx="88"  cy="93"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        {/* row 6~8 (하단) */}
+        <circle cx="5"   cy="115" r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="22"  cy="120" r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="40"  cy="112" r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
+        <circle cx="55"  cy="125" r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="68"  cy="118" r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="82"  cy="128" r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="94"  cy="110" r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="12"  cy="145" r="0.4" fill="#fff" opacity="0.65"filter="url(#bgsg)" />
+        <circle cx="30"  cy="150" r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="48"  cy="142" r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="62"  cy="155" r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
+        <circle cx="78"  cy="148" r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="92"  cy="158" r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="8"   cy="172" r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="25"  cy="178" r="0.4" fill="#fff" opacity="0.65"filter="url(#bgsg)" />
+        <circle cx="42"  cy="168" r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
+        <circle cx="58"  cy="182" r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="72"  cy="175" r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
+        <circle cx="87"  cy="185" r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="97"  cy="170" r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+      </svg>
+
+      {/* ── 별자리 SVG ── */}
+      <div className="relative w-full max-w-[340px] px-8">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" overflow="visible" style={{ width: "100%", height: "auto" }}>
+          <defs>
+            {/* 별자리 별 글로우 필터 */}
+            <filter id="starglow" x="-300%" y="-300%" width="700%" height="700%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur1" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur2" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur3" />
+              <feMerge>
+                <feMergeNode in="blur3" />
+                <feMergeNode in="blur2" />
+                <feMergeNode in="blur1" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            {/* 선 글로우 필터 */}
+            <filter id="lineglow" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur1" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur2" />
+              <feMerge>
+                <feMergeNode in="blur2" />
+                <feMergeNode in="blur1" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
           <style>{`
             .star-g, .cline {
               animation-duration: 10s;
@@ -21,153 +129,121 @@ export default function ConstellationLoader() {
             /* ── Stars ── */
             .s1 { animation-name: s1-anim; }
             @keyframes s1-anim {
-              0%          { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
-              2.5%        { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 18px #fff) drop-shadow(0 0 35px #aaccff) drop-shadow(0 0 55px #88aaff); }
-              10%, 91%    { opacity: 1; transform: scale(1);   filter: drop-shadow(0 0 8px #fff)  drop-shadow(0 0 22px #aaccff) drop-shadow(0 0 38px #88aaff); }
-              100%        { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
+              0%          { opacity: 0; transform: scale(0.5); }
+              2.5%        { opacity: 1; transform: scale(1.3); }
+              10%, 91%    { opacity: 1; transform: scale(1);   }
+              100%        { opacity: 0; transform: scale(0.5); }
             }
             .s2 { animation-name: s2-anim; }
             @keyframes s2-anim {
-              0%, 12.4%   { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
-              15.0%       { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 18px #fff) drop-shadow(0 0 35px #aaccff) drop-shadow(0 0 55px #88aaff); }
-              22.5%, 91%  { opacity: 1; transform: scale(1);   filter: drop-shadow(0 0 8px #fff)  drop-shadow(0 0 22px #aaccff) drop-shadow(0 0 38px #88aaff); }
-              100%        { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
+              0%, 12.4%   { opacity: 0; transform: scale(0.5); }
+              15.0%       { opacity: 1; transform: scale(1.3); }
+              22.5%, 91%  { opacity: 1; transform: scale(1);   }
+              100%        { opacity: 0; transform: scale(0.5); }
             }
             .s3 { animation-name: s3-anim; }
             @keyframes s3-anim {
-              0%, 24.9%   { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
-              27.5%       { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 18px #fff) drop-shadow(0 0 35px #aaccff) drop-shadow(0 0 55px #88aaff); }
-              35.0%, 91%  { opacity: 1; transform: scale(1);   filter: drop-shadow(0 0 8px #fff)  drop-shadow(0 0 22px #aaccff) drop-shadow(0 0 38px #88aaff); }
-              100%        { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
+              0%, 24.9%   { opacity: 0; transform: scale(0.5); }
+              27.5%       { opacity: 1; transform: scale(1.3); }
+              35.0%, 91%  { opacity: 1; transform: scale(1);   }
+              100%        { opacity: 0; transform: scale(0.5); }
             }
             .s4 { animation-name: s4-anim; }
             @keyframes s4-anim {
-              0%, 37.4%   { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
-              40.0%       { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 18px #fff) drop-shadow(0 0 35px #aaccff) drop-shadow(0 0 55px #88aaff); }
-              47.5%, 91%  { opacity: 1; transform: scale(1);   filter: drop-shadow(0 0 8px #fff)  drop-shadow(0 0 22px #aaccff) drop-shadow(0 0 38px #88aaff); }
-              100%        { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
+              0%, 37.4%   { opacity: 0; transform: scale(0.5); }
+              40.0%       { opacity: 1; transform: scale(1.3); }
+              47.5%, 91%  { opacity: 1; transform: scale(1);   }
+              100%        { opacity: 0; transform: scale(0.5); }
             }
             .s5 { animation-name: s5-anim; }
             @keyframes s5-anim {
-              0%, 49.9%   { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
-              52.5%       { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 18px #fff) drop-shadow(0 0 35px #aaccff) drop-shadow(0 0 55px #88aaff); }
-              60.0%, 91%  { opacity: 1; transform: scale(1);   filter: drop-shadow(0 0 8px #fff)  drop-shadow(0 0 22px #aaccff) drop-shadow(0 0 38px #88aaff); }
-              100%        { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
+              0%, 49.9%   { opacity: 0; transform: scale(0.5); }
+              52.5%       { opacity: 1; transform: scale(1.3); }
+              60.0%, 91%  { opacity: 1; transform: scale(1);   }
+              100%        { opacity: 0; transform: scale(0.5); }
             }
             .s6 { animation-name: s6-anim; }
             @keyframes s6-anim {
-              0%, 62.4%   { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
-              65.0%       { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 18px #fff) drop-shadow(0 0 35px #aaccff) drop-shadow(0 0 55px #88aaff); }
-              72.5%, 91%  { opacity: 1; transform: scale(1);   filter: drop-shadow(0 0 8px #fff)  drop-shadow(0 0 22px #aaccff) drop-shadow(0 0 38px #88aaff); }
-              100%        { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
+              0%, 62.4%   { opacity: 0; transform: scale(0.5); }
+              65.0%       { opacity: 1; transform: scale(1.3); }
+              72.5%, 91%  { opacity: 1; transform: scale(1);   }
+              100%        { opacity: 0; transform: scale(0.5); }
             }
             .s7 { animation-name: s7-anim; }
             @keyframes s7-anim {
-              0%, 74.9%   { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
-              77.5%       { opacity: 1; transform: scale(1.2); filter: drop-shadow(0 0 18px #fff) drop-shadow(0 0 35px #aaccff) drop-shadow(0 0 55px #88aaff); }
-              85.0%, 91%  { opacity: 1; transform: scale(1);   filter: drop-shadow(0 0 8px #fff)  drop-shadow(0 0 22px #aaccff) drop-shadow(0 0 38px #88aaff); }
-              100%        { opacity: 0; transform: scale(0.5); filter: drop-shadow(0 0 0px #fff); }
+              0%, 74.9%   { opacity: 0; transform: scale(0.5); }
+              77.5%       { opacity: 1; transform: scale(1.3); }
+              85.0%, 91%  { opacity: 1; transform: scale(1);   }
+              100%        { opacity: 0; transform: scale(0.5); }
             }
 
             /* ── Lines ── */
             .l12 { animation-name: l12-anim; }
             @keyframes l12-anim {
-              0%, 12.4%   { stroke-dashoffset: 100; opacity: 0; filter: none; }
-              13.5%       { opacity: 0.9; filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #aaccff); }
-              19.1%, 91%  { stroke-dashoffset: 0; opacity: 0.9; filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #aaccff); }
-              100%        { stroke-dashoffset: 100; opacity: 0; filter: none; }
+              0%, 12.4%   { stroke-dashoffset: 100; opacity: 0; }
+              13.5%       { opacity: 0.9; }
+              19.1%, 91%  { stroke-dashoffset: 0; opacity: 0.9; }
+              100%        { stroke-dashoffset: 100; opacity: 0; }
             }
             .l23 { animation-name: l23-anim; }
             @keyframes l23-anim {
-              0%, 24.9%   { stroke-dashoffset: 100; opacity: 0; filter: none; }
-              26.0%       { opacity: 0.9; filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #aaccff); }
-              31.6%, 91%  { stroke-dashoffset: 0; opacity: 0.9; filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #aaccff); }
-              100%        { stroke-dashoffset: 100; opacity: 0; filter: none; }
+              0%, 24.9%   { stroke-dashoffset: 100; opacity: 0; }
+              26.0%       { opacity: 0.9; }
+              31.6%, 91%  { stroke-dashoffset: 0; opacity: 0.9; }
+              100%        { stroke-dashoffset: 100; opacity: 0; }
             }
             .l34 { animation-name: l34-anim; }
             @keyframes l34-anim {
-              0%, 37.4%   { stroke-dashoffset: 80; opacity: 0; filter: none; }
-              38.5%       { opacity: 0.9; filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #aaccff); }
-              44.1%, 91%  { stroke-dashoffset: 0; opacity: 0.9; filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #aaccff); }
-              100%        { stroke-dashoffset: 80; opacity: 0; filter: none; }
+              0%, 37.4%   { stroke-dashoffset: 80; opacity: 0; }
+              38.5%       { opacity: 0.9; }
+              44.1%, 91%  { stroke-dashoffset: 0; opacity: 0.9; }
+              100%        { stroke-dashoffset: 80; opacity: 0; }
             }
             .l45 { animation-name: l45-anim; }
             @keyframes l45-anim {
-              0%, 49.9%   { stroke-dashoffset: 80; opacity: 0; filter: none; }
-              51.0%       { opacity: 0.9; filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #aaccff); }
-              56.6%, 91%  { stroke-dashoffset: 0; opacity: 0.9; filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #aaccff); }
-              100%        { stroke-dashoffset: 80; opacity: 0; filter: none; }
+              0%, 49.9%   { stroke-dashoffset: 80; opacity: 0; }
+              51.0%       { opacity: 0.9; }
+              56.6%, 91%  { stroke-dashoffset: 0; opacity: 0.9; }
+              100%        { stroke-dashoffset: 80; opacity: 0; }
             }
             .l15 { animation-name: l15-anim; }
             @keyframes l15-anim {
-              0%, 49.9%   { stroke-dashoffset: 120; opacity: 0; filter: none; }
-              51.0%       { opacity: 0.9; filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #aaccff); }
-              56.6%, 91%  { stroke-dashoffset: 0; opacity: 0.9; filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #aaccff); }
-              100%        { stroke-dashoffset: 120; opacity: 0; filter: none; }
+              0%, 49.9%   { stroke-dashoffset: 120; opacity: 0; }
+              51.0%       { opacity: 0.9; }
+              56.6%, 91%  { stroke-dashoffset: 0; opacity: 0.9; }
+              100%        { stroke-dashoffset: 120; opacity: 0; }
             }
             .l56 { animation-name: l56-anim; }
             @keyframes l56-anim {
-              0%, 62.4%   { stroke-dashoffset: 60; opacity: 0; filter: none; }
-              63.5%       { opacity: 0.9; filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #aaccff); }
-              69.1%, 91%  { stroke-dashoffset: 0; opacity: 0.9; filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #aaccff); }
-              100%        { stroke-dashoffset: 60; opacity: 0; filter: none; }
+              0%, 62.4%   { stroke-dashoffset: 60; opacity: 0; }
+              63.5%       { opacity: 0.9; }
+              69.1%, 91%  { stroke-dashoffset: 0; opacity: 0.9; }
+              100%        { stroke-dashoffset: 60; opacity: 0; }
             }
             .l57 { animation-name: l57-anim; }
             @keyframes l57-anim {
-              0%, 74.9%   { stroke-dashoffset: 120; opacity: 0; filter: none; }
-              76.0%       { opacity: 0.9; filter: drop-shadow(0 0 6px #fff) drop-shadow(0 0 14px #aaccff); }
-              81.6%, 91%  { stroke-dashoffset: 0; opacity: 0.9; filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px #aaccff); }
-              100%        { stroke-dashoffset: 120; opacity: 0; filter: none; }
+              0%, 74.9%   { stroke-dashoffset: 120; opacity: 0; }
+              76.0%       { opacity: 0.9; }
+              81.6%, 91%  { stroke-dashoffset: 0; opacity: 0.9; }
+              100%        { stroke-dashoffset: 120; opacity: 0; }
             }
           `}</style>
 
-          <g>
-            {/* 밝은 별 */}
-            <circle cx="50"  cy="80"  r="2"   fill="#fff" filter="url(#sg)" opacity="0.9" />
-            <circle cx="350" cy="120" r="2.5" fill="#fff" filter="url(#sg)" opacity="0.9" />
-            <circle cx="80"  cy="300" r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
-            <circle cx="320" cy="350" r="2.5" fill="#fff" filter="url(#sg)" opacity="0.9" />
-            <circle cx="200" cy="40"  r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
-            <circle cx="260" cy="310" r="2"   fill="#fff" filter="url(#sg)" opacity="0.9" />
-            {/* 추가 별 */}
-            <circle cx="30"  cy="200" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.8" />
-            <circle cx="370" cy="260" r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
-            <circle cx="140" cy="30"  r="1.5" fill="#fff" filter="url(#sg)" opacity="0.8" />
-            <circle cx="340" cy="50"  r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
-            <circle cx="60"  cy="160" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.75" />
-            <circle cx="380" cy="180" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.8" />
-            <circle cx="110" cy="370" r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
-            <circle cx="290" cy="380" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.8" />
-            <circle cx="20"  cy="350" r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
-            <circle cx="390" cy="340" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.75" />
-            <circle cx="240" cy="20"  r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
-            <circle cx="170" cy="360" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.8" />
-          </g>
-          <defs>
-            <filter id="sg" x="-150%" y="-150%" width="400%" height="400%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
+          <line className="cline l12" x1="150" y1="320" x2="230" y2="260" strokeDasharray="100" filter="url(#lineglow)" />
+          <line className="cline l23" x1="230" y1="260" x2="310" y2="200" strokeDasharray="100" filter="url(#lineglow)" />
+          <line className="cline l34" x1="310" y1="200" x2="230" y2="200" strokeDasharray="80"  filter="url(#lineglow)" />
+          <line className="cline l45" x1="230" y1="200" x2="150" y2="200" strokeDasharray="80"  filter="url(#lineglow)" />
+          <line className="cline l15" x1="150" y1="320" x2="150" y2="200" strokeDasharray="120" filter="url(#lineglow)" />
+          <line className="cline l56" x1="150" y1="200" x2="90"  y2="200" strokeDasharray="60"  filter="url(#lineglow)" />
+          <line className="cline l57" x1="150" y1="200" x2="150" y2="80"  strokeDasharray="120" filter="url(#lineglow)" />
 
-          <line className="cline l12" x1="150" y1="320" x2="230" y2="260" strokeDasharray="100" />
-          <line className="cline l23" x1="230" y1="260" x2="310" y2="200" strokeDasharray="100" />
-          <line className="cline l34" x1="310" y1="200" x2="230" y2="200" strokeDasharray="80" />
-          <line className="cline l45" x1="230" y1="200" x2="150" y2="200" strokeDasharray="80" />
-          <line className="cline l15" x1="150" y1="320" x2="150" y2="200" strokeDasharray="120" />
-          <line className="cline l56" x1="150" y1="200" x2="90" y2="200" strokeDasharray="60" />
-          <line className="cline l57" x1="150" y1="200" x2="150" y2="80" strokeDasharray="120" />
-
-          <g className="star-g s1" style={{ transformOrigin: "150px 320px" }}><circle cx="150" cy="320" r="8.5" className="cstar" /></g>
-          <g className="star-g s2" style={{ transformOrigin: "230px 260px" }}><circle cx="230" cy="260" r="8.5" className="cstar" /></g>
-          <g className="star-g s3" style={{ transformOrigin: "310px 200px" }}><circle cx="310" cy="200" r="8.5" className="cstar" /></g>
-          <g className="star-g s4" style={{ transformOrigin: "230px 200px" }}><circle cx="230" cy="200" r="8.5" className="cstar" /></g>
-          <g className="star-g s5" style={{ transformOrigin: "150px 200px" }}><circle cx="150" cy="200" r="8.5" className="cstar" /></g>
-          <g className="star-g s6" style={{ transformOrigin: "90px 200px" }}><circle cx="90" cy="200" r="8.5" className="cstar" /></g>
-          <g className="star-g s7" style={{ transformOrigin: "150px 80px" }}><circle cx="150" cy="80" r="8.5" className="cstar" /></g>
+          <g className="star-g s1" style={{ transformOrigin: "150px 320px" }}><circle cx="150" cy="320" r="8.5" className="cstar" filter="url(#starglow)" /></g>
+          <g className="star-g s2" style={{ transformOrigin: "230px 260px" }}><circle cx="230" cy="260" r="8.5" className="cstar" filter="url(#starglow)" /></g>
+          <g className="star-g s3" style={{ transformOrigin: "310px 200px" }}><circle cx="310" cy="200" r="8.5" className="cstar" filter="url(#starglow)" /></g>
+          <g className="star-g s4" style={{ transformOrigin: "230px 200px" }}><circle cx="230" cy="200" r="8.5" className="cstar" filter="url(#starglow)" /></g>
+          <g className="star-g s5" style={{ transformOrigin: "150px 200px" }}><circle cx="150" cy="200" r="8.5" className="cstar" filter="url(#starglow)" /></g>
+          <g className="star-g s6" style={{ transformOrigin: "90px 200px"  }}><circle cx="90"  cy="200" r="8.5" className="cstar" filter="url(#starglow)" /></g>
+          <g className="star-g s7" style={{ transformOrigin: "150px 80px"  }}><circle cx="150" cy="80"  r="8.5" className="cstar" filter="url(#starglow)" /></g>
         </svg>
       </div>
       <p className="mt-6 text-sm text-gray-400 tracking-widest uppercase">Reading the stars…</p>
