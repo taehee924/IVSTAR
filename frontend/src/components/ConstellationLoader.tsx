@@ -121,14 +121,37 @@ export default function ConstellationLoader() {
             }
           `}</style>
 
-          <g opacity="0.3">
-            <circle cx="50" cy="80" r="1" fill="#fff" />
-            <circle cx="350" cy="120" r="1.5" fill="#fff" />
-            <circle cx="80" cy="300" r="1" fill="#fff" />
-            <circle cx="320" cy="350" r="2" fill="#fff" />
-            <circle cx="200" cy="40" r="1" fill="#fff" />
-            <circle cx="260" cy="310" r="1" fill="#fff" />
+          <g>
+            {/* 밝은 별 */}
+            <circle cx="50"  cy="80"  r="2"   fill="#fff" filter="url(#sg)" opacity="0.9" />
+            <circle cx="350" cy="120" r="2.5" fill="#fff" filter="url(#sg)" opacity="0.9" />
+            <circle cx="80"  cy="300" r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
+            <circle cx="320" cy="350" r="2.5" fill="#fff" filter="url(#sg)" opacity="0.9" />
+            <circle cx="200" cy="40"  r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
+            <circle cx="260" cy="310" r="2"   fill="#fff" filter="url(#sg)" opacity="0.9" />
+            {/* 추가 별 */}
+            <circle cx="30"  cy="200" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.8" />
+            <circle cx="370" cy="260" r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
+            <circle cx="140" cy="30"  r="1.5" fill="#fff" filter="url(#sg)" opacity="0.8" />
+            <circle cx="340" cy="50"  r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
+            <circle cx="60"  cy="160" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.75" />
+            <circle cx="380" cy="180" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.8" />
+            <circle cx="110" cy="370" r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
+            <circle cx="290" cy="380" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.8" />
+            <circle cx="20"  cy="350" r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
+            <circle cx="390" cy="340" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.75" />
+            <circle cx="240" cy="20"  r="2"   fill="#fff" filter="url(#sg)" opacity="0.85" />
+            <circle cx="170" cy="360" r="1.5" fill="#fff" filter="url(#sg)" opacity="0.8" />
           </g>
+          <defs>
+            <filter id="sg" x="-150%" y="-150%" width="400%" height="400%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
 
           <line className="cline l12" x1="150" y1="320" x2="230" y2="260" strokeDasharray="100" />
           <line className="cline l23" x1="230" y1="260" x2="310" y2="200" strokeDasharray="100" />
