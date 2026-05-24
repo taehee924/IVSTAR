@@ -166,14 +166,12 @@ export default function MePage() {
               Edit
             </Link>
           </div>
-          <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] p-4 flex items-center gap-4">
-            <div className="relative w-14 h-14 rounded-full overflow-hidden bg-[#D8D2C4] shrink-0">
+          <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] p-4 flex items-center gap-6">
+            <div className="relative w-20 h-20 rounded-full overflow-hidden shrink-0">
               <Image src={selectedAvatar ?? "/avatars/dragon.png"} alt={name} fill style={{ objectFit: "cover" }} />
             </div>
-            <div className="space-y-0.5">
-              <p className="font-semibold text-sm text-gray-800">
-                {name}{profile?.gender ? ` (${profile.gender})` : ""}
-              </p>
+            <div className="space-y-1.5">
+              <p className="font-semibold text-sm text-gray-800">{name}</p>
               {profile?.birth_date && (
                 <p className="text-xs text-gray-600">
                   {formatBirthDate(profile.birth_date, profile.birth_time)}
