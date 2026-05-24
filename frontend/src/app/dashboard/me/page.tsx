@@ -119,7 +119,6 @@ export default function MePage() {
 
   const name = displayName ?? session?.user?.name ?? "";
   const email = session?.user?.email ?? "";
-  const googleImage = session?.user?.image;
 
   if (status !== "loading" && !session) {
     router.replace("/login");
@@ -143,14 +142,8 @@ export default function MePage() {
             </Link>
           </div>
           <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] p-4 flex items-center gap-4">
-            <div className="relative w-14 h-14 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center shrink-0">
-              {selectedAvatar ? (
-                <Image src={selectedAvatar} alt={name} fill style={{ objectFit: "cover" }} />
-              ) : googleImage ? (
-                <img src={googleImage} alt={name} className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-xl font-semibold text-gray-600">{name[0]}</span>
-              )}
+            <div className="relative w-14 h-14 rounded-full overflow-hidden bg-[#EDE8DC] flex items-center justify-center shrink-0">
+              <Image src={selectedAvatar ?? "/avatars/dragon.png"} alt={name} fill style={{ objectFit: "cover" }} />
             </div>
             <div>
               <p className="font-semibold text-base text-gray-800">{name}</p>

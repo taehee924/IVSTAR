@@ -262,7 +262,6 @@ export default function EditProfilePage() {
     }
   };
 
-  const googleImage = session?.user?.image;
   const displayName = editName || session?.user?.name || "";
   const email = session?.user?.email ?? "";
 
@@ -294,13 +293,7 @@ export default function EditProfilePage() {
         <div className="flex justify-center pt-2">
           <div className="relative">
             <div className="relative w-24 h-24 rounded-full overflow-hidden bg-[#EDE8DC] flex items-center justify-center">
-              {selectedAvatar ? (
-                <Image src={selectedAvatar} alt="avatar" fill style={{ objectFit: "cover" }} />
-              ) : googleImage ? (
-                <img src={googleImage} alt={displayName} className="w-full h-full object-cover" />
-              ) : (
-                <span className="text-2xl font-semibold text-gray-600">{displayName[0]}</span>
-              )}
+              <Image src={selectedAvatar ?? "/avatars/dragon.png"} alt="avatar" fill style={{ objectFit: "cover" }} />
             </div>
             <button
               onClick={() => setShowAvatarModal(true)}
