@@ -21,8 +21,16 @@ export default function Header() {
     <>
       {/* 상단 헤더 */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#FFFBF5] border-b border-[#DDD8CE]">
-        <div className="w-full max-w-2xl lg:max-w-5xl mx-auto px-4 lg:px-8 h-14 flex items-center justify-between">
-          <Link href="/dashboard">
+        <div className="w-full max-w-2xl lg:max-w-5xl mx-auto px-4 lg:px-8 h-14 flex items-center justify-between relative">
+
+          {/* 모바일: 왼쪽 빈 공간 (햄버거 버튼과 균형) / 데스크톱: 로고 */}
+          <div className="lg:hidden w-[38px]" />
+          <Link href="/dashboard" className="hidden lg:block">
+            <Image src="/logo3.png" alt="IVSTAR" height={24} width={100} style={{ objectFit: "fill" }} priority />
+          </Link>
+
+          {/* 모바일 중앙 로고 */}
+          <Link href="/dashboard" className="lg:hidden absolute left-1/2 -translate-x-1/2">
             <Image src="/logo3.png" alt="IVSTAR" height={24} width={100} style={{ objectFit: "fill" }} priority />
           </Link>
 
