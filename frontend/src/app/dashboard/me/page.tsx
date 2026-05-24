@@ -155,10 +155,10 @@ export default function MePage() {
       <Header />
       <div className="w-full max-w-2xl lg:max-w-3xl mx-auto px-4 lg:px-8 pt-8 space-y-6">
 
-        <h1 className="text-[23px] font-semibold text-gray-800">My Page</h1>
+        <h1 className="text-[21px] font-semibold text-gray-800">My page</h1>
 
         {/* My Profile */}
-        <div className="space-y-2 -mt-5">
+        <div className="space-y-2 -mt-6">
           <div className="flex items-center justify-end">
             <Link
               href="/dashboard/me/edit"

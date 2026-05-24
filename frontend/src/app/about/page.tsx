@@ -31,7 +31,7 @@ const BRANCHES = [
 
 function SectionLabel({ children, font = "playfair" }: { children: React.ReactNode; font?: "urbanist" | "playfair" }) {
   return (
-    <p className={`text-[23px] font-semibold text-gray-800 mb-3 ${font === "urbanist" ? "font-urbanist" : "font-playfair"}`}>
+    <p className={`text-[21px] font-semibold text-gray-800 mb-3 ${font === "urbanist" ? "font-urbanist" : "font-playfair"}`}>
       {children}
     </p>
   );
