@@ -158,7 +158,7 @@ export default function MePage() {
         <h1 className="text-[23px] font-semibold text-gray-800">Mypage</h1>
 
         {/* My Profile */}
-        <div className="space-y-2">
+        <div className="space-y-2 -mt-3">
           <div className="flex items-center justify-end">
             <Link
               href="/dashboard/me/edit"
