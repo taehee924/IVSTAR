@@ -93,7 +93,7 @@ const MONTHS = [
   { value: 11, label: "November" }, { value: 12, label: "December" },
 ];
 const HOURS = Array.from({ length: 24 }, (_, i) => i); // 0~23
-const MINUTES = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
+const MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"));
 
 function getDaysInMonth(year: number, month: number) {
   return new Date(year, month, 0).getDate();
