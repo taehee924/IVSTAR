@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
@@ -96,6 +96,23 @@ function OnboardingContent() {
   const [gender, setGender] = useState<Gender | "">("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    if (!session) return;
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`, {
+      headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
+    })
+      .then((res) => res.json())
+      .then((profiles) => {
+        if (Array.isArray(profiles) && profiles.length > 0) {
+          router.replace(redirect);
+        } else {
+          setChecking(false);
+        }
+      })
+      .catch(() => setChecking(false));
+  }, [session, redirect, router]);
 
   const days = year && month
     ? Array.from({ length: getDaysInMonth(Number(year), Number(month)) }, (_, i) => i + 1)
@@ -182,6 +199,14 @@ function OnboardingContent() {
   };
 
   const selectClass = "w-full rounded-lg border border-[#DDD8CE] bg-[#EDE8DC] px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-400";
+
+  if (checking) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-[#FFFBF5]">
+        <p className="text-sm text-gray-400">Loading...</p>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-[#FFFBF5] p-6">
