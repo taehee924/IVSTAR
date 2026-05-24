@@ -11,7 +11,20 @@ import {
   getEarthlyBranchElement,
 } from "manseryeok";
 
-const AVATARS = ["/avatars/dragon.png"];
+const AVATARS = [
+  "/avatars/rat.png",
+  "/avatars/cow.png",
+  "/avatars/tiger.png",
+  "/avatars/rabbit.png",
+  "/avatars/dragon.png",
+  "/avatars/snake.png",
+  "/avatars/horse.png",
+  "/avatars/sheep.png",
+  "/avatars/monkey.png",
+  "/avatars/chicken.png",
+  "/avatars/dog.png",
+  "/avatars/pig.png",
+];
 const AVATAR_KEY = "ivstar_avatar";
 const NAME_KEY = "ivstar_display_name";
 
