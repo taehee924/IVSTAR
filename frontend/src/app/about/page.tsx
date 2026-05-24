@@ -31,7 +31,7 @@ const BRANCHES = [
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[28px] font-semibold text-gray-800 mb-3 font-urbanist">
+    <p className="text-[23px] font-semibold text-gray-800 mb-3 font-urbanist">
       {children}
     </p>
   );
