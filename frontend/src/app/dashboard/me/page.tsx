@@ -158,7 +158,7 @@ export default function MePage() {
         {/* My Profile */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-medium text-gray-700">My Profile</h2>
+            <h2 className="text-sm font-bold text-gray-700">My Profile</h2>
             <Link
               href="/dashboard/me/edit"
               className="text-xs text-gray-500 hover:text-gray-700 border border-[#DDD8CE] rounded-lg px-3 py-1.5 transition-colors"
@@ -186,7 +186,7 @@ export default function MePage() {
 
         {/* My Readings */}
         <div className="space-y-2">
-          <h2 className="text-sm font-medium text-gray-700">My Readings ({reports.length})</h2>
+          <h2 className="text-sm font-bold text-gray-700">My Readings ({reports.length})</h2>
           <div className="rounded-2xl border border-gray-200 overflow-hidden divide-y divide-gray-100">
             {loading ? (
               <div className="p-4 text-sm text-gray-400">Loading...</div>
@@ -196,7 +196,7 @@ export default function MePage() {
               reports.map((r) => (
                 <div key={r.id} className="flex items-center justify-between px-4 py-3 hover:bg-[#EDE8DC] transition-colors">
                   <Link href={`/dashboard/report/${r.id}`} className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-700">
+                    <p className="text-sm font-bold text-gray-700">
                       {REPORT_LABELS[r.report_type] ?? r.report_type}
                     </p>
                     <p className="text-xs text-gray-400">{formatDate(r.created_at)}</p>
@@ -217,7 +217,7 @@ export default function MePage() {
 
         {/* My Credits */}
         <div className="space-y-2">
-          <h2 className="text-sm font-medium text-gray-700">My Credits</h2>
+          <h2 className="text-sm font-bold text-gray-700">My Credits</h2>
           <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] px-4 py-3 flex items-center justify-between">
             <p className="text-sm text-gray-600">0 readings remaining</p>
             <Link
@@ -231,7 +231,7 @@ export default function MePage() {
 
         {/* Support */}
         <div className="space-y-2">
-          <h2 className="text-sm font-medium text-gray-700">Support</h2>
+          <h2 className="text-sm font-bold text-gray-700">Support</h2>
           <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] px-4 py-3 flex items-center justify-between">
             <p className="text-sm text-gray-600">Questions or issues?</p>
             <a
