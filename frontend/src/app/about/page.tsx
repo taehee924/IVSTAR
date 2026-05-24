@@ -29,9 +29,9 @@ const BRANCHES = [
   { char: "亥", roman: "Hae",  animal: "Pig",     emoji: "🐗" },
 ];
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children, font = "playfair" }: { children: React.ReactNode; font?: "urbanist" | "playfair" }) {
   return (
-    <p className="text-[23px] font-semibold text-gray-800 mb-3 font-urbanist">
+    <p className={`text-[23px] font-semibold text-gray-800 mb-3 ${font === "urbanist" ? "font-urbanist" : "font-playfair"}`}>
       {children}
     </p>
   );
@@ -49,7 +49,7 @@ export default function AboutPage() {
 
         {/* ── ABOUT ── */}
         <section>
-          <SectionLabel>About</SectionLabel>
+          <SectionLabel font="urbanist">About</SectionLabel>
           <h1 className="text-4xl font-bold leading-tight text-gray-900 mb-5 font-playfair">
             Two ancient systems. <br></br>
             <span className="italic text-[#7B3B2A]">One complete picture</span>
