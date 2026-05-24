@@ -55,7 +55,7 @@ export default function AboutPage() {
             <span className="italic text-[#7B3B2A]">One complete picture</span>
             {" "}of you.
           </h1>
-          <p className="text-sm text-gray-600 leading-relaxed font-carattere">
+          <p className="text-[17px] text-gray-600 leading-relaxed font-carattere">
             Western astrology reads the sky at the moment you were born.
             Eastern Four Pillars reads the forces of time that shaped you.
             For centuries, these lived on opposite sides of the world. We
@@ -70,7 +70,7 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-playfair">
             Not a horoscope.<br />A portrait.
           </h2>
-          <p className="text-sm text-gray-600 leading-relaxed font-carattere">
+          <p className="text-[17px] text-gray-600 leading-relaxed font-carattere">
             We read your birth chart and your Four Pillars chart together —
             combining the sky at your birth with the elemental forces of the time
             you were born into. Where the two systems meet, a more complete
@@ -104,13 +104,13 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-playfair">
             The system that reads time, not just the sky.
           </h2>
-          <p className="text-sm text-gray-600 leading-relaxed mb-4 font-carattere">
+          <p className="text-[17px] text-gray-600 leading-relaxed mb-4 font-carattere">
             Saju (四柱) — literally &ldquo;four pillars&rdquo; — is one of East Asia&apos;s oldest systems
             of self-understanding. Built from the year, month, day, and hour of your
             birth, it maps five elemental forces — Wood, Fire, Earth, Metal, Water —
             that run through your character, your strengths, and your life&apos;s timing.
           </p>
-          <p className="text-sm text-gray-600 leading-relaxed font-carattere">
+          <p className="text-[17px] text-gray-600 leading-relaxed font-carattere">
             Unlike sun-sign astrology, Saju doesn&apos;t read the sky. It reads time itself:
             the invisible structure of energy you were born into. Precise, layered, and
             thousands of years old. Most of the world just hasn&apos;t had a way in — until
@@ -145,7 +145,7 @@ export default function AboutPage() {
           <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-4">
             10 Energies — The Quality of Time
           </p>
-          <p className="text-sm text-gray-600 leading-relaxed mb-6 font-carattere">
+          <p className="text-[17px] text-gray-600 leading-relaxed mb-6 font-carattere">
             Each Stem is a blend of one of the Five Elements and a polarity — Yang (☀ active)
             or Yin (☾ receptive). The Stem of your birth <em>day</em> is your Day Master:
             the core energy you were born with.
@@ -174,7 +174,7 @@ export default function AboutPage() {
           <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-4">
             12 Branches — Seasons, Directions, Animals
           </p>
-          <p className="text-sm text-gray-600 leading-relaxed mb-6 font-carattere">
+          <p className="text-[17px] text-gray-600 leading-relaxed mb-6 font-carattere">
             The 12 Earthly Branches correspond to the animals of the Chinese zodiac
             — but in Saju, each also carries a season, a direction, and an elemental
             energy. Your birth year, month, day, and hour each have a Branch, forming
@@ -212,7 +212,7 @@ export default function AboutPage() {
         <section>
           <SectionLabel>AI · Reports</SectionLabel>
           <h2 className="text-sm font-bold text-gray-900 mb-3 font-playfair">Built to be trusted</h2>
-          <p className="text-sm text-gray-600 leading-relaxed font-carattere">
+          <p className="text-[17px] text-gray-600 leading-relaxed font-carattere">
             Our AI engine runs on a framework built specifically for cosmic analysis —
             delivering precise, consistent reports that feel like the y were written only
             for you.
@@ -225,7 +225,7 @@ export default function AboutPage() {
         <section>
           <SectionLabel>Archive</SectionLabel>
           <h2 className="text-sm font-bold text-gray-900 mb-3 font-playfair">Your readings, always there</h2>
-          <p className="text-sm text-gray-900 leading-relaxed font-carattere">
+          <p className="text-[17px] text-gray-900 leading-relaxed font-carattere">
             Every report is saved. Look back at past readings, track how your energy
             shifts over time, and share results with the people you trust.
           </p>
@@ -239,7 +239,7 @@ export default function AboutPage() {
           <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-playfair">
             If astrology ever felt like only half the picture.
           </h2>
-          <p className="text-sm text-gray-600 leading-relaxed font-carattere">
+          <p className="text-[17px] text-gray-600 leading-relaxed font-carattere">
             For the women who already live and breathe birth charts, tarot pulls, and
             MBTI deep-dives. For anyone curious about saju but never sure where
             to begin. We built the next step.
