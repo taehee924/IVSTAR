@@ -26,7 +26,7 @@ export default function Header() {
           {/* 모바일: 왼쪽 빈 공간 (햄버거 버튼과 균형) / 데스크톱: 로고 */}
           <div className="lg:hidden w-[38px]" />
           <Link href="/dashboard" className="hidden lg:block">
-            <Image src="/logo3.png" alt="IVSTAR" height={24} width={100} style={{ objectFit: "fill" }} priority />
+            <Image src="/logo4.png" alt="IVSTAR" height={24} width={100} style={{ objectFit: "fill" }} priority />
           </Link>
 
           {/* 모바일 중앙 로고 */}
