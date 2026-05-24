@@ -45,7 +45,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#FFFBF5] pt-14 pb-16">
       <Header />
-      <div className="max-w-lg mx-auto px-6 pt-12 space-y-0 font-serif">
+      <div className="max-w-lg mx-auto px-6 pt-12 space-y-0">
 
         {/* ── ABOUT ── */}
         <section>
@@ -67,7 +67,7 @@ export default function AboutPage() {
 
       
         <section>
-          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5">
+          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-carattere">
             Not a horoscope.<br />A portrait.
           </h2>
           <p className="text-sm text-gray-600 leading-relaxed">
@@ -101,7 +101,7 @@ export default function AboutPage() {
           </p>
           <br></br>
 
-          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5">
+          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-carattere">
             The system that reads time, not just the sky.
           </h2>
           <p className="text-sm text-gray-600 leading-relaxed mb-4">
@@ -123,7 +123,7 @@ export default function AboutPage() {
         {/* ── THE LANGUAGE OF SAJU ── */}
         <section>
           <SectionLabel>The language of Saju</SectionLabel>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 font-carattere">
             천간지지 — <span className="font-bold">Stems &amp; Branches</span>
           </h2>
 
@@ -211,7 +211,7 @@ export default function AboutPage() {
         {/* ── AI · REPORTS ── */}
         <section>
           <SectionLabel>AI · Reports</SectionLabel>
-          <h2 className="text-sm font-bold text-gray-900 mb-3">Built to be trusted</h2>
+          <h2 className="text-sm font-bold text-gray-900 mb-3 font-carattere">Built to be trusted</h2>
           <p className="text-sm text-gray-600 leading-relaxed">
             Our AI engine runs on a framework built specifically for cosmic analysis —
             delivering precise, consistent reports that feel like the y were written only
@@ -224,7 +224,7 @@ export default function AboutPage() {
         {/* ── ARCHIVE ── */}
         <section>
           <SectionLabel>Archive</SectionLabel>
-          <h2 className="text-sm font-bold text-gray-900 mb-3">Your readings, always there</h2>
+          <h2 className="text-sm font-bold text-gray-900 mb-3 font-carattere">Your readings, always there</h2>
           <p className="text-sm text-gray-900 leading-relaxed">
             Every report is saved. Look back at past readings, track how your energy
             shifts over time, and share results with the people you trust.
@@ -236,7 +236,7 @@ export default function AboutPage() {
         {/* ── WHO IT'S FOR ── */}
         <section>
           <SectionLabel>Who it&apos;s for</SectionLabel>
-          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5">
+          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-carattere">
             If astrology ever felt like only half the picture.
           </h2>
           <p className="text-sm text-gray-600 leading-relaxed">
