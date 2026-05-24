@@ -50,7 +50,7 @@ export default function AboutPage() {
         {/* ── ABOUT ── */}
         <section>
           <SectionLabel>About</SectionLabel>
-          <h1 className="text-4xl font-bold leading-tight text-gray-900 mb-5">
+          <h1 className="text-4xl font-bold leading-tight text-gray-900 mb-5 font-carattere">
             Two ancient systems. <br></br>
             <span className="italic text-[#7B3B2A]">One complete picture</span>
             {" "}of you.
