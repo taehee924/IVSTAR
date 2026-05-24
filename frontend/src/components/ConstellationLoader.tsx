@@ -16,71 +16,71 @@ export default function ConstellationLoader() {
           </filter>
         </defs>
         {/* row 1 */}
-        <circle cx="4"   cy="6"   r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="14"  cy="3"   r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="26"  cy="10"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
-        <circle cx="38"  cy="4"   r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
-        <circle cx="52"  cy="8"   r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
-        <circle cx="63"  cy="2"   r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="74"  cy="11"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="85"  cy="5"   r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
-        <circle cx="95"  cy="14"  r="0.4" fill="#fff" opacity="0.65"filter="url(#bgsg)" />
+        <circle cx="4"   cy="6"   r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="14"  cy="3"   r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="26"  cy="10"  r="0.3"  fill="#fff" opacity="0.5"  filter="url(#bgsg)" />
+        <circle cx="38"  cy="4"   r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="52"  cy="8"   r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="63"  cy="2"   r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="74"  cy="11"  r="0.25" fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="85"  cy="5"   r="0.3"  fill="#fff" opacity="0.5"  filter="url(#bgsg)" />
+        <circle cx="95"  cy="14"  r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
         {/* row 2 */}
-        <circle cx="8"   cy="24"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
-        <circle cx="20"  cy="18"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
-        <circle cx="33"  cy="28"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="47"  cy="20"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
-        <circle cx="60"  cy="30"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
-        <circle cx="72"  cy="22"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="84"  cy="32"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="93"  cy="19"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="8"   cy="24"  r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="20"  cy="18"  r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="33"  cy="28"  r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="47"  cy="20"  r="0.3"  fill="#fff" opacity="0.5"  filter="url(#bgsg)" />
+        <circle cx="60"  cy="30"  r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="72"  cy="22"  r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="84"  cy="32"  r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="93"  cy="19"  r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
         {/* row 3 */}
-        <circle cx="3"   cy="45"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
-        <circle cx="16"  cy="40"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="29"  cy="52"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="43"  cy="44"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
-        <circle cx="57"  cy="55"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
-        <circle cx="69"  cy="42"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="80"  cy="50"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
-        <circle cx="91"  cy="47"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
+        <circle cx="3"   cy="45"  r="0.3"  fill="#fff" opacity="0.5"  filter="url(#bgsg)" />
+        <circle cx="16"  cy="40"  r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="29"  cy="52"  r="0.25" fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="43"  cy="44"  r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="57"  cy="55"  r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="69"  cy="42"  r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="80"  cy="50"  r="0.3"  fill="#fff" opacity="0.5"  filter="url(#bgsg)" />
+        <circle cx="91"  cy="47"  r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
         {/* row 4 */}
-        <circle cx="6"   cy="68"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="19"  cy="74"  r="0.4" fill="#fff" opacity="0.65"filter="url(#bgsg)" />
-        <circle cx="32"  cy="65"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
-        <circle cx="45"  cy="78"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="58"  cy="70"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
-        <circle cx="70"  cy="80"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
-        <circle cx="82"  cy="67"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="94"  cy="75"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
+        <circle cx="6"   cy="68"  r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="19"  cy="74"  r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="32"  cy="65"  r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="45"  cy="78"  r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="58"  cy="70"  r="0.3"  fill="#fff" opacity="0.5"  filter="url(#bgsg)" />
+        <circle cx="70"  cy="80"  r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="82"  cy="67"  r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="94"  cy="75"  r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
         {/* row 5 */}
-        <circle cx="10"  cy="90"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
-        <circle cx="23"  cy="95"  r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
-        <circle cx="36"  cy="88"  r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
-        <circle cx="50"  cy="98"  r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="63"  cy="92"  r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="76"  cy="100" r="0.4" fill="#fff" opacity="0.65"filter="url(#bgsg)" />
-        <circle cx="88"  cy="93"  r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="10"  cy="90"  r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="23"  cy="95"  r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="36"  cy="88"  r="0.3"  fill="#fff" opacity="0.5"  filter="url(#bgsg)" />
+        <circle cx="50"  cy="98"  r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="63"  cy="92"  r="0.25" fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="76"  cy="100" r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="88"  cy="93"  r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
         {/* row 6~8 (하단) */}
-        <circle cx="5"   cy="115" r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="22"  cy="120" r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
-        <circle cx="40"  cy="112" r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
-        <circle cx="55"  cy="125" r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="68"  cy="118" r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="82"  cy="128" r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
-        <circle cx="94"  cy="110" r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
-        <circle cx="12"  cy="145" r="0.4" fill="#fff" opacity="0.65"filter="url(#bgsg)" />
-        <circle cx="30"  cy="150" r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
-        <circle cx="48"  cy="142" r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="62"  cy="155" r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
-        <circle cx="78"  cy="148" r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
-        <circle cx="92"  cy="158" r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="8"   cy="172" r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
-        <circle cx="25"  cy="178" r="0.4" fill="#fff" opacity="0.65"filter="url(#bgsg)" />
-        <circle cx="42"  cy="168" r="0.6" fill="#fff" opacity="0.9" filter="url(#bgsg)" />
-        <circle cx="58"  cy="182" r="0.35"fill="#fff" opacity="0.6" filter="url(#bgsg)" />
-        <circle cx="72"  cy="175" r="0.5" fill="#fff" opacity="0.8" filter="url(#bgsg)" />
-        <circle cx="87"  cy="185" r="0.4" fill="#fff" opacity="0.7" filter="url(#bgsg)" />
-        <circle cx="97"  cy="170" r="0.55"fill="#fff" opacity="0.85"filter="url(#bgsg)" />
+        <circle cx="5"   cy="115" r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="22"  cy="120" r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="40"  cy="112" r="0.3"  fill="#fff" opacity="0.5"  filter="url(#bgsg)" />
+        <circle cx="55"  cy="125" r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="68"  cy="118" r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="82"  cy="128" r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="94"  cy="110" r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="12"  cy="145" r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="30"  cy="150" r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="48"  cy="142" r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="62"  cy="155" r="0.3"  fill="#fff" opacity="0.5"  filter="url(#bgsg)" />
+        <circle cx="78"  cy="148" r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="92"  cy="158" r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="8"   cy="172" r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
+        <circle cx="25"  cy="178" r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="42"  cy="168" r="0.3"  fill="#fff" opacity="0.5"  filter="url(#bgsg)" />
+        <circle cx="58"  cy="182" r="0.2"  fill="#fff" opacity="0.35" filter="url(#bgsg)" />
+        <circle cx="72"  cy="175" r="0.25" fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="87"  cy="185" r="0.2"  fill="#fff" opacity="0.4"  filter="url(#bgsg)" />
+        <circle cx="97"  cy="170" r="0.25" fill="#fff" opacity="0.45" filter="url(#bgsg)" />
       </svg>
 
       {/* ── 별자리 SVG ── */}
@@ -124,6 +124,7 @@ export default function ConstellationLoader() {
               stroke-width: 3.5;
               stroke-linecap: round;
               fill: none;
+              filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 8px #aaccff);
             }
 
             /* ── Stars ── */
@@ -229,13 +230,13 @@ export default function ConstellationLoader() {
             }
           `}</style>
 
-          <line className="cline l12" x1="150" y1="320" x2="230" y2="260" strokeDasharray="100" filter="url(#lineglow)" />
-          <line className="cline l23" x1="230" y1="260" x2="310" y2="200" strokeDasharray="100" filter="url(#lineglow)" />
-          <line className="cline l34" x1="310" y1="200" x2="230" y2="200" strokeDasharray="80"  filter="url(#lineglow)" />
-          <line className="cline l45" x1="230" y1="200" x2="150" y2="200" strokeDasharray="80"  filter="url(#lineglow)" />
-          <line className="cline l15" x1="150" y1="320" x2="150" y2="200" strokeDasharray="120" filter="url(#lineglow)" />
-          <line className="cline l56" x1="150" y1="200" x2="90"  y2="200" strokeDasharray="60"  filter="url(#lineglow)" />
-          <line className="cline l57" x1="150" y1="200" x2="150" y2="80"  strokeDasharray="120" filter="url(#lineglow)" />
+          <line className="cline l12" x1="150" y1="320" x2="230" y2="260" strokeDasharray="100" />
+          <line className="cline l23" x1="230" y1="260" x2="310" y2="200" strokeDasharray="100" />
+          <line className="cline l34" x1="310" y1="200" x2="230" y2="200" strokeDasharray="80"  />
+          <line className="cline l45" x1="230" y1="200" x2="150" y2="200" strokeDasharray="80"  />
+          <line className="cline l15" x1="150" y1="320" x2="150" y2="200" strokeDasharray="120" />
+          <line className="cline l56" x1="150" y1="200" x2="90"  y2="200" strokeDasharray="60"  />
+          <line className="cline l57" x1="150" y1="200" x2="150" y2="80"  strokeDasharray="120" />
 
           <g className="star-g s1" style={{ transformOrigin: "150px 320px" }}><circle cx="150" cy="320" r="8.5" className="cstar" filter="url(#starglow)" /></g>
           <g className="star-g s2" style={{ transformOrigin: "230px 260px" }}><circle cx="230" cy="260" r="8.5" className="cstar" filter="url(#starglow)" /></g>
