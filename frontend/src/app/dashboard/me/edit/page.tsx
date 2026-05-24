@@ -93,7 +93,6 @@ export default function EditProfilePage() {
   const [profile, setProfile] = useState<BirthProfile | null>(null);
   const [pageLoading, setPageLoading] = useState(true);
   const [saveLoading, setSaveLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
 
   // Avatar
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
@@ -260,26 +259,6 @@ export default function EditProfilePage() {
       alert("Error saving profile. Please try again.");
     } finally {
       setSaveLoading(false);
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    if (!confirm("Are you sure you want to leave? All data will be deleted.")) return;
-    setDeleteLoading(true);
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
-      });
-      if (!res.ok) throw new Error("Failed to delete account");
-      localStorage.removeItem(AVATAR_KEY);
-      localStorage.removeItem(NAME_KEY);
-      await signOut({ callbackUrl: "/" });
-    } catch (e) {
-      console.error(e);
-      alert("Error deleting account. Please try again.");
-    } finally {
-      setDeleteLoading(false);
     }
   };
 
@@ -490,11 +469,16 @@ export default function EditProfilePage() {
         )}
 
         {/* Email */}
-        <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] px-4 py-3 space-y-0.5">
+        <a
+          href="https://myaccount.google.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] px-4 py-3 space-y-0.5 hover:bg-[#E5DFD0] transition-colors"
+        >
           <p className="text-xs text-gray-500">Email</p>
           <p className="text-sm text-gray-800">{email}</p>
-          <p className="text-xs text-gray-400">Linked via Google account</p>
-        </div>
+          <p className="text-xs text-gray-400">Linked via Google account →</p>
+        </a>
 
         {/* Save */}
         <button
@@ -513,22 +497,13 @@ export default function EditProfilePage() {
           Cancel
         </button>
 
-        <div className="border-t border-[#DDD8CE] pt-4 space-y-3">
+        <div className="border-t border-[#DDD8CE] pt-4">
           {/* Logout */}
           <button
             onClick={() => signOut({ callbackUrl: "/" })}
             className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors"
           >
             ↪ Logout
-          </button>
-
-          {/* Delete Account */}
-          <button
-            onClick={handleDeleteAccount}
-            disabled={deleteLoading}
-            className="flex items-center gap-2 text-sm text-red-400 hover:text-red-600 transition-colors disabled:opacity-50"
-          >
-            {deleteLoading ? "Processing..." : "↪ Delete Account"}
           </button>
         </div>
 
