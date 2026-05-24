@@ -210,7 +210,7 @@ function ReportAccordion({
                 isOpen ? "bg-[#E8E2D4]" : "bg-[#EDE8DC] hover:bg-[#E8E2D4]"
               }`}
             >
-              <span className="flex items-center gap-1.5 text-xs font-semibold text-gray-800">
+              <span className="flex items-center gap-1.5 text-[15px] font-semibold text-gray-800">
                 <span className="text-sm">{sec.emoji}</span>
                 <span>{sec.title}</span>
               </span>
