@@ -196,7 +196,7 @@ export default function MePage() {
               reports.map((r) => (
                 <div key={r.id} className="flex items-center justify-between px-4 py-3 hover:bg-[#EDE8DC] transition-colors">
                   <Link href={`/dashboard/report/${r.id}`} className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-gray-700">
+                    <p className="text-sm text-gray-700">
                       {REPORT_LABELS[r.report_type] ?? r.report_type}
                     </p>
                     <p className="text-xs text-gray-400">{formatDate(r.created_at)}</p>
