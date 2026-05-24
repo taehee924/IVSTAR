@@ -79,7 +79,7 @@ const MONTHS = [
   { value: 9, label: "September" }, { value: 10, label: "October" },
   { value: 11, label: "November" }, { value: 12, label: "December" },
 ];
-const HOURS = Array.from({ length: 12 }, (_, i) => i + 1);
+const HOURS = Array.from({ length: 24 }, (_, i) => i); // 0~23
 const MINUTES = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
 
 function getDaysInMonth(year: number, month: number) {
@@ -105,7 +105,6 @@ export default function EditProfilePage() {
   const [editDay, setEditDay] = useState("");
   const [editHour, setEditHour] = useState("");
   const [editMinute, setEditMinute] = useState("");
-  const [editAmpm, setEditAmpm] = useState("AM");
   const [editTimeUnknown, setEditTimeUnknown] = useState(false);
   const [editCountry, setEditCountry] = useState("");
   const [editCity, setEditCity] = useState("");
@@ -148,9 +147,7 @@ export default function EditProfilePage() {
 
             if (p.birth_time) {
               const [h, min] = p.birth_time.split(":");
-              const hNum = parseInt(h);
-              setEditAmpm(hNum >= 12 ? "PM" : "AM");
-              setEditHour(String(hNum > 12 ? hNum - 12 : hNum === 0 ? 12 : hNum));
+              setEditHour(String(parseInt(h)));
               setEditMinute(min ?? "00");
               setEditTimeUnknown(false);
             } else {
@@ -189,11 +186,8 @@ export default function EditProfilePage() {
           : null;
 
       let birthTime = null;
-      if (!editTimeUnknown && editHour && editMinute) {
-        let h = parseInt(editHour);
-        if (editAmpm === "PM" && h !== 12) h += 12;
-        if (editAmpm === "AM" && h === 12) h = 0;
-        birthTime = `${String(h).padStart(2, "0")}:${editMinute}`;
+      if (!editTimeUnknown && editHour !== "" && editMinute) {
+        birthTime = `${String(parseInt(editHour)).padStart(2, "0")}:${editMinute}`;
       }
 
       const birthPlace = editCity && editCountry ? `${editCity}, ${editCountry}` : null;
@@ -263,7 +257,6 @@ export default function EditProfilePage() {
   };
 
   const displayName = editName || session?.user?.name || "";
-  const email = session?.user?.email ?? "";
 
   const selectClass =
     "w-full rounded-lg border border-[#DDD8CE] bg-[#FFFBF5] px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-400";
@@ -398,11 +391,11 @@ export default function EditProfilePage() {
             <div className="space-y-1">
               <label className="text-xs text-gray-500">Time of Birth</label>
               {!editTimeUnknown && (
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   <select value={editHour} onChange={(e) => setEditHour(e.target.value)} className={selectClass}>
                     <option value="">Hour</option>
                     {HOURS.map((h) => (
-                      <option key={h} value={h}>{h}</option>
+                      <option key={h} value={h}>{String(h).padStart(2, "0")}</option>
                     ))}
                   </select>
                   <select value={editMinute} onChange={(e) => setEditMinute(e.target.value)} className={selectClass}>
@@ -410,10 +403,6 @@ export default function EditProfilePage() {
                     {MINUTES.map((m) => (
                       <option key={m} value={m}>{m}</option>
                     ))}
-                  </select>
-                  <select value={editAmpm} onChange={(e) => setEditAmpm(e.target.value)} className={selectClass}>
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
                   </select>
                 </div>
               )}
@@ -461,18 +450,6 @@ export default function EditProfilePage() {
           </div>
         )}
 
-        {/* Email */}
-        <a
-          href="https://myaccount.google.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] px-4 py-3 space-y-0.5 hover:bg-[#E5DFD0] transition-colors"
-        >
-          <p className="text-xs text-gray-500">Email</p>
-          <p className="text-sm text-gray-800">{email}</p>
-          <p className="text-xs text-gray-400">Linked via Google account →</p>
-        </a>
-
         {/* Save */}
         <button
           onClick={handleSaveProfile}
@@ -480,14 +457,6 @@ export default function EditProfilePage() {
           className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white hover:bg-gray-700 disabled:opacity-50 transition-colors"
         >
           {saveLoading ? "Saving..." : "Save"}
-        </button>
-
-        {/* Cancel */}
-        <button
-          onClick={() => router.back()}
-          className="w-full text-sm text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          Cancel
         </button>
 
         <div className="border-t border-[#DDD8CE] pt-4">
