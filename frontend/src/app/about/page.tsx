@@ -1,4 +1,5 @@
 import Header from "@/components/layout/Header";
+import Image from "next/image";
 
 const STEMS = [
   { char: "甲", roman: "Gap", element: "Wood", polarity: "Yang", symbol: "☀" },
@@ -126,9 +127,15 @@ export default function AboutPage() {
             천간지지 — <span className="font-bold">Stems &amp; Branches</span>
           </h2>
 
-          {/* Saju Wheel placeholder */}
-          <div className="border border-dashed border-gray-300 rounded-sm flex items-center justify-center h-40 mb-10 text-gray-400 text-sm tracking-wide">
-            [ Saju Wheel ]
+          {/* Saju Wheel */}
+          <div className="relative w-full mb-10">
+            <Image
+              src="/sajuwheel.png"
+              alt="Saju Wheel"
+              width={800}
+              height={800}
+              style={{ width: "100%", height: "auto" }}
+            />
           </div>
 
           {/* 천간 · Heavenly Stems */}
