@@ -68,7 +68,7 @@ export default function CategoriesPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {filtered.map((r) => (
             <div key={r.type + r.label} onClick={() => handleCardClick(r.type)} className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow">
-              {["daily", "general", "love", "life_cycle", "ex", "crush"].includes(r.type) ? (
+              {["daily", "general", "love", "life_cycle", "ex", "crush", "career", "wealth", "situationship"].includes(r.type) ? (
                 <div className="relative aspect-[3/4] w-full">
                   <Image
                     src={
@@ -77,7 +77,10 @@ export default function CategoriesPage() {
                       r.type === "love" ? "/couple.png" :
                       r.type === "life_cycle" ? "/lifecycle.png" :
                       r.type === "ex" ? "/ex.png" :
-                      "/crush.png"
+                      r.type === "crush" ? "/crush.png" :
+                      r.type === "career" ? "/career.png" :
+                      r.type === "wealth" ? "/wealth.png" :
+                      "/situationship.png"
                     }
                     alt={r.label}
                     fill
