@@ -31,7 +31,7 @@ export default function Header() {
 
           {/* 모바일 중앙 로고 */}
           <Link href="/dashboard" className="lg:hidden absolute left-1/2 -translate-x-1/2">
-            <Image src="/logo3.png" alt="IVSTAR" height={24} width={100} style={{ objectFit: "fill" }} priority />
+            <Image src="/logo4.png" alt="IVSTAR" height={24} width={100} style={{ objectFit: "fill" }} priority />
           </Link>
 
           {/* 데스크톱 인라인 네비게이션 (lg+) */}
