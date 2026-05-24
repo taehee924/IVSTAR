@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
+import ConstellationLoader from "@/components/ConstellationLoader";
 
 const REPORT_LABELS: Record<string, string> = {
   general: "About Me",
@@ -217,6 +218,8 @@ function NewReportContent() {
       setLoading(false);
     }
   };
+
+  if (loading) return <ConstellationLoader />;
 
   return (
     <main className="min-h-screen bg-[#FFFBF5] flex items-center justify-center p-4">
