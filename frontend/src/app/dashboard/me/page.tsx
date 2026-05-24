@@ -155,6 +155,8 @@ export default function MePage() {
       <Header />
       <div className="w-full max-w-2xl lg:max-w-3xl mx-auto px-4 lg:px-8 pt-8 space-y-6">
 
+        <h1 className="text-[28px] font-semibold text-gray-800">Mypage</h1>
+
         {/* My Profile */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
