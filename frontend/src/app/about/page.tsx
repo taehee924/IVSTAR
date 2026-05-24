@@ -31,7 +31,7 @@ const BRANCHES = [
 
 function SectionLabel({ children, font = "playfair" }: { children: React.ReactNode; font?: "urbanist" | "playfair" }) {
   return (
-    <p className={`text-[21px] font-semibold text-gray-800 mb-3 ${font === "urbanist" ? "font-urbanist" : "font-playfair"}`}>
+    <p className={`text-[21px] font-semibold text-gray-800 mb-3 ${font === "urbanist" ? "font-urbanist" : "font-inknut"}`}>
       {children}
     </p>
   );
@@ -50,7 +50,7 @@ export default function AboutPage() {
         {/* ── ABOUT ── */}
         <section>
           <SectionLabel font="urbanist">About</SectionLabel>
-          <h1 className="text-4xl font-bold leading-tight text-gray-900 mb-5 font-playfair">
+          <h1 className="text-4xl font-bold leading-tight text-gray-900 mb-5 font-inknut">
             Two ancient systems. <br></br>
             <span className="italic text-[#7B3B2A]">One complete picture</span>
             {" "}of you.
@@ -67,7 +67,7 @@ export default function AboutPage() {
 
       
         <section>
-          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-playfair">
+          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-inknut">
             Not a horoscope.<br />A portrait.
           </h2>
           <p className="text-[17px] text-gray-600 leading-relaxed font-urbanist">
@@ -101,7 +101,7 @@ export default function AboutPage() {
           </p>
           <br></br>
 
-          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-playfair">
+          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-inknut">
             The system that reads time, not just the sky.
           </h2>
           <p className="text-[17px] text-gray-600 leading-relaxed mb-4 font-urbanist">
@@ -123,7 +123,7 @@ export default function AboutPage() {
         {/* ── THE LANGUAGE OF SAJU ── */}
         <section>
           <SectionLabel>The language of Saju</SectionLabel>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 font-playfair">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 font-inknut">
             천간지지 — <span className="font-bold">Stems &amp; Branches</span>
           </h2>
 
@@ -211,7 +211,7 @@ export default function AboutPage() {
         {/* ── AI · REPORTS ── */}
         <section>
           <SectionLabel>AI · Reports</SectionLabel>
-          <h2 className="text-sm font-bold text-gray-900 mb-3 font-playfair">Built to be trusted</h2>
+          <h2 className="text-sm font-bold text-gray-900 mb-3 font-inknut">Built to be trusted</h2>
           <p className="text-[17px] text-gray-600 leading-relaxed font-urbanist">
             Our AI engine runs on a framework built specifically for cosmic analysis —
             delivering precise, consistent reports that feel like the y were written only
@@ -224,7 +224,7 @@ export default function AboutPage() {
         {/* ── ARCHIVE ── */}
         <section>
           <SectionLabel>Archive</SectionLabel>
-          <h2 className="text-sm font-bold text-gray-900 mb-3 font-playfair">Your readings, always there</h2>
+          <h2 className="text-sm font-bold text-gray-900 mb-3 font-inknut">Your readings, always there</h2>
           <p className="text-[17px] text-gray-900 leading-relaxed font-urbanist">
             Every report is saved. Look back at past readings, track how your energy
             shifts over time, and share results with the people you trust.
@@ -236,7 +236,7 @@ export default function AboutPage() {
         {/* ── WHO IT'S FOR ── */}
         <section>
           <SectionLabel>Who it&apos;s for</SectionLabel>
-          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-playfair">
+          <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-inknut">
             If astrology ever felt like only half the picture.
           </h2>
           <p className="text-[17px] text-gray-600 leading-relaxed font-urbanist">

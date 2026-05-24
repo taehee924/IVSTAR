@@ -33,3 +33,7 @@ body {
 .font-playfair {
   font-family: var(--font-playfair), Georgia, serif;
 }
+
+.font-inknut {
+  font-family: var(--font-inknut), Georgia, serif;
+}
