@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Carattere, Urbanist } from "next/font/google";
+import { Geist, Geist_Mono, Carattere, Urbanist, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
@@ -24,6 +24,12 @@ const urbanist = Urbanist({
   variable: "--font-urbanist",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+});
+
+const playfairDisplay = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 // 환경에 따라 URL 결정
@@ -58,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${carattere.variable} ${urbanist.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${carattere.variable} ${urbanist.variable} ${playfairDisplay.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>

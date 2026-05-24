@@ -29,3 +29,7 @@ body {
 .font-urbanist {
   font-family: var(--font-urbanist), Arial, Helvetica, sans-serif;
 }
+
+.font-playfair {
+  font-family: var(--font-playfair), Georgia, serif;
+}
