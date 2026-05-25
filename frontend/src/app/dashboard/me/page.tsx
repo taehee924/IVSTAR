@@ -222,7 +222,7 @@ export default function MePage() {
           <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] px-4 py-3 flex items-center justify-between">
             <p className="text-sm text-gray-600">0 readings remaining</p>
             <Link
-              href="/dashboard/categories"
+              href="/dashboard/store"
               className="text-xs font-medium border border-[#DDD8CE] rounded-lg px-3 py-1.5 hover:bg-[#FFFBF5] transition-colors text-gray-600"
             >
               Get more →
