@@ -1,4 +1,21 @@
+"use client";
+import { useState, useEffect } from "react";
+
+const MESSAGES = [
+  "Gathering your birth data...",
+  "Aligning the stars...",
+  "Generating your reading...",
+];
+
 export default function ConstellationLoader() {
+  const [msgIdx, setMsgIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setMsgIdx((prev) => (prev + 1) % MESSAGES.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
   return (
     <main className="fixed inset-0 z-50 flex flex-col items-center justify-center" style={{ background: "#060d18" }}>
 
@@ -247,7 +264,9 @@ export default function ConstellationLoader() {
           <g className="star-g s7" style={{ transformOrigin: "150px 80px"  }}><circle cx="150" cy="80"  r="8.5" className="cstar" filter="url(#starglow)" /></g>
         </svg>
       </div>
-      <p className="mt-6 text-sm text-gray-400 tracking-widest uppercase">Reading the stars…</p>
+      <p className="mt-6 text-sm text-gray-400 tracking-widest uppercase transition-opacity duration-500">
+        {MESSAGES[msgIdx]}
+      </p>
     </main>
   );
 }
