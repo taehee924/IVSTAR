@@ -6,15 +6,24 @@ export default function DashboardPage() {
     <main style={{ background: "#F6F3ED" }}>
       <Header />
 
-      <div className="w-full flex justify-center" style={{ background: "#F6F3ED" }}>
+      {/* 데스크톱: background.png / 모바일: 단색 */}
+      <div
+        className="w-full flex justify-center"
+        style={{
+          backgroundImage: "url('/background.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
         <div className="w-full max-w-lg" style={{ lineHeight: 0 }}>
 
           {/* Section 1: Dragon */}
           <Image
             src="/home1.png"
             alt="IVSTAR Dragon"
-            width={418}
-            height={707}
+            width={1564}
+            height={2596}
             style={{ width: "100%", height: "auto", display: "block" }}
             priority
           />
@@ -23,8 +32,8 @@ export default function DashboardPage() {
           <Image
             src="/home2.png"
             alt="Celestial Map"
-            width={467}
-            height={708}
+            width={1564}
+            height={2596}
             style={{ width: "100%", height: "auto", display: "block" }}
           />
 
