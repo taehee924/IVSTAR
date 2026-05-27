@@ -32,7 +32,7 @@ export default function DashboardPage() {
       >
         <div style={{ lineHeight: 0 }}>
           <Image
-            src="/desktop1.png"
+            src="/desktop3.png"
             alt="IVSTAR Desktop 1"
             width={6048}
             height={3928}
