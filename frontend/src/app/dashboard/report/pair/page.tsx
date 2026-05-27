@@ -232,7 +232,7 @@ function PairReportContent() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-[#FFFBF5] p-6">
+    <main className="min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-sm space-y-6">
 
         <div className="text-center">

@@ -222,7 +222,7 @@ function NewReportContent() {
   if (loading) return <ConstellationLoader />;
 
   return (
-    <main className="min-h-screen bg-[#FFFBF5] flex items-center justify-center p-4">
+    <main className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
 
         <div className="space-y-1">

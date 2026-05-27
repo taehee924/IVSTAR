@@ -372,7 +372,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#FFFBF5] flex items-center justify-center">
+      <main className="min-h-screen flex items-center justify-center">
         <Header />
         <p className="text-sm text-gray-400">Loading...</p>
       </main>
@@ -381,7 +381,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
 
   if (!report) {
     return (
-      <main className="min-h-screen bg-[#FFFBF5] flex items-center justify-center">
+      <main className="min-h-screen flex items-center justify-center">
         <Header />
         <p className="text-sm text-red-500">{error || "리포트를 찾을 수 없어요."}</p>
       </main>
@@ -389,7 +389,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
   }
 
   return (
-    <main className="min-h-screen bg-[#FFFBF5] pt-14 pb-10">
+    <main className="min-h-screen pt-14 pb-10">
       <Header />
       <div className="max-w-md mx-auto px-4 pt-8 space-y-6">
 

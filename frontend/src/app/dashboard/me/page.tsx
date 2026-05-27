@@ -151,7 +151,7 @@ export default function MePage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#FFFBF5] pt-14 pb-8">
+    <main className="min-h-screen pt-14 pb-8">
       <Header />
       <div className="w-full max-w-2xl lg:max-w-3xl mx-auto px-4 lg:px-8 pt-8 space-y-6">
 

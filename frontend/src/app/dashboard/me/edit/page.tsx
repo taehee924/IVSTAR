@@ -276,14 +276,14 @@ export default function EditProfilePage() {
 
   if (status === "loading" || pageLoading) {
     return (
-      <main className="min-h-screen bg-[#FFFBF5] flex items-center justify-center">
+      <main className="min-h-screen flex items-center justify-center">
         <p className="text-sm text-gray-400">Loading...</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[#FFFBF5] pt-14 pb-12">
+    <main className="min-h-screen pt-14 pb-12">
       <Header />
       <div className="w-full max-w-md mx-auto px-4 pt-8 space-y-6">
 
