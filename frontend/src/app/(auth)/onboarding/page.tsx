@@ -191,7 +191,7 @@ function OnboardingContent() {
       if (!nameRes.ok) throw new Error("Failed to save name");
       router.push(redirect);
     } catch (e: any) {
-      setError("저장에 실패했어요. 다시 시도해주세요.");
+      setError("Failed to save. Please try again.");
       console.error(e);
     } finally {
       setLoading(false);

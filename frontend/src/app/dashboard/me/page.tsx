@@ -188,7 +188,7 @@ export default function MePage() {
         {/* My Readings */}
         <div className="space-y-2">
           <h2 className="text-sm font-bold text-gray-700">My Readings ({reports.length})</h2>
-          <div className="rounded-2xl border border-gray-200 overflow-hidden divide-y divide-gray-100">
+          <div className="rounded-2xl border border-[#DDD8CE] overflow-hidden divide-y divide-[#DDD8CE] bg-[#FFFBF5]">
             {loading ? (
               <div className="p-4 text-sm text-gray-400">Loading...</div>
             ) : reports.length === 0 ? (

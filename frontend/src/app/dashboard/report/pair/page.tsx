@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, Suspense } from "react";
+import ConstellationLoader from "@/components/ConstellationLoader";
 import {
   calculateFourPillars,
   getHeavenlyStemElement,
@@ -18,10 +19,10 @@ const REPORT_LABELS: Record<string, string> = {
 };
 
 const PARTNER_LABELS: Record<string, string> = {
-  crush: "상대방",
-  ex: "전 연인",
-  situationship: "상대방",
-  love: "파트너",
+  crush: "Their",
+  ex: "Their",
+  situationship: "Their",
+  love: "Partner",
 };
 
 const COUNTRIES = [
@@ -96,7 +97,7 @@ function PairReportContent() {
   const promoCode = searchParams.get("promo_code") ?? null;
   const needsPayment = searchParams.get("needs_payment") === "true";
 
-  const partnerLabel = PARTNER_LABELS[type] ?? "상대방";
+  const partnerLabel = PARTNER_LABELS[type] ?? "Their";
   const readingLabel = REPORT_LABELS[type] ?? type;
 
   // 파트너 기본 정보
@@ -131,7 +132,7 @@ function PairReportContent() {
 
   const handleCreate = async () => {
     if (!session) { router.push("/login"); return; }
-    if (!isValid) { setError(`${partnerLabel}의 생년월일을 입력해주세요.`); return; }
+    if (!isValid) { setError("Please enter their date of birth."); return; }
 
     setLoading(true);
     setError("");
@@ -142,7 +143,7 @@ function PairReportContent() {
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`,
         { headers: { Authorization: `Bearer ${(session as any)?.id_token}` } }
       );
-      if (!profileRes.ok) throw new Error("출생 정보 조회 실패");
+      if (!profileRes.ok) throw new Error("Failed to load birth profile.");
       const profiles = await profileRes.json();
       if (profiles.length === 0) {
         router.push(`/onboarding?redirect=/dashboard/report/pair?type=${type}`);
@@ -200,8 +201,8 @@ function PairReportContent() {
 
       if (!reportRes.ok) {
         const errData = await reportRes.json().catch(() => ({}));
-        if (reportRes.status === 503) throw new Error("AI가 잠시 바쁜 상태예요. 잠시 후 다시 시도해주세요.");
-        throw new Error(errData.detail ?? "리포트 생성 실패");
+        if (reportRes.status === 503) throw new Error("Our AI is busy right now. Please try again in a moment.");
+        throw new Error(errData.detail ?? "Failed to generate report.");
       }
 
       const report = await reportRes.json();
@@ -225,11 +226,13 @@ function PairReportContent() {
         router.push(`/dashboard/report/${report.id}`);
       }
     } catch (e: any) {
-      setError(e.message ?? "오류가 발생했어요.");
+      setError(e.message ?? "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
   };
+
+  if (loading) return <ConstellationLoader />;
 
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
@@ -240,7 +243,7 @@ function PairReportContent() {
             {readingLabel} Reading
           </h1>
           <p className="mt-2 text-sm text-gray-500">
-            {partnerLabel}의 정보를 입력해주세요.
+            Enter their information below.
           </p>
         </div>
 
@@ -255,7 +258,7 @@ function PairReportContent() {
               type="text"
               value={partnerName}
               onChange={(e) => setPartnerName(e.target.value)}
-              placeholder={`${partnerLabel}의 이름`}
+              placeholder="e.g. Alex"
               className={selectClass}
             />
           </div>
@@ -316,7 +319,7 @@ function PairReportContent() {
                 onChange={(e) => setTimeUnknown(e.target.checked)}
                 className="rounded"
               />
-              시간을 몰라요
+              I don't know their birth time
             </label>
           </div>
 
@@ -366,7 +369,7 @@ function PairReportContent() {
             disabled={!isValid || loading}
             className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
           >
-            {loading ? "리딩 생성 중..." : "Get Free Reading"}
+            {loading ? "Generating reading..." : "Get Free Reading"}
           </button>
         </div>
 

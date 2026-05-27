@@ -309,7 +309,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
           },
         }
       );
-      if (!res.ok) throw new Error("리포트 조회 실패");
+      if (!res.ok) throw new Error("Failed to load report.");
       const data = await res.json();
       setReport(data);
     } catch (e: any) {
@@ -356,7 +356,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
               }),
             }
           );
-          if (!res.ok) throw new Error("결제 캡처 실패");
+          if (!res.ok) throw new Error("Payment capture failed.");
           await fetchReport();
           router.replace(`/dashboard/report/${id}`);
         } catch (e: any) {
@@ -366,7 +366,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
         }
       },
       onCancel: () => router.replace(`/dashboard/report/${id}`),
-      onError: () => setError("결제 중 오류가 발생했어요."),
+      onError: () => setError("An error occurred during payment."),
     }).render("#paypal-button-container");
   }, [paypalReady, orderId, report]);
 
@@ -383,7 +383,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
     return (
       <main className="min-h-screen flex items-center justify-center">
         <Header />
-        <p className="text-sm text-red-500">{error || "리포트를 찾을 수 없어요."}</p>
+        <p className="text-sm text-red-500">{error || "Report not found."}</p>
       </main>
     );
   }
