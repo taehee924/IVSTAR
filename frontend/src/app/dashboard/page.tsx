@@ -7,18 +7,11 @@ export default function DashboardPage() {
       <Header />
 
       {/* 데스크톱: background.png / 모바일: 단색 */}
+      {/* 모바일 (lg 미만) */}
       <div
-        className="w-full flex justify-center"
-        style={{
-          backgroundImage: "url('/background.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
+        className="lg:hidden w-full flex justify-center"
       >
         <div className="w-full max-w-lg" style={{ lineHeight: 0 }}>
-
-          {/* Section 1: Dragon */}
           <Image
             src="/home1.png"
             alt="IVSTAR Dragon"
@@ -27,8 +20,6 @@ export default function DashboardPage() {
             style={{ width: "100%", height: "auto", display: "block" }}
             priority
           />
-
-          {/* Section 2: Celestial Map */}
           <Image
             src="/home2.png"
             alt="Celestial Map"
@@ -36,7 +27,35 @@ export default function DashboardPage() {
             height={2596}
             style={{ width: "100%", height: "auto", display: "block" }}
           />
+        </div>
+      </div>
 
+      {/* 데스크톱 (lg 이상) */}
+      <div
+        className="hidden lg:block w-full"
+        style={{
+          backgroundImage: "url('/background.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div style={{ lineHeight: 0 }}>
+          <Image
+            src="/desktop1.png"
+            alt="IVSTAR Desktop 1"
+            width={6048}
+            height={3928}
+            style={{ width: "100%", height: "auto", display: "block" }}
+            priority
+          />
+          <Image
+            src="/desktop2.png"
+            alt="IVSTAR Desktop 2"
+            width={6048}
+            height={3928}
+            style={{ width: "100%", height: "auto", display: "block" }}
+          />
         </div>
       </div>
 
