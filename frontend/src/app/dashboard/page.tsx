@@ -44,7 +44,7 @@ export default function DashboardPage() {
       <div className="fixed bottom-6 right-5 z-40 flex flex-col items-center gap-3">
         {/* Instagram */}
         <a
-          href="https://www.instagram.com/ivstar.app"
+          href="https://www.instagram.com/ivstarcosmic/"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Instagram"
@@ -58,7 +58,7 @@ export default function DashboardPage() {
         </a>
         {/* TikTok */}
         <a
-          href="https://www.tiktok.com/@ivstar.app"
+          href="https://www.tiktok.com/@ivstarcosmic"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="TikTok"

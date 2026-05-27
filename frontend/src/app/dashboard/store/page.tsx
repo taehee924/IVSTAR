@@ -1,12 +1,30 @@
 import Header from "@/components/layout/Header";
+import Image from "next/image";
 
 export default function StorePage() {
   return (
-    <main className="min-h-screen bg-white pt-14">
+    <main style={{ background: "#F6F3ED" }}>
       <Header />
-      <div className="max-w-md mx-auto px-4 pt-8">
-        <h1 className="text-lg font-semibold text-gray-800">Store</h1>
-        <p className="text-sm text-gray-400 mt-2">Coming soon.</p>
+
+      <div
+        className="w-full flex justify-center"
+        style={{
+          backgroundImage: "url('/background.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div className="w-full max-w-lg" style={{ lineHeight: 0 }}>
+          <Image
+            src="/home2.png"
+            alt="Store"
+            width={1564}
+            height={2596}
+            style={{ width: "100%", height: "auto", display: "block" }}
+            priority
+          />
+        </div>
       </div>
     </main>
   );
