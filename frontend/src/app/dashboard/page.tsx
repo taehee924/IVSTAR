@@ -1,13 +1,35 @@
 import Header from "@/components/layout/Header";
+import Image from "next/image";
 
 export default function DashboardPage() {
   return (
-    <main className="min-h-screen bg-white pt-14">
+    <main className="bg-[#FFFBF5]">
       <Header />
-      <div className="max-w-md mx-auto px-4 pt-8">
-        <h1 className="text-lg font-semibold text-gray-800">Home</h1>
-        <p className="text-sm text-gray-400 mt-2">Coming soon.</p>
-      </div>
+
+      {/* ── Section 1: Dragon ── */}
+      <section className="relative min-h-screen w-full overflow-hidden">
+        <Image
+          src="/home1.png"
+          alt="IVSTAR Dragon"
+          fill
+          style={{ objectFit: "cover", objectPosition: "center top" }}
+          priority
+        />
+      </section>
+
+      {/* ── Section 2: Celestial Map ── */}
+      <section className="relative min-h-screen w-full overflow-hidden">
+        <Image
+          src="/home2.png"
+          alt="Celestial Map"
+          fill
+          style={{ objectFit: "cover", objectPosition: "center center" }}
+        />
+        {/* IVSTAR 텍스트 좌하단 */}
+        <div className="absolute bottom-10 left-6 z-10">
+          <p className="text-[52px] font-bold text-gray-900 leading-none font-inknut">IVSTAR</p>
+        </div>
+      </section>
     </main>
   );
 }
