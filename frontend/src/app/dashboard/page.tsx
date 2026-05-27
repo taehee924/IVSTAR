@@ -13,8 +13,8 @@ export default function DashboardPage() {
           <Image
             src="/home1.png"
             alt="IVSTAR Dragon"
-            width={800}
-            height={1400}
+            width={418}
+            height={707}
             style={{ width: "100%", height: "auto", display: "block" }}
             priority
           />
@@ -23,8 +23,8 @@ export default function DashboardPage() {
           <Image
             src="/home2.png"
             alt="Celestial Map"
-            width={800}
-            height={1400}
+            width={467}
+            height={708}
             style={{ width: "100%", height: "auto", display: "block" }}
           />
 
