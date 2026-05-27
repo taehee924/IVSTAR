@@ -3,11 +3,11 @@ import Image from "next/image";
 
 export default function DashboardPage() {
   return (
-    <main className="bg-[#F5F0E8]">
+    <main style={{ background: "#F6F3ED" }}>
       <Header />
 
-      <div className="w-full flex justify-center bg-[#F5F0E8]">
-        <div className="w-full max-w-lg">
+      <div className="w-full flex justify-center" style={{ background: "#F6F3ED" }}>
+        <div className="w-full max-w-lg" style={{ lineHeight: 0 }}>
 
           {/* Section 1: Dragon */}
           <Image
