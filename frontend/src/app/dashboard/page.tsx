@@ -14,18 +14,11 @@ export default function DashboardPage() {
         <div className="w-full max-w-lg" style={{ lineHeight: 0 }}>
           <Image
             src="/home1.png"
-            alt="IVSTAR Dragon"
+            alt="IVSTAR"
             width={1564}
             height={2596}
             style={{ width: "100%", height: "auto", display: "block" }}
             priority
-          />
-          <Image
-            src="/home2.png"
-            alt="Celestial Map"
-            width={1564}
-            height={2596}
-            style={{ width: "100%", height: "auto", display: "block" }}
           />
         </div>
       </div>
