@@ -8,19 +8,16 @@ export default function DashboardPage() {
 
       {/* 데스크톱: background.png / 모바일: 단색 */}
       {/* 모바일 (lg 미만) */}
-      <div
-        className="lg:hidden w-full flex justify-center"
-      >
-        <div className="w-full max-w-lg" style={{ lineHeight: 0 }}>
-          <Image
-            src="/home1.png"
-            alt="IVSTAR"
-            width={1564}
-            height={2596}
-            style={{ width: "100%", height: "auto", display: "block" }}
-            priority
-          />
-        </div>
+      <div className="lg:hidden w-full" style={{ lineHeight: 0 }}>
+        <Image
+          src="/home1.png"
+          alt="IVSTAR"
+          width={1564}
+          height={2596}
+          style={{ width: "100%", height: "auto", display: "block" }}
+          priority
+          unoptimized
+        />
       </div>
 
       {/* 데스크톱 (lg 이상) */}
