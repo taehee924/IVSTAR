@@ -3,31 +3,37 @@ import Image from "next/image";
 
 export default function DashboardPage() {
   return (
-    <main className="bg-[#FFFBF5]">
+    <main className="bg-[#F5F0E8]">
       <Header />
 
       {/* ── Section 1: Dragon ── */}
-      <section className="relative min-h-screen w-full overflow-hidden">
-        <Image
-          src="/home1.png"
-          alt="IVSTAR Dragon"
-          fill
-          style={{ objectFit: "cover", objectPosition: "center top" }}
-          priority
-        />
+      <section className="w-full flex justify-center bg-[#F5F0E8]">
+        <div className="relative w-full max-w-lg">
+          <Image
+            src="/home1.png"
+            alt="IVSTAR Dragon"
+            width={800}
+            height={1400}
+            style={{ width: "100%", height: "auto" }}
+            priority
+          />
+        </div>
       </section>
 
       {/* ── Section 2: Celestial Map ── */}
-      <section className="relative min-h-screen w-full overflow-hidden">
-        <Image
-          src="/home2.png"
-          alt="Celestial Map"
-          fill
-          style={{ objectFit: "cover", objectPosition: "center center" }}
-        />
-        {/* IVSTAR 텍스트 좌하단 */}
-        <div className="absolute bottom-10 left-6 z-10">
-          <p className="text-[52px] font-bold text-gray-900 leading-none font-inknut">IVSTAR</p>
+      <section className="w-full flex justify-center bg-[#F5F0E8] relative">
+        <div className="relative w-full max-w-lg">
+          <Image
+            src="/home2.png"
+            alt="Celestial Map"
+            width={800}
+            height={1400}
+            style={{ width: "100%", height: "auto" }}
+          />
+          {/* IVSTAR 텍스트 좌하단 */}
+          <div className="absolute bottom-8 left-5">
+            <p className="text-[48px] font-bold text-gray-900 leading-none font-inknut">IVSTAR</p>
+          </div>
         </div>
       </section>
     </main>
