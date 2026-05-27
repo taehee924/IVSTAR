@@ -26,12 +26,12 @@ export default function Header() {
           {/* 모바일: 왼쪽 빈 공간 (햄버거 버튼과 균형) / 데스크톱: 로고 */}
           <div className="lg:hidden w-[38px]" />
           <Link href="/dashboard" className="hidden lg:block">
-            <Image src="/logo5.png" alt="IVSTAR" height={24} width={100} style={{ objectFit: "fill" }} priority />
+            <Image src="/logo5.png" alt="IVSTAR" height={19} width={80} style={{ objectFit: "fill" }} priority />
           </Link>
 
           {/* 모바일 중앙 로고 */}
           <Link href="/dashboard" className="lg:hidden absolute left-1/2 -translate-x-1/2">
-            <Image src="/logo5.png" alt="IVSTAR" height={24} width={100} style={{ objectFit: "fill" }} priority />
+            <Image src="/logo5.png" alt="IVSTAR" height={19} width={80} style={{ objectFit: "fill" }} priority />
           </Link>
 
           {/* 데스크톱 인라인 네비게이션 (lg+) */}
