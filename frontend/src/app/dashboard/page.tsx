@@ -48,6 +48,7 @@ export default function DashboardPage() {
             height={3928}
             style={{ width: "100%", height: "auto", display: "block" }}
             priority
+            unoptimized
           />
           <Image
             src="/desktop2.png"
@@ -55,6 +56,7 @@ export default function DashboardPage() {
             width={6048}
             height={3928}
             style={{ width: "100%", height: "auto", display: "block" }}
+            unoptimized
           />
         </div>
       </div>
