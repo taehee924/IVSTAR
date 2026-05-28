@@ -8,7 +8,7 @@ export default function DashboardPage() {
 
       {/* 데스크톱: background.png / 모바일: 단색 */}
       {/* 모바일 (lg 미만) */}
-      <div className="lg:hidden w-full" style={{ lineHeight: 0 }}>
+      <div className="lg:hidden w-full pt-14" style={{ lineHeight: 0 }}>
         <Image
           src="/home1.png"
           alt="IVSTAR"
