@@ -20,9 +20,8 @@ body {
   background-color: var(--background);
   background-image: url('/background.png');
   background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-position: center top;
+  background-repeat: repeat-y;
   color: var(--foreground);
   font-family: var(--font-urbanist), Arial, Helvetica, sans-serif;
 }
