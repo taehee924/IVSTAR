@@ -247,18 +247,18 @@ export default function MePage() {
         {/* Logout */}
         <button
           onClick={() => signOut({ callbackUrl: "/" })}
-          className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors"
+          className="text-sm text-gray-400 hover:text-gray-600 transition-colors underline underline-offset-2"
         >
-          ↪ Logout
+          Logout
         </button>
 
         {/* Delete Account */}
         <button
           onClick={handleDeleteAccount}
           disabled={deleteLoading}
-          className="flex items-center gap-2 text-sm text-red-400 hover:text-red-600 transition-colors disabled:opacity-50"
+          className="text-sm text-red-400 hover:text-red-600 transition-colors disabled:opacity-50 underline underline-offset-2"
         >
-          {deleteLoading ? "Processing..." : "↪ Delete Account"}
+          {deleteLoading ? "Processing..." : "Delete Account"}
         </button>
 
       </div>
