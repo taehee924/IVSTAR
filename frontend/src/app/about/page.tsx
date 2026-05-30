@@ -52,14 +52,11 @@ export default function AboutPage() {
           <SectionLabel font="urbanist">About</SectionLabel>
           <h1 className="text-3xl font-bold leading-tight text-gray-900 mb-5 font-inknut">
             Two ancient systems. <br></br>
-            <span className="italic text-[#7B3B2A]">One complete picture</span>
+            <span className="italic text-[#7B3B2A]">One complete pic</span>
             {" "}of you.
           </h1>
           <p className="text-[17px] text-gray-600 leading-relaxed font-urbanist">
-            Western astrology reads the sky at the moment you were born.
-            Eastern Four Pillars reads the forces of time that shaped you.
-            For centuries, these lived on opposite sides of the world. We
-            put them in the same room.
+          For centuries, Western astrology and Eastern astrology lived on opposite sides of the world: Western astrology reads the sky at the moment you were born, Eastern Four Pillars reads the forces of time that shaped you. However, instead of seperation, we bring two astrology into one.
           </p>
         </section>
 
@@ -68,7 +65,7 @@ export default function AboutPage() {
       
         <section>
           <h2 className="text-2xl font-bold leading-tight text-gray-900 mb-5 font-inknut">
-            Not a horoscope.<br />A portrait.
+           Not a horoscope—a portrait.
           </h2>
           <p className="text-[17px] text-gray-600 leading-relaxed font-urbanist">
             We read your birth chart and your Four Pillars chart together —
@@ -105,7 +102,8 @@ export default function AboutPage() {
             The system that reads time, not just the sky.
           </h2>
           <p className="text-[17px] text-gray-600 leading-relaxed mb-4 font-urbanist">
-            Saju (四柱) — literally &ldquo;four pillars&rdquo; — is one of East Asia&apos;s oldest systems
+            Saju (四柱) — in literal sense four pillars
+            — is one of East Asia&apos;s oldest systems
             of self-understanding. Built from the year, month, day, and hour of your
             birth, it maps five elemental forces — Wood, Fire, Earth, Metal, Water —
             that run through your character, your strengths, and your life&apos;s timing.
@@ -213,7 +211,7 @@ export default function AboutPage() {
           <SectionLabel>AI · Reports</SectionLabel>
           <h2 className="text-sm font-bold text-gray-900 mb-3 font-inknut">Built to be trusted</h2>
           <p className="text-[17px] text-gray-600 leading-relaxed font-urbanist">
-            Our AI engine runs on a framework built specifically for cosmic analysis —
+            Our AI model runs on a framework built specifically for cosmic analysis —
             delivering precise, consistent reports that feel like the y were written only
             for you.
           </p>
@@ -226,8 +224,9 @@ export default function AboutPage() {
           <SectionLabel>Archive</SectionLabel>
           <h2 className="text-sm font-bold text-gray-900 mb-3 font-inknut">Your readings, always there</h2>
           <p className="text-[17px] text-gray-900 leading-relaxed font-urbanist">
-            Every report is saved. Look back at past readings, track how your energy
-            shifts over time, and share results with the people you trust.
+          Each and every report of yours is saved.
+          Look back at past readings, track how your energy
+          shifts over time, and share results with the people you trust.
           </p>
         </section>
 
