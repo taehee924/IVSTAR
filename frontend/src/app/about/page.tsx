@@ -52,8 +52,8 @@ export default function AboutPage() {
           <SectionLabel font="urbanist">About</SectionLabel>
           <h1 className="text-3xl font-bold leading-tight text-gray-900 mb-5 font-inknut">
             Two ancient systems. <br></br>
-            <span className="italic text-[#7B3B2A]">One complete pic</span>
-            {" "}of you.
+            <span className="italic text-[#7B3B2A]">One complete picture</span>
+            {" "}
           </h1>
           <p className="text-[17px] text-gray-600 leading-relaxed font-urbanist">
           For centuries, Western astrology and Eastern astrology lived on opposite sides of the world: Western astrology reads the sky at the moment you were born, Eastern Four Pillars reads the forces of time that shaped you. However, instead of seperation, we bring two astrology into one.
