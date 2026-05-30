@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import ConstellationLoader from "@/components/ConstellationLoader";
 
 const REPORT_LABELS: Record<string, string> = {
@@ -106,6 +106,21 @@ function NewReportContent() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // 페이지 진입 시 프로필 체크 → 없으면 온보딩으로
+  useEffect(() => {
+    if (!session) return;
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`, {
+      headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
+    })
+      .then((res) => res.json())
+      .then((profiles) => {
+        if (!Array.isArray(profiles) || profiles.length === 0) {
+          router.replace(`/onboarding?redirect=${encodeURIComponent(`/dashboard/report/new?type=${type}`)}`);
+        }
+      })
+      .catch(() => {});
+  }, [session]);
 
   // 쿠폰
   const [promoCode, setPromoCode] = useState("");

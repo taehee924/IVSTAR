@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import ConstellationLoader from "@/components/ConstellationLoader";
 import {
   calculateFourPillars,
@@ -120,6 +120,22 @@ function PairReportContent() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // 페이지 진입 시 프로필 체크 → 없으면 온보딩으로
+  useEffect(() => {
+    if (!session) return;
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`, {
+      headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
+    })
+      .then((res) => res.json())
+      .then((profiles) => {
+        if (!Array.isArray(profiles) || profiles.length === 0) {
+          const currentUrl = `/dashboard/report/pair?type=${type}${promoCode ? `&promo_code=${promoCode}` : ""}${needsPayment ? "&needs_payment=true" : ""}`;
+          router.replace(`/onboarding?redirect=${encodeURIComponent(currentUrl)}`);
+        }
+      })
+      .catch(() => {});
+  }, [session]);
 
   const days = year && month
     ? Array.from({ length: getDaysInMonth(Number(year), Number(month)) }, (_, i) => i + 1)
