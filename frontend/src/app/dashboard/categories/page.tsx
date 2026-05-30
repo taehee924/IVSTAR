@@ -40,13 +40,38 @@ export default function CategoriesPage() {
   });
 
   const PAIR_TYPES = new Set(["crush", "ex", "situationship", "love"]);
+  const [checkingProfile, setCheckingProfile] = useState(false);
 
-  const handleCardClick = (type: string) => {
+  const handleCardClick = async (type: string) => {
+    const targetUrl = PAIR_TYPES.has(type)
+      ? `/dashboard/report/pair?type=${type}`
+      : `/dashboard/report/new?type=${type}`;
+
+    // 비로그인 → 로그인 후 온보딩 → 리포트
     if (!session) {
-      router.push("/login");
+      const onboardingUrl = `/onboarding?redirect=${encodeURIComponent(targetUrl)}`;
+      router.push(`/login?callbackUrl=${encodeURIComponent(onboardingUrl)}`);
       return;
     }
-    router.push(`/dashboard/report/new?type=${type}`);
+
+    // 로그인 상태 → 프로필 있는지 체크
+    setCheckingProfile(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`, {
+        headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
+      });
+      const profiles = await res.json();
+      if (!Array.isArray(profiles) || profiles.length === 0) {
+        // 프로필 없음 → 온보딩 먼저
+        router.push(`/onboarding?redirect=${encodeURIComponent(targetUrl)}`);
+      } else {
+        router.push(targetUrl);
+      }
+    } catch {
+      router.push(targetUrl);
+    } finally {
+      setCheckingProfile(false);
+    }
   };
 
   return (
@@ -67,7 +92,7 @@ export default function CategoriesPage() {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {filtered.map((r) => (
-            <div key={r.type + r.label} onClick={() => handleCardClick(r.type)} className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow">
+            <div key={r.type + r.label} onClick={() => !checkingProfile && handleCardClick(r.type)} className={`rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow ${checkingProfile ? "opacity-60 pointer-events-none" : ""}`}>
               {["daily", "general", "love", "life_cycle", "ex", "crush", "career", "wealth", "situationship"].includes(r.type) ? (
                 <div className="relative aspect-[3/4] w-full">
                   <Image
