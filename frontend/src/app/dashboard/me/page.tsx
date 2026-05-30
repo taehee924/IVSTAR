@@ -252,6 +252,8 @@ export default function MePage() {
           Logout
         </button>
 
+        <div />
+
         {/* Delete Account */}
         <button
           onClick={handleDeleteAccount}
