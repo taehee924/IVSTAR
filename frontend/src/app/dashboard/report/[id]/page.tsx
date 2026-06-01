@@ -242,6 +242,8 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
   const searchParams = useSearchParams();
   const router = useRouter();
   const orderId = searchParams.get("order_id");
+  const paypalToken = searchParams.get("token");   // PayPal 리다이렉트 후 붙는 파라미터
+  const payerId = searchParams.get("PayerID");
 
   const [report, setReport] = useState<Report | null>(null);
   const [loading, setLoading] = useState(true);
@@ -322,6 +324,38 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
   useEffect(() => {
     if (session) fetchReport();
   }, [session]);
+
+  // PayPal 리다이렉트 후 자동 캡처
+  useEffect(() => {
+    if (!session || !paypalToken || !payerId || !report) return;
+    const autoCapture = async () => {
+      setPaymentLoading(true);
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/capture`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${(session as any)?.id_token}`,
+            },
+            body: JSON.stringify({
+              paypal_order_id: paypalToken,
+              report_id: report.id,
+            }),
+          }
+        );
+        if (!res.ok) throw new Error("Payment capture failed.");
+        await fetchReport();
+        router.replace(`/dashboard/report/${id}`);
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setPaymentLoading(false);
+      }
+    };
+    autoCapture();
+  }, [session, paypalToken, payerId, report]);
 
   useEffect(() => {
     if (!orderId || paypalReady) return;

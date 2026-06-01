@@ -237,7 +237,11 @@ function PairReportContent() {
         );
         if (!orderRes.ok) throw new Error("Failed to create payment.");
         const order = await orderRes.json();
-        router.push(`/dashboard/report/${report.id}?order_id=${order.paypal_order_id}`);
+        if (order.approval_url) {
+          window.location.href = order.approval_url;
+        } else {
+          router.push(`/dashboard/report/${report.id}?order_id=${order.paypal_order_id}`);
+        }
       } else {
         router.push(`/dashboard/report/${report.id}`);
       }
