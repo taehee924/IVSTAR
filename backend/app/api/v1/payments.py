@@ -164,6 +164,12 @@ async def paypal_create_order(
                         },
                     }
                 ],
+                "application_context": {
+                    "brand_name": "IVSTAR",
+                    "user_action": "PAY_NOW",
+                    "return_url": f"{settings.FRONTEND_URL}/dashboard/report/{report.id}",
+                    "cancel_url": f"{settings.FRONTEND_URL}/dashboard/report/{report.id}?cancelled=true",
+                },
             },
             headers={"Authorization": f"Bearer {token}"},
         )
@@ -171,7 +177,12 @@ async def paypal_create_order(
     if res.status_code != 201:
         raise HTTPException(status_code=502, detail="PayPal Order 생성 실패")
 
-    order_id = res.json()["id"]
+    order_data = res.json()
+    order_id = order_data["id"]
+    approval_url = next(
+        (link["href"] for link in order_data.get("links", []) if link["rel"] == "approve"),
+        None,
+    )
 
     # DB에 Payment 기록 (pending)
     payment = Payment(
@@ -186,7 +197,7 @@ async def paypal_create_order(
     db.commit()
     db.refresh(payment)
 
-    return {"paypal_order_id": order_id, "payment_id": payment.id}
+    return {"paypal_order_id": order_id, "payment_id": payment.id, "approval_url": approval_url}
 
 
 @router.post("/paypal/capture", response_model=PaymentResponse)

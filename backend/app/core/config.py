@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     REDIS_URL: str | None = None
 
     ENV: str = "local"  # "local" | "production"
+    FRONTEND_URL: str = "https://www.4fourstar.com"
 
     PROMO_CODE: str = "THANKS4USING"
 
