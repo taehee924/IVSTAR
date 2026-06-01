@@ -150,11 +150,37 @@ function PairReportContent() {
     if (!session) { router.push("/login"); return; }
     if (!isValid) { setError("Please enter their date of birth."); return; }
 
+    // 파트너 생년월일 조합
+    const partnerBirthDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    let partnerBirthTime: string | null = null;
+    if (!timeUnknown && hour !== "" && minute) {
+      partnerBirthTime = `${String(parseInt(hour)).padStart(2, "0")}:${minute}`;
+    }
+    const partnerBirthPlace = country && city ? `${city}, ${country}` : (city || country || null);
+    const [py, pm, pd] = partnerBirthDate.split("-").map(Number);
+    const ph = partnerBirthTime ? parseInt(partnerBirthTime.split(":")[0]) : 12;
+    const pmin = partnerBirthTime ? parseInt(partnerBirthTime.split(":")[1]) : 0;
+
+    // 유료 → 파트너 데이터 저장 후 결제 페이지로 이동
+    if (needsPayment) {
+      sessionStorage.setItem("ivstar_partner_data", JSON.stringify({
+        name: partnerName || null,
+        gender: partnerGender || null,
+        year: py, month: pm, day: pd,
+        hour: ph, minute: pmin,
+        birthDate: partnerBirthDate,
+        birthTime: partnerBirthTime,
+        birthPlace: partnerBirthPlace,
+      }));
+      router.push(`/dashboard/report/payment?type=${type}`);
+      return;
+    }
+
+    // 프로모 코드 (무료) → ConstellationLoader + report 생성
     setLoading(true);
     setError("");
 
     try {
-      // 유저 출생 정보 조회
       const profileRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`,
         { headers: { Authorization: `Bearer ${(session as any)?.id_token}` } }
@@ -167,22 +193,6 @@ function PairReportContent() {
       }
       const profile = profiles[0];
 
-      // 파트너 생년월일 조합
-      const partnerBirthDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-
-      // 파트너 시간
-      let partnerBirthTime: string | null = null;
-      if (!timeUnknown && hour !== "" && minute) {
-        partnerBirthTime = `${String(parseInt(hour)).padStart(2, "0")}:${minute}`;
-      }
-
-      // 파트너 장소
-      const partnerBirthPlace = country && city ? `${city}, ${country}` : (city || country || null);
-
-      // 파트너 사주 계산
-      const [py, pm, pd] = partnerBirthDate.split("-").map(Number);
-      const ph = partnerBirthTime ? parseInt(partnerBirthTime.split(":")[0]) : 12;
-      const pmin = partnerBirthTime ? parseInt(partnerBirthTime.split(":")[1]) : 0;
       const pillars = calculateFourPillars({ year: py, month: pm, day: pd, hour: ph, minute: pmin });
 
       const reportRes = await fetch(

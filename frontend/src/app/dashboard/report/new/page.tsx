@@ -149,32 +149,33 @@ function NewReportContent() {
   };
 
   const handleCreate = async () => {
-    if (!session) {
-      router.push("/login");
+    if (!session) { router.push("/login"); return; }
+
+    // PAIR 타입 → 파트너 정보 입력 페이지
+    if (PAIR_TYPES.has(type)) {
+      const params = new URLSearchParams({ type });
+      if (promoValid && promoCode.trim()) {
+        params.set("promo_code", promoCode.trim());
+      } else {
+        params.set("needs_payment", "true");
+      }
+      router.push(`/dashboard/report/pair?${params.toString()}`);
       return;
     }
 
+    // 유료 → 결제 페이지로 바로 이동 (API 호출 없음)
+    if (!promoValid) {
+      router.push(`/dashboard/report/payment?type=${type}`);
+      return;
+    }
+
+    // 프로모 코드 (무료) → ConstellationLoader + report 생성
     setLoading(true);
     setError("");
-
     try {
-      // PAIR 타입은 파트너 정보 입력 페이지로 이동
-      if (PAIR_TYPES.has(type)) {
-        const params = new URLSearchParams({ type });
-        if (promoValid && promoCode.trim()) {
-          params.set("promo_code", promoCode.trim());
-        } else {
-          params.set("needs_payment", "true");
-        }
-        router.push(`/dashboard/report/pair?${params.toString()}`);
-        return;
-      }
-
       const profileRes = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`,
-        {
-          headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
-        }
+        { headers: { Authorization: `Bearer ${(session as any)?.id_token}` } }
       );
       if (!profileRes.ok) throw new Error("Failed to load birth profiles.");
       const profiles = await profileRes.json();
@@ -196,41 +197,17 @@ function NewReportContent() {
             birth_profile_id: profile.id,
             report_type: type,
             price: PRICE,
-            promo_code: promoValid ? promoCode.trim() : null,
+            promo_code: promoCode.trim(),
           }),
         }
       );
-
       if (!reportRes.ok) {
         const errData = await reportRes.json().catch(() => ({}));
         if (reportRes.status === 503) throw new Error("Please try again in a minute or two.");
-        if (reportRes.status === 400) throw new Error(errData.detail ?? "Invalid request.");
         throw new Error(errData.detail ?? "Failed to create report. Please try again.");
       }
       const report = await reportRes.json();
-
-      if (promoValid) {
-        router.push(`/dashboard/report/${report.id}`);
-      } else {
-        const orderRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/create`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${(session as any)?.id_token}`,
-            },
-            body: JSON.stringify({ report_id: report.id, currency: "USD" }),
-          }
-        );
-        if (!orderRes.ok) throw new Error("Failed to create payment.");
-        const order = await orderRes.json();
-        if (order.approval_url) {
-          window.location.href = order.approval_url;
-        } else {
-          router.push(`/dashboard/report/${report.id}?order_id=${order.paypal_order_id}`);
-        }
-      }
+      router.push(`/dashboard/report/${report.id}`);
     } catch (e: any) {
       setError(e.message ?? "Error");
     } finally {
