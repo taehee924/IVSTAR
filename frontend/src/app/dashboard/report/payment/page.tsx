@@ -10,7 +10,6 @@ import {
   getEarthlyBranchElement,
 } from "manseryeok";
 
-const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!;
 const PRICE = 0.99;
 
 const REPORT_LABELS: Record<string, string> = {
@@ -64,12 +63,9 @@ function PaymentContent() {
   // PayPal SDK 로드
   useEffect(() => {
     if (paypalReady) return;
-    // 이미 로드된 경우
     if ((window as any).paypal) { setPaypalReady(true); return; }
-    const clientId = PAYPAL_CLIENT_ID || process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-    if (!clientId) { setError("PayPal is not configured. Please contact support."); return; }
     const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&currency=USD`;
     script.async = true;
     script.onload = () => setPaypalReady(true);
     script.onerror = () => setError("Failed to load PayPal. Please refresh and try again.");
