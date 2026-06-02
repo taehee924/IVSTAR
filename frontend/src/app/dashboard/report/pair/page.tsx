@@ -220,8 +220,8 @@ function PairReportContent() {
             body: JSON.stringify({ paypal_order_id: pendingOrderId, report_id: report.id }),
           }
         );
-        if (!captureRes.ok) throw new Error("Payment capture failed.");
-        sessionStorage.removeItem("ivstar_pending_order_id");
+        sessionStorage.removeItem("ivstar_pending_order_id"); // 성공/실패 무관하게 제거
+        if (!captureRes.ok) throw new Error("Payment capture failed. Please contact support.");
       }
 
       router.push(`/dashboard/report/${report.id}`);
