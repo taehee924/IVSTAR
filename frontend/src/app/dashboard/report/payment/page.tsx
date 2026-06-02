@@ -60,16 +60,23 @@ function PaymentContent() {
   const [error, setError] = useState("");
   const rendered = useRef(false);
 
-  // PayPal SDK 로드
+  // PayPal SDK 로드 (런타임에 client ID 가져오기)
   useEffect(() => {
     if (paypalReady) return;
     if ((window as any).paypal) { setPaypalReady(true); return; }
-    const script = document.createElement("script");
-    script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&currency=USD`;
-    script.async = true;
-    script.onload = () => setPaypalReady(true);
-    script.onerror = () => setError("Failed to load PayPal. Please refresh and try again.");
-    document.head.appendChild(script);
+
+    fetch("/api/paypal/config")
+      .then((r) => r.json())
+      .then(({ clientId }) => {
+        if (!clientId) { setError("PayPal is not configured. Please contact support."); return; }
+        const script = document.createElement("script");
+        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
+        script.async = true;
+        script.onload = () => setPaypalReady(true);
+        script.onerror = () => setError("Failed to load PayPal. Please refresh and try again.");
+        document.head.appendChild(script);
+      })
+      .catch(() => setError("Failed to load PayPal. Please refresh and try again."));
   }, []);
 
   // PayPal 버튼 렌더링
