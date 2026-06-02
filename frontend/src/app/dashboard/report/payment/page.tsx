@@ -10,7 +10,10 @@ import {
   getEarthlyBranchElement,
 } from "manseryeok";
 
-const PRICE = 0.99;
+const PRICE_MAP: Record<string, number> = {
+  daily: 1.99,
+};
+const DEFAULT_PRICE = 0.99;
 
 const REPORT_LABELS: Record<string, string> = {
   general: "About Me",
@@ -54,6 +57,7 @@ function PaymentContent() {
   const router = useRouter();
   const type = searchParams.get("type") ?? "general";
   const isPair = ["crush", "ex", "situationship", "love"].includes(type);
+  const PRICE = PRICE_MAP[type] ?? DEFAULT_PRICE;
 
   const [loading, setLoading] = useState(false);
   const [paypalReady, setPaypalReady] = useState(false);

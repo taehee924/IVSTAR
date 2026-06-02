@@ -96,13 +96,15 @@ const WHAT_INSIDE: Record<string, string[]> = {
   ],
 };
 
-const PRICE = 0.99;
+const PRICE_MAP: Record<string, number> = { daily: 1.99 };
+const DEFAULT_PRICE = 0.99;
 
 function NewReportContent() {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const router = useRouter();
   const type = searchParams.get("type") ?? "general";
+  const PRICE = PRICE_MAP[type] ?? DEFAULT_PRICE;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
