@@ -70,7 +70,7 @@ function PaymentContent() {
       .then(({ clientId }) => {
         if (!clientId) { setError("PayPal is not configured. Please contact support."); return; }
         const script = document.createElement("script");
-        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
+        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&locale=en_US`;
         script.async = true;
         script.onload = () => setPaypalReady(true);
         script.onerror = () => setError("Failed to load PayPal. Please refresh and try again.");
