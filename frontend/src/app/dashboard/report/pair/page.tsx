@@ -95,7 +95,6 @@ function PairReportContent() {
   const router = useRouter();
   const type = searchParams.get("type") ?? "crush";
   const promoCode = searchParams.get("promo_code") ?? null;
-  const needsPayment = searchParams.get("needs_payment") === "true";
 
   const partnerLabel = PARTNER_LABELS[type] ?? "Their";
   const readingLabel = REPORT_LABELS[type] ?? type;
@@ -130,7 +129,7 @@ function PairReportContent() {
       .then((res) => res.json())
       .then((profiles) => {
         if (!Array.isArray(profiles) || profiles.length === 0) {
-          const currentUrl = `/dashboard/report/pair?type=${type}${promoCode ? `&promo_code=${promoCode}` : ""}${needsPayment ? "&needs_payment=true" : ""}`;
+          const currentUrl = `/dashboard/report/pair?type=${type}${promoCode ? `&promo_code=${promoCode}` : ""}`;
           router.replace(`/onboarding?redirect=${encodeURIComponent(currentUrl)}`);
         }
       })
@@ -150,7 +149,9 @@ function PairReportContent() {
     if (!session) { router.push("/login"); return; }
     if (!isValid) { setError("Please enter their date of birth."); return; }
 
-    // 파트너 생년월일 조합
+    setLoading(true);
+    setError("");
+
     const partnerBirthDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     let partnerBirthTime: string | null = null;
     if (!timeUnknown && hour !== "" && minute) {
@@ -160,25 +161,7 @@ function PairReportContent() {
     const [py, pm, pd] = partnerBirthDate.split("-").map(Number);
     const ph = partnerBirthTime ? parseInt(partnerBirthTime.split(":")[0]) : 12;
     const pmin = partnerBirthTime ? parseInt(partnerBirthTime.split(":")[1]) : 0;
-
-    // 유료 → 파트너 데이터 저장 후 결제 페이지로 이동
-    if (needsPayment) {
-      sessionStorage.setItem("ivstar_partner_data", JSON.stringify({
-        name: partnerName || null,
-        gender: partnerGender || null,
-        year: py, month: pm, day: pd,
-        hour: ph, minute: pmin,
-        birthDate: partnerBirthDate,
-        birthTime: partnerBirthTime,
-        birthPlace: partnerBirthPlace,
-      }));
-      router.push(`/dashboard/report/payment?type=${type}`);
-      return;
-    }
-
-    // 프로모 코드 (무료) → ConstellationLoader + report 생성
-    setLoading(true);
-    setError("");
+    const pendingOrderId = sessionStorage.getItem("ivstar_pending_order_id");
 
     try {
       const profileRes = await fetch(
@@ -199,10 +182,7 @@ function PairReportContent() {
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/pair/preview`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${(session as any)?.id_token}`,
-          },
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${(session as any)?.id_token}` },
           body: JSON.stringify({
             birth_profile_id: profile.id,
             report_type: type,
@@ -213,7 +193,6 @@ function PairReportContent() {
             partner_birth_time: partnerBirthTime,
             partner_birth_place: partnerBirthPlace,
             partner_gender: partnerGender || null,
-            // 사주 4주
             partner_year_pillar: `${pillars.year.heavenlyStem}${pillars.year.earthlyBranch}`,
             partner_month_pillar: `${pillars.month.heavenlyStem}${pillars.month.earthlyBranch}`,
             partner_day_pillar: `${pillars.day.heavenlyStem}${pillars.day.earthlyBranch}`,
@@ -224,40 +203,30 @@ function PairReportContent() {
           }),
         }
       );
-
       if (!reportRes.ok) {
         const errData = await reportRes.json().catch(() => ({}));
         if (reportRes.status === 503) throw new Error("Our AI is busy right now. Please try again in a moment.");
         throw new Error(errData.detail ?? "Failed to generate report.");
       }
-
       const report = await reportRes.json();
 
-      if (needsPayment) {
-        const orderRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/create`,
+      // 결제 완료된 경우 → 캡처
+      if (pendingOrderId) {
+        const captureRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/capture`,
           {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${(session as any)?.id_token}`,
-            },
-            body: JSON.stringify({ report_id: report.id, currency: "USD" }),
+            headers: { "Content-Type": "application/json", Authorization: `Bearer ${(session as any)?.id_token}` },
+            body: JSON.stringify({ paypal_order_id: pendingOrderId, report_id: report.id }),
           }
         );
-        if (!orderRes.ok) throw new Error("Failed to create payment.");
-        const order = await orderRes.json();
-        if (order.approval_url) {
-          window.location.href = order.approval_url;
-        } else {
-          router.push(`/dashboard/report/${report.id}?order_id=${order.paypal_order_id}`);
-        }
-      } else {
-        router.push(`/dashboard/report/${report.id}`);
+        if (!captureRes.ok) throw new Error("Payment capture failed.");
+        sessionStorage.removeItem("ivstar_pending_order_id");
       }
+
+      router.push(`/dashboard/report/${report.id}`);
     } catch (e: any) {
       setError(e.message ?? "Something went wrong. Please try again.");
-    } finally {
       setLoading(false);
     }
   };

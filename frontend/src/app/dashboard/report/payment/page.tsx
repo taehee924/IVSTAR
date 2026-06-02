@@ -121,8 +121,16 @@ function PaymentContent() {
         }
       },
 
-      // 결제 완료 후 → ConstellationLoader + 리포트 생성 + capture
+      // 결제 완료 후
       onApprove: async (data: any) => {
+        // PAIR 타입: 파트너 정보 입력 페이지로 이동 (리포트 생성은 거기서)
+        if (isPair) {
+          sessionStorage.setItem("ivstar_pending_order_id", data.orderID);
+          router.push(`/dashboard/report/pair?type=${type}`);
+          return;
+        }
+
+        // 비-PAIR: 리포트 생성 + 캡처 + ConstellationLoader
         setLoading(true);
         try {
           // 1. 유저 프로필 조회

@@ -153,19 +153,19 @@ function NewReportContent() {
   const handleCreate = async () => {
     if (!session) { router.push("/login"); return; }
 
-    // PAIR 타입 → 파트너 정보 입력 페이지
+    // PAIR 타입
     if (PAIR_TYPES.has(type)) {
-      const params = new URLSearchParams({ type });
       if (promoValid && promoCode.trim()) {
-        params.set("promo_code", promoCode.trim());
+        // 프로모 코드 → 파트너 정보 입력으로 바로
+        router.push(`/dashboard/report/pair?type=${type}&promo_code=${encodeURIComponent(promoCode.trim())}`);
       } else {
-        params.set("needs_payment", "true");
+        // 결제 → 결제 페이지로
+        router.push(`/dashboard/report/payment?type=${type}`);
       }
-      router.push(`/dashboard/report/pair?${params.toString()}`);
       return;
     }
 
-    // 유료 → 결제 페이지로 바로 이동 (API 호출 없음)
+    // 비-PAIR 유료 → 결제 페이지로 바로 이동 (API 호출 없음)
     if (!promoValid) {
       router.push(`/dashboard/report/payment?type=${type}`);
       return;
