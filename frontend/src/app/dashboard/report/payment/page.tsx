@@ -88,43 +88,64 @@ function PaymentContent() {
     (window as any).paypal.Buttons({
       style: { layout: "vertical", color: "black", shape: "rect", label: "pay", height: 48 },
 
+      // PayPal 주문만 빠르게 생성 (리포트 생성 X)
       createOrder: async () => {
         setError("");
         try {
-          // 유저 프로필 조회
+          const orderRes = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/create`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${(session as any)?.id_token}`,
+              },
+              body: JSON.stringify({
+                currency: "USD",
+                amount: PRICE,
+                description: `${REPORT_LABELS[type] ?? type} Reading`,
+              }),
+            }
+          );
+          if (!orderRes.ok) throw new Error("Failed to create payment.");
+          const order = await orderRes.json();
+          sessionStorage.setItem("ivstar_pending_order_id", order.paypal_order_id);
+          return order.paypal_order_id;
+        } catch (e: any) {
+          setError(e.message ?? "Something went wrong.");
+          throw e;
+        }
+      },
+
+      // 결제 완료 후 → ConstellationLoader + 리포트 생성 + capture
+      onApprove: async (data: any) => {
+        setLoading(true);
+        try {
+          // 1. 유저 프로필 조회
           const profileRes = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`,
             { headers: { Authorization: `Bearer ${(session as any)?.id_token}` } }
           );
           if (!profileRes.ok) throw new Error("Failed to load birth profile.");
           const profiles = await profileRes.json();
-          if (!profiles.length) {
-            router.replace(`/onboarding?redirect=/dashboard/report/payment?type=${type}`);
-            throw new Error("No birth profile.");
-          }
+          if (!profiles.length) throw new Error("No birth profile.");
           const profile = profiles[0];
 
+          // 2. 리포트 생성 (AI 생성 — ConstellationLoader 중)
           let reportRes: Response;
-
           if (isPair) {
-            // 파트너 데이터 sessionStorage에서 로드
             const raw = sessionStorage.getItem("ivstar_partner_data");
-            if (!raw) throw new Error("Partner data missing. Please go back and fill in the form.");
+            if (!raw) throw new Error("Partner data missing. Please go back.");
             const p = JSON.parse(raw);
-
             const pillars = calculateFourPillars({
               year: p.year, month: p.month, day: p.day,
               hour: p.hour ?? 12, minute: p.minute ?? 0,
             });
-
             reportRes = await fetch(
               `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/pair/preview`,
               {
                 method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${(session as any)?.id_token}`,
-                },
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${(session as any)?.id_token}` },
                 body: JSON.stringify({
                   birth_profile_id: profile.id,
                   report_type: type,
@@ -150,72 +171,32 @@ function PaymentContent() {
               `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/full`,
               {
                 method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${(session as any)?.id_token}`,
-                },
-                body: JSON.stringify({
-                  birth_profile_id: profile.id,
-                  report_type: type,
-                  price: PRICE,
-                  promo_code: null,
-                }),
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${(session as any)?.id_token}` },
+                body: JSON.stringify({ birth_profile_id: profile.id, report_type: type, price: PRICE, promo_code: null }),
               }
             );
           }
-
           if (!reportRes.ok) {
             const errData = await reportRes.json().catch(() => ({}));
-            if (reportRes.status === 503) throw new Error("Our AI is busy. Please try again in a moment.");
+            if (reportRes.status === 503) throw new Error("Our AI is busy. Please try again.");
             throw new Error(errData.detail ?? "Failed to create report.");
           }
           const report = await reportRes.json();
 
-          // PayPal 주문 생성
-          const orderRes = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/create`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${(session as any)?.id_token}`,
-              },
-              body: JSON.stringify({ report_id: report.id, currency: "USD" }),
-            }
-          );
-          if (!orderRes.ok) throw new Error("Failed to create payment.");
-          const order = await orderRes.json();
-
-          sessionStorage.setItem("ivstar_pending_report_id", String(report.id));
-          return order.paypal_order_id;
-        } catch (e: any) {
-          setError(e.message ?? "Something went wrong.");
-          throw e;
-        }
-      },
-
-      onApprove: async (data: any) => {
-        setLoading(true);
-        const reportId = sessionStorage.getItem("ivstar_pending_report_id");
-        try {
-          const res = await fetch(
+          // 3. 결제 캡처
+          const captureRes = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/capture`,
             {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${(session as any)?.id_token}`,
-              },
-              body: JSON.stringify({
-                paypal_order_id: data.orderID,
-                report_id: Number(reportId),
-              }),
+              headers: { "Content-Type": "application/json", Authorization: `Bearer ${(session as any)?.id_token}` },
+              body: JSON.stringify({ paypal_order_id: data.orderID, report_id: report.id }),
             }
           );
-          if (!res.ok) throw new Error("Payment capture failed.");
+          if (!captureRes.ok) throw new Error("Payment capture failed.");
+
           sessionStorage.removeItem("ivstar_partner_data");
-          sessionStorage.removeItem("ivstar_pending_report_id");
-          router.push(`/dashboard/report/${reportId}`);
+          sessionStorage.removeItem("ivstar_pending_order_id");
+          router.push(`/dashboard/report/${report.id}`);
         } catch (e: any) {
           setError(e.message);
           setLoading(false);

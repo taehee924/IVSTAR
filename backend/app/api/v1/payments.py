@@ -38,8 +38,10 @@ class PaymentResponse(BaseModel):
 
 
 class PaypalCreateRequest(BaseModel):
-    report_id: int
+    report_id: int | None = None
     currency: str = "USD"
+    amount: float = 0.99
+    description: str = "IVSTAR Reading"
 
 
 class PaypalCaptureRequest(BaseModel):
@@ -123,29 +125,29 @@ async def paypal_create_order(
 ):
     """
     PayPal Order 생성 (결제 시작).
-    1. Report에서 price 조회
-    2. PayPal Order 생성
-    3. DB에 Payment 레코드 pending 상태로 저장
-    4. paypal_order_id 반환 → 프론트에서 PayPal 결제창 호출
+    report_id가 있으면 리포트 기반, 없으면 body.amount 사용.
     """
-    # 리포트 조회 + 본인 소유 확인
-    report = db.query(Report).filter(
-        Report.id == body.report_id,
-        Report.user_id == current_user.id,
-    ).first()
-    if not report:
-        raise HTTPException(status_code=404, detail="Report not found")
+    amount_dollars: str
+    amount_cents: int
+    description = body.description
 
-    # 무료 리포트는 결제 불가
-    if report.price == 0:
-        raise HTTPException(status_code=400, detail="This report is free")
-
-    # 이미 결제된 리포트 중복 결제 방지
-    if report.payment_id:
-        raise HTTPException(status_code=400, detail="Already paid")
-
-    amount_dollars = f"{report.price:.2f}"  # Numeric → "0.99"
-    amount_cents = int(report.price * 100)  # DB 저장용 cents
+    if body.report_id:
+        report = db.query(Report).filter(
+            Report.id == body.report_id,
+            Report.user_id == current_user.id,
+        ).first()
+        if not report:
+            raise HTTPException(status_code=404, detail="Report not found")
+        if report.price == 0:
+            raise HTTPException(status_code=400, detail="This report is free")
+        if report.payment_id:
+            raise HTTPException(status_code=400, detail="Already paid")
+        amount_dollars = f"{report.price:.2f}"
+        amount_cents = int(report.price * 100)
+        description = f"{report.report_type.value.capitalize()} Report"
+    else:
+        amount_dollars = f"{body.amount:.2f}"
+        amount_cents = int(body.amount * 100)
 
     # PayPal Order 생성
     token = await get_paypal_access_token()
@@ -156,8 +158,8 @@ async def paypal_create_order(
                 "intent": "CAPTURE",
                 "purchase_units": [
                     {
-                        "reference_id": f"report_{report.id}",
-                        "description": f"{report.report_type.value.capitalize()} Report",
+                        "reference_id": "ivstar_reading",
+                        "description": description,
                         "amount": {
                             "currency_code": body.currency,
                             "value": amount_dollars,
@@ -167,8 +169,6 @@ async def paypal_create_order(
                 "application_context": {
                     "brand_name": "IVSTAR",
                     "user_action": "PAY_NOW",
-                    "return_url": f"{settings.FRONTEND_URL}/dashboard/report/{report.id}",
-                    "cancel_url": f"{settings.FRONTEND_URL}/dashboard/report/{report.id}?cancelled=true",
                 },
             },
             headers={"Authorization": f"Bearer {token}"},
