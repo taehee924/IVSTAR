@@ -43,9 +43,7 @@ export default function CategoriesPage() {
   const [checkingProfile, setCheckingProfile] = useState(false);
 
   const handleCardClick = async (type: string) => {
-    const targetUrl = PAIR_TYPES.has(type)
-      ? `/dashboard/report/pair?type=${type}`
-      : `/dashboard/report/new?type=${type}`;
+    const targetUrl = `/dashboard/report/new?type=${type}`;
 
     // 비로그인 → 로그인 후 온보딩 → 리포트
     if (!session) {
