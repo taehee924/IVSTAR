@@ -8,11 +8,11 @@ export default function StorePage() {
   const { data: session } = useSession();
   const [stars, setStars] = useState<number | null>(null);
   const [paypalReady, setPaypalReady] = useState(false);
+  const [showPaypal, setShowPaypal] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const rendered = useRef(false);
 
-  // 유저 스타 잔액 조회
   useEffect(() => {
     if (!session) return;
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`, {
@@ -42,14 +42,14 @@ export default function StorePage() {
       .catch(() => setError("Failed to load PayPal."));
   }, [session]);
 
-  // PayPal 버튼 렌더링
+  // PayPal 버튼 렌더링 (showPaypal이 true가 된 이후)
   useEffect(() => {
-    if (!paypalReady || !session || rendered.current) return;
+    if (!paypalReady || !session || !showPaypal || rendered.current) return;
     if (!(window as any).paypal) return;
     rendered.current = true;
 
     (window as any).paypal.Buttons({
-      style: { layout: "vertical", color: "gold", shape: "rect", label: "pay", height: 44 },
+      style: { layout: "vertical", color: "black", shape: "rect", label: "pay", height: 48 },
 
       createOrder: async () => {
         setError("");
@@ -83,13 +83,22 @@ export default function StorePage() {
         if (!res.ok) { setError("Payment capture failed. Please contact support."); return; }
         const result = await res.json();
         setStars(result.stars);
-        setSuccess("⭐ 1 Star added to your account!");
+        setSuccess("3 Stars have been added to your account!");
+        setShowPaypal(false);
+        rendered.current = false;
       },
 
-      onCancel: () => {},
-      onError: () => setError("Payment failed. Please try again."),
+      onCancel: () => { setShowPaypal(false); rendered.current = false; },
+      onError: () => { setError("Payment failed. Please try again."); setShowPaypal(false); rendered.current = false; },
     }).render("#star-paypal-button");
-  }, [paypalReady, session]);
+  }, [paypalReady, session, showPaypal]);
+
+  const handlePayBoxClick = () => {
+    if (!session) return;
+    setError("");
+    setSuccess("");
+    setShowPaypal(true);
+  };
 
   return (
     <main
@@ -107,31 +116,58 @@ export default function StorePage() {
           <h1 className="text-[21px] font-bold text-gray-800">Store</h1>
           {stars !== null && (
             <p className="text-sm text-gray-500 mt-1">
-              Your balance: <span className="font-semibold text-gray-800">⭐ {stars} {stars === 1 ? "Star" : "Stars"}</span>
+              Balance:{" "}
+              <span className="font-semibold text-gray-800">
+                ✦ {stars} {stars === 1 ? "Star" : "Stars"}
+              </span>
             </p>
           )}
         </div>
 
-        <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] p-6 max-w-sm space-y-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">⭐</span>
-              <h2 className="text-lg font-semibold text-gray-800">1 Star</h2>
+        {/* 상품 카드 */}
+        <div className="max-w-xs space-y-3">
+          <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] overflow-hidden">
+            {/* 상품 정보 */}
+            <div className="p-5 space-y-2">
+              <p className="text-xs text-gray-400 uppercase tracking-widest">Star Pack</p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-bold text-gray-800">✦✦✦</span>
+              </div>
+              <p className="text-lg font-semibold text-gray-800">3 Stars</p>
+              <p className="text-sm text-gray-500">
+                Use stars to unlock any reading — no separate payment needed each time.
+              </p>
+              <p className="text-2xl font-bold text-gray-900">$2.00</p>
             </div>
-            <p className="text-sm text-gray-500">Use 1 Star to unlock any reading — no separate payment needed.</p>
-            <p className="text-xl font-bold text-gray-800">$0.99</p>
+
+            {/* Pay 박스 */}
+            {!session ? (
+              <div className="px-5 pb-5">
+                <p className="text-sm text-gray-400">Sign in to purchase.</p>
+              </div>
+            ) : (
+              <div className="px-5 pb-5 space-y-3">
+                {error && <p className="text-sm text-red-500">{error}</p>}
+                {success && (
+                  <p className="text-sm text-green-600 font-medium">✓ {success}</p>
+                )}
+
+                {!showPaypal ? (
+                  <button
+                    onClick={handlePayBoxClick}
+                    disabled={!paypalReady}
+                    className="w-full rounded-xl bg-gray-900 py-3.5 text-sm font-semibold text-white transition-opacity disabled:opacity-40 hover:bg-gray-700"
+                  >
+                    {paypalReady ? "Pay $2.00" : "Loading..."}
+                  </button>
+                ) : (
+                  <div id="star-paypal-button" />
+                )}
+              </div>
+            )}
           </div>
 
-          {error && <p className="text-sm text-red-500">{error}</p>}
-          {success && <p className="text-sm text-green-600 font-medium">{success}</p>}
-
-          {!session ? (
-            <p className="text-sm text-gray-400">Sign in to purchase stars.</p>
-          ) : !paypalReady ? (
-            <p className="text-sm text-gray-400 py-2">Loading payment...</p>
-          ) : (
-            <div id="star-paypal-button" />
-          )}
+          <p className="text-xs text-gray-400 text-center">Secure payment via PayPal</p>
         </div>
       </div>
     </main>

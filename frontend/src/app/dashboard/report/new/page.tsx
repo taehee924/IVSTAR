@@ -340,7 +340,7 @@ function NewReportContent() {
               disabled={loading}
               className="w-full rounded-lg border border-[#DDD8CE] bg-[#EDE8DC] py-3 text-sm font-semibold text-gray-700 transition-colors disabled:opacity-50 hover:bg-[#E5DFD2]"
             >
-              ⭐ Use 1 Star ({starBalance} remaining)
+              ✦ Use 1 Star ({starBalance} remaining)
             </button>
           )}
         </div>

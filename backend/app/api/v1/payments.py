@@ -273,7 +273,7 @@ async def star_create_order(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """PayPal Order 생성 — 1 Star 구매 ($0.99)"""
+    """PayPal Order 생성 — 3 Stars 구매 ($2.00)"""
     token = await get_paypal_access_token()
     async with httpx.AsyncClient() as client:
         res = await client.post(
@@ -283,8 +283,8 @@ async def star_create_order(
                 "purchase_units": [
                     {
                         "reference_id": "ivstar_star",
-                        "description": "1 IVSTAR Star",
-                        "amount": {"currency_code": "USD", "value": "0.99"},
+                        "description": "3 IVSTAR Stars",
+                        "amount": {"currency_code": "USD", "value": "2.00"},
                     }
                 ],
                 "application_context": {
@@ -303,7 +303,7 @@ async def star_create_order(
 
     payment = Payment(
         user_id=current_user.id,
-        amount=99,
+        amount=200,
         currency="USD",
         payment_method=PaymentMethod.paypal,
         status=PaymentStatus.pending,
@@ -322,7 +322,7 @@ async def star_capture_order(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """PayPal 캡처 후 스타 +1 지급"""
+    """PayPal 캡처 후 스타 +3 지급"""
     payment = db.query(Payment).filter(
         Payment.paypal_order_id == body.paypal_order_id,
         Payment.user_id == current_user.id,
@@ -357,11 +357,11 @@ async def star_capture_order(
 
     payment.status = PaymentStatus.paid
     payment.paypal_capture_id = capture_id
-    current_user.stars = (current_user.stars or 0) + 1
+    current_user.stars = (current_user.stars or 0) + 3
     db.commit()
     db.refresh(current_user)
 
-    return {"stars": current_user.stars, "message": "Star added successfully"}
+    return {"stars": current_user.stars, "message": "3 Stars added successfully"}
 
 
 @router.post("/{payment_id}/refund", response_model=PaymentResponse)
