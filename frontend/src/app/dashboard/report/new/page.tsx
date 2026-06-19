@@ -350,17 +350,15 @@ function NewReportContent() {
           ) : (
             <>
               <button
-                onClick={handleCreate}
+                onClick={() => router.push("/dashboard/store")}
                 disabled={loading}
                 className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
               >
-                {loading ? "Generating..." : `Pay $${PRICE.toFixed(2)}`}
+                Go to Store
               </button>
-              {starBalance > 0 && (
-                <p className="text-xs text-center text-gray-400">
-                  You have {starBalance} {starBalance === 1 ? "star" : "stars"} — need {STAR_COST} for this reading
-                </p>
-              )}
+              <p className="text-xs text-center text-gray-400">
+                {STAR_COST} {STAR_COST === 1 ? "star" : "stars"} needed — get stars in the store
+              </p>
             </>
           )}
         </div>
