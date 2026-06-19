@@ -268,12 +268,27 @@ class StarCaptureRequest(BaseModel):
     paypal_order_id: str
 
 
+class StarCreateRequest(BaseModel):
+    quantity: int = 3  # 1 or 3
+
+
+STAR_PACKS = {
+    1: {"amount_str": "0.99", "amount_cents": 99, "description": "1 IVSTAR Star"},
+    3: {"amount_str": "2.00", "amount_cents": 200, "description": "3 IVSTAR Stars"},
+}
+
+
 @router.post("/stars/create", response_model=dict, status_code=status.HTTP_201_CREATED)
 async def star_create_order(
+    body: StarCreateRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """PayPal Order 생성 — 3 Stars 구매 ($2.00)"""
+    """PayPal Order 생성 — Star 패키지 구매 (1개=$0.99 / 3개=$2.00)"""
+    pack = STAR_PACKS.get(body.quantity)
+    if not pack:
+        raise HTTPException(status_code=400, detail="Invalid star quantity. Choose 1 or 3.")
+
     token = await get_paypal_access_token()
     async with httpx.AsyncClient() as client:
         res = await client.post(
@@ -283,8 +298,8 @@ async def star_create_order(
                 "purchase_units": [
                     {
                         "reference_id": "ivstar_star",
-                        "description": "3 IVSTAR Stars",
-                        "amount": {"currency_code": "USD", "value": "2.00"},
+                        "description": pack["description"],
+                        "amount": {"currency_code": "USD", "value": pack["amount_str"]},
                     }
                 ],
                 "application_context": {
@@ -303,7 +318,7 @@ async def star_create_order(
 
     payment = Payment(
         user_id=current_user.id,
-        amount=200,
+        amount=pack["amount_cents"],
         currency="USD",
         payment_method=PaymentMethod.paypal,
         status=PaymentStatus.pending,
@@ -355,13 +370,17 @@ async def star_capture_order(
         .get("id")
     )
 
+    stars_to_add = next(
+        (qty for qty, pack in STAR_PACKS.items() if pack["amount_cents"] == payment.amount),
+        1,
+    )
     payment.status = PaymentStatus.paid
     payment.paypal_capture_id = capture_id
-    current_user.stars = (current_user.stars or 0) + 3
+    current_user.stars = (current_user.stars or 0) + stars_to_add
     db.commit()
     db.refresh(current_user)
 
-    return {"stars": current_user.stars, "message": "3 Stars added successfully"}
+    return {"stars": current_user.stars, "stars_added": stars_to_add}
 
 
 @router.post("/{payment_id}/refund", response_model=PaymentResponse)
