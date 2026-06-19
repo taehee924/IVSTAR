@@ -326,26 +326,42 @@ function NewReportContent() {
         )}
 
         <div className="space-y-2">
-          <button
-            onClick={handleCreate}
-            disabled={loading}
-            className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
-          >
-            {loading
-              ? "Generating..."
-              : promoValid
-              ? "Get Free Reading"
-              : `Pay $${PRICE.toFixed(2)}`}
-          </button>
-
-          {starBalance >= STAR_COST && !promoValid && (
+          {promoValid ? (
             <button
-              onClick={handleUseStar}
+              onClick={handleCreate}
               disabled={loading}
-              className="w-full rounded-lg border border-[#DDD8CE] bg-[#EDE8DC] py-3 text-sm font-semibold text-gray-700 transition-colors disabled:opacity-50 hover:bg-[#E5DFD2]"
+              className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
             >
-              ✦ Use {STAR_COST} {STAR_COST === 1 ? "Star" : "Stars"} ({starBalance} remaining)
+              {loading ? "Generating..." : "Get Free Reading"}
             </button>
+          ) : starBalance >= STAR_COST ? (
+            <>
+              <button
+                onClick={handleUseStar}
+                disabled={loading}
+                className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
+              >
+                {loading ? "Generating..." : `✦ Use ${STAR_COST} ${STAR_COST === 1 ? "Star" : "Stars"}`}
+              </button>
+              <p className="text-xs text-center text-gray-400">
+                {starBalance} {starBalance === 1 ? "star" : "stars"} remaining
+              </p>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={handleCreate}
+                disabled={loading}
+                className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
+              >
+                {loading ? "Generating..." : `Pay $${PRICE.toFixed(2)}`}
+              </button>
+              {starBalance > 0 && (
+                <p className="text-xs text-center text-gray-400">
+                  You have {starBalance} {starBalance === 1 ? "star" : "stars"} — need {STAR_COST} for this reading
+                </p>
+              )}
+            </>
           )}
         </div>
 
