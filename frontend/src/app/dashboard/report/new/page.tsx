@@ -108,8 +108,9 @@ function NewReportContent() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [starBalance, setStarBalance] = useState<number>(0);
 
-  // 페이지 진입 시 프로필 체크 → 없으면 온보딩으로
+  // 페이지 진입 시 프로필 체크 + 스타 잔액 조회
   useEffect(() => {
     if (!session) return;
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`, {
@@ -121,6 +122,13 @@ function NewReportContent() {
           router.replace(`/onboarding?redirect=${encodeURIComponent(`/dashboard/report/new?type=${type}`)}`);
         }
       })
+      .catch(() => {});
+
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`, {
+      headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
+    })
+      .then((r) => r.json())
+      .then((u) => setStarBalance(u.stars ?? 0))
       .catch(() => {});
   }, [session]);
 
@@ -150,16 +158,55 @@ function NewReportContent() {
     }
   };
 
+  const handleUseStar = async () => {
+    if (!session) { router.push("/login"); return; }
+    if (PAIR_TYPES.has(type)) {
+      sessionStorage.setItem("ivstar_use_star", "true");
+      router.push(`/dashboard/report/pair?type=${type}`);
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      const profileRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`,
+        { headers: { Authorization: `Bearer ${(session as any)?.id_token}` } }
+      );
+      if (!profileRes.ok) throw new Error("Failed to load birth profiles.");
+      const profiles = await profileRes.json();
+      if (profiles.length === 0) {
+        router.push(`/onboarding?redirect=/dashboard/report/new?type=${type}`);
+        return;
+      }
+      const profile = profiles[0];
+      const reportRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/full`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${(session as any)?.id_token}` },
+          body: JSON.stringify({ birth_profile_id: profile.id, report_type: type, price: PRICE, use_star: true }),
+        }
+      );
+      if (!reportRes.ok) {
+        const errData = await reportRes.json().catch(() => ({}));
+        throw new Error(errData.detail ?? "Failed to create report.");
+      }
+      const report = await reportRes.json();
+      router.push(`/dashboard/report/${report.id}`);
+    } catch (e: any) {
+      setError(e.message ?? "Error");
+      setLoading(false);
+    }
+  };
+
   const handleCreate = async () => {
     if (!session) { router.push("/login"); return; }
 
     // PAIR 타입
     if (PAIR_TYPES.has(type)) {
       if (promoValid && promoCode.trim()) {
-        // 프로모 코드 → 파트너 정보 입력으로 바로
         router.push(`/dashboard/report/pair?type=${type}&promo_code=${encodeURIComponent(promoCode.trim())}`);
       } else {
-        // 결제 → 결제 페이지로
         router.push(`/dashboard/report/payment?type=${type}`);
       }
       return;
@@ -274,17 +321,29 @@ function NewReportContent() {
           <p className="text-sm text-red-500">{error}</p>
         )}
 
-        <button
-          onClick={handleCreate}
-          disabled={loading}
-          className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
-        >
-          {loading
-            ? "Generating..."
-            : promoValid
-            ? "Get Free Reading"
-            : `Pay $${PRICE.toFixed(2)}`}
-        </button>
+        <div className="space-y-2">
+          <button
+            onClick={handleCreate}
+            disabled={loading}
+            className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
+          >
+            {loading
+              ? "Generating..."
+              : promoValid
+              ? "Get Free Reading"
+              : `Pay $${PRICE.toFixed(2)}`}
+          </button>
+
+          {starBalance > 0 && !promoValid && (
+            <button
+              onClick={handleUseStar}
+              disabled={loading}
+              className="w-full rounded-lg border border-[#DDD8CE] bg-[#EDE8DC] py-3 text-sm font-semibold text-gray-700 transition-colors disabled:opacity-50 hover:bg-[#E5DFD2]"
+            >
+              ⭐ Use 1 Star ({starBalance} remaining)
+            </button>
+          )}
+        </div>
 
         <button
           onClick={() => router.back()}

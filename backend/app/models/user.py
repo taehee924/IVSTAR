@@ -22,6 +22,7 @@ class User(Base):
     profile_image = Column(String(500), nullable=True)  # Google 프로필 이미지 URL
 
     role = Column(Enum(UserRole), default=UserRole.user, nullable=False)
+    stars = Column(Integer, default=0, nullable=False, server_default="0")
 
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), onupdate=func.now(), nullable=True)

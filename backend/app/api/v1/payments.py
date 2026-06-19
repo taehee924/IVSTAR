@@ -264,6 +264,106 @@ async def paypal_capture_order(
     return format_payment(payment)
 
 
+class StarCaptureRequest(BaseModel):
+    paypal_order_id: str
+
+
+@router.post("/stars/create", response_model=dict, status_code=status.HTTP_201_CREATED)
+async def star_create_order(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """PayPal Order 생성 — 1 Star 구매 ($0.99)"""
+    token = await get_paypal_access_token()
+    async with httpx.AsyncClient() as client:
+        res = await client.post(
+            f"{PAYPAL_API}/v2/checkout/orders",
+            json={
+                "intent": "CAPTURE",
+                "purchase_units": [
+                    {
+                        "reference_id": "ivstar_star",
+                        "description": "1 IVSTAR Star",
+                        "amount": {"currency_code": "USD", "value": "0.99"},
+                    }
+                ],
+                "application_context": {
+                    "brand_name": "IVSTAR",
+                    "user_action": "PAY_NOW",
+                },
+            },
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+    if res.status_code != 201:
+        raise HTTPException(status_code=502, detail="PayPal Order 생성 실패")
+
+    order_data = res.json()
+    order_id = order_data["id"]
+
+    payment = Payment(
+        user_id=current_user.id,
+        amount=99,
+        currency="USD",
+        payment_method=PaymentMethod.paypal,
+        status=PaymentStatus.pending,
+        paypal_order_id=order_id,
+    )
+    db.add(payment)
+    db.commit()
+    db.refresh(payment)
+
+    return {"paypal_order_id": order_id, "payment_id": payment.id}
+
+
+@router.post("/stars/capture", response_model=dict)
+async def star_capture_order(
+    body: StarCaptureRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """PayPal 캡처 후 스타 +1 지급"""
+    payment = db.query(Payment).filter(
+        Payment.paypal_order_id == body.paypal_order_id,
+        Payment.user_id == current_user.id,
+        Payment.status == PaymentStatus.pending,
+    ).first()
+    if not payment:
+        raise HTTPException(status_code=404, detail="Payment not found or already processed")
+
+    token = await get_paypal_access_token()
+    async with httpx.AsyncClient() as client:
+        res = await client.post(
+            f"{PAYPAL_API}/v2/checkout/orders/{body.paypal_order_id}/capture",
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Content-Type": "application/json",
+            },
+        )
+
+    if res.status_code != 201:
+        payment.status = PaymentStatus.failed
+        db.commit()
+        raise HTTPException(status_code=502, detail="PayPal 캡처 실패")
+
+    capture_data = res.json()
+    capture_id = (
+        capture_data
+        .get("purchase_units", [{}])[0]
+        .get("payments", {})
+        .get("captures", [{}])[0]
+        .get("id")
+    )
+
+    payment.status = PaymentStatus.paid
+    payment.paypal_capture_id = capture_id
+    current_user.stars = (current_user.stars or 0) + 1
+    db.commit()
+    db.refresh(current_user)
+
+    return {"stars": current_user.stars, "message": "Star added successfully"}
+
+
 @router.post("/{payment_id}/refund", response_model=PaymentResponse)
 async def refund_payment(
     payment_id: int,

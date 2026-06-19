@@ -162,6 +162,7 @@ function PairReportContent() {
     const ph = partnerBirthTime ? parseInt(partnerBirthTime.split(":")[0]) : 12;
     const pmin = partnerBirthTime ? parseInt(partnerBirthTime.split(":")[1]) : 0;
     const pendingOrderId = sessionStorage.getItem("ivstar_pending_order_id");
+    const useStar = sessionStorage.getItem("ivstar_use_star") === "true";
 
     try {
       const profileRes = await fetch(
@@ -188,6 +189,7 @@ function PairReportContent() {
             report_type: type,
             price: 0.99,
             promo_code: promoCode,
+            use_star: useStar,
             partner_name: partnerName || null,
             partner_birth_date: partnerBirthDate,
             partner_birth_time: partnerBirthTime,
@@ -210,7 +212,12 @@ function PairReportContent() {
       }
       const report = await reportRes.json();
 
-      // 결제 완료된 경우 → 캡처
+      // 스타 사용 플래그 제거
+      if (useStar) {
+        sessionStorage.removeItem("ivstar_use_star");
+      }
+
+      // PayPal 결제 완료된 경우 → 캡처
       if (pendingOrderId) {
         const captureRes = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/payments/paypal/capture`,
@@ -220,7 +227,7 @@ function PairReportContent() {
             body: JSON.stringify({ paypal_order_id: pendingOrderId, report_id: report.id }),
           }
         );
-        sessionStorage.removeItem("ivstar_pending_order_id"); // 성공/실패 무관하게 제거
+        sessionStorage.removeItem("ivstar_pending_order_id");
         if (!captureRes.ok) throw new Error("Payment capture failed. Please contact support.");
       }
 
@@ -368,7 +375,7 @@ function PairReportContent() {
             disabled={!isValid || loading}
             className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
           >
-            {loading ? "Generating reading..." : "Get Free Reading"}
+            {loading ? "Generating reading..." : "Get Reading"}
           </button>
         </div>
 

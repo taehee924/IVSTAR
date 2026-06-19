@@ -20,6 +20,7 @@ class UserResponse(BaseModel):
     name: str | None
     profile_image: str | None
     role: str
+    stars: int
     created_at: str
 
     class Config:
@@ -43,6 +44,7 @@ def get_my_profile(
         "name": current_user.name,
         "profile_image": current_user.profile_image,
         "role": current_user.role.value,
+        "stars": current_user.stars,
         "created_at": str(current_user.created_at),
     }
 
@@ -68,6 +70,7 @@ def update_my_profile(
         "name": current_user.name,
         "profile_image": current_user.profile_image,
         "role": current_user.role.value,
+        "stars": current_user.stars,
         "created_at": str(current_user.created_at),
     }
 

@@ -17,6 +17,7 @@ class PaymentStatus(str, enum.Enum):
 class PaymentMethod(str, enum.Enum):
     card = "card"
     paypal = "paypal"
+    star = "star"
 
 
 class Payment(Base):

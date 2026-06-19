@@ -6,7 +6,7 @@ from app.core.database import get_db
 from app.api.deps import get_current_user
 from app.models.user import User
 from app.models.report import Report, ReportType
-from app.models.payment import Payment, PaymentStatus
+from app.models.payment import Payment, PaymentStatus, PaymentMethod
 from app.models.birth_profile import BirthProfile
 from app.core.gemini import generate_report, generate_pair_report
 from app.core.config import settings
@@ -35,7 +35,8 @@ class ReportCreateRequest(BaseModel):
     birth_profile_id: int
     report_type: ReportType
     price: float = 0.99
-    promo_code: str | None = None  # 프로모 코드
+    promo_code: str | None = None
+    use_star: bool = False
 
 
 class CouponValidateRequest(BaseModel):
@@ -210,6 +211,33 @@ async def create_full_report(
     except RuntimeError as e:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
 
+    # 스타 사용
+    if body.use_star:
+        if (current_user.stars or 0) < 1:
+            raise HTTPException(status_code=400, detail="Not enough stars")
+        star_payment = Payment(
+            user_id=current_user.id,
+            amount=99,
+            currency="USD",
+            payment_method=PaymentMethod.star,
+            status=PaymentStatus.paid,
+        )
+        db.add(star_payment)
+        db.flush()
+        current_user.stars -= 1
+        report = Report(
+            user_id=current_user.id,
+            birth_profile_id=profile.id,
+            report_type=body.report_type,
+            content=content,
+            price=body.price,
+            payment_id=star_payment.id,
+        )
+        db.add(report)
+        db.commit()
+        db.refresh(report)
+        return format_report(report, db)
+
     # 프로모 코드 유효하면 무료
     final_price = 0.00 if is_valid_promo(body.promo_code) else body.price
 
@@ -233,7 +261,8 @@ class PairReportCreateRequest(BaseModel):
     birth_profile_id: int
     report_type: ReportType
     price: float = 0.99
-    promo_code: str | None = None  # 프로모 코드
+    promo_code: str | None = None
+    use_star: bool = False
     partner_name: str | None = None
     partner_birth_date: str | None = None
     partner_birth_time: str | None = None
@@ -316,6 +345,33 @@ async def create_pair_preview(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
     except RuntimeError as e:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
+
+    # 스타 사용
+    if body.use_star:
+        if (current_user.stars or 0) < 1:
+            raise HTTPException(status_code=400, detail="Not enough stars")
+        star_payment = Payment(
+            user_id=current_user.id,
+            amount=99,
+            currency="USD",
+            payment_method=PaymentMethod.star,
+            status=PaymentStatus.paid,
+        )
+        db.add(star_payment)
+        db.flush()
+        current_user.stars -= 1
+        report = Report(
+            user_id=current_user.id,
+            birth_profile_id=profile.id,
+            report_type=body.report_type,
+            content=content,
+            price=body.price,
+            payment_id=star_payment.id,
+        )
+        db.add(report)
+        db.commit()
+        db.refresh(report)
+        return format_report(report, db)
 
     # 프로모 코드 유효하면 무료
     final_price = 0.00 if is_valid_promo(body.promo_code) else body.price
