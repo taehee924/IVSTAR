@@ -98,6 +98,8 @@ const WHAT_INSIDE: Record<string, string[]> = {
 
 const PRICE_MAP: Record<string, number> = { daily: 1.99 };
 const DEFAULT_PRICE = 0.99;
+const STAR_COST_MAP: Record<string, number> = { daily: 2 };
+const DEFAULT_STAR_COST = 1;
 
 function NewReportContent() {
   const { data: session } = useSession();
@@ -105,6 +107,7 @@ function NewReportContent() {
   const router = useRouter();
   const type = searchParams.get("type") ?? "general";
   const PRICE = PRICE_MAP[type] ?? DEFAULT_PRICE;
+  const STAR_COST = STAR_COST_MAP[type] ?? DEFAULT_STAR_COST;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -162,6 +165,7 @@ function NewReportContent() {
     if (!session) { router.push("/login"); return; }
     if (PAIR_TYPES.has(type)) {
       sessionStorage.setItem("ivstar_use_star", "true");
+      sessionStorage.setItem("ivstar_star_cost", String(STAR_COST));
       router.push(`/dashboard/report/pair?type=${type}`);
       return;
     }
@@ -184,7 +188,7 @@ function NewReportContent() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json", Authorization: `Bearer ${(session as any)?.id_token}` },
-          body: JSON.stringify({ birth_profile_id: profile.id, report_type: type, price: PRICE, use_star: true }),
+          body: JSON.stringify({ birth_profile_id: profile.id, report_type: type, price: PRICE, use_star: true, star_cost: STAR_COST }),
         }
       );
       if (!reportRes.ok) {
@@ -334,13 +338,13 @@ function NewReportContent() {
               : `Pay $${PRICE.toFixed(2)}`}
           </button>
 
-          {starBalance > 0 && !promoValid && (
+          {starBalance >= STAR_COST && !promoValid && (
             <button
               onClick={handleUseStar}
               disabled={loading}
               className="w-full rounded-lg border border-[#DDD8CE] bg-[#EDE8DC] py-3 text-sm font-semibold text-gray-700 transition-colors disabled:opacity-50 hover:bg-[#E5DFD2]"
             >
-              ✦ Use 1 Star ({starBalance} remaining)
+              ✦ Use {STAR_COST} {STAR_COST === 1 ? "Star" : "Stars"} ({starBalance} remaining)
             </button>
           )}
         </div>

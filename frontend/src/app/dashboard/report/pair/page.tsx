@@ -163,6 +163,7 @@ function PairReportContent() {
     const pmin = partnerBirthTime ? parseInt(partnerBirthTime.split(":")[1]) : 0;
     const pendingOrderId = sessionStorage.getItem("ivstar_pending_order_id");
     const useStar = sessionStorage.getItem("ivstar_use_star") === "true";
+    const starCost = parseInt(sessionStorage.getItem("ivstar_star_cost") ?? "1", 10);
 
     try {
       const profileRes = await fetch(
@@ -190,6 +191,7 @@ function PairReportContent() {
             price: 0.99,
             promo_code: promoCode,
             use_star: useStar,
+            star_cost: starCost,
             partner_name: partnerName || null,
             partner_birth_date: partnerBirthDate,
             partner_birth_time: partnerBirthTime,
@@ -212,9 +214,9 @@ function PairReportContent() {
       }
       const report = await reportRes.json();
 
-      // 스타 사용 플래그 제거
       if (useStar) {
         sessionStorage.removeItem("ivstar_use_star");
+        sessionStorage.removeItem("ivstar_star_cost");
       }
 
       // PayPal 결제 완료된 경우 → 캡처

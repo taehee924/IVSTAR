@@ -8,13 +8,13 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 
 const REPORT_TYPES = [
-  { type: "daily", label: "2026 Horoscope", description: "", price: "$1.99", category: "about" },
-  { type: "general", label: "About Me", description: "", price: "$0.99", category: "about" },
-  { type: "life_cycle", label: "Life Cycle", description: "", price: "$0.99", category: "about" },
-  { type: "love", label: "Couple", description: "", price: "$0.99", category: "love" },
-  { type: "crush", label: "Crush", description: "", price: "$0.99", category: "love" },
-  { type: "ex", label: "Ex", description: "", price: "$0.99", category: "love" },
-  { type: "situationship", label: "Situationship", description: "", price: "$0.99", category: "love" },
+  { type: "daily", label: "2026 Horoscope", description: "", price: "2 Stars", category: "about" },
+  { type: "general", label: "About Me", description: "", price: "1 Star", category: "about" },
+  { type: "life_cycle", label: "Life Cycle", description: "", price: "1 Star", category: "about" },
+  { type: "love", label: "Couple", description: "", price: "1 Star", category: "love" },
+  { type: "crush", label: "Crush", description: "", price: "1 Star", category: "love" },
+  { type: "ex", label: "Ex", description: "", price: "1 Star", category: "love" },
+  { type: "situationship", label: "Situationship", description: "", price: "1 Star", category: "love" },
   { type: "career", label: "Career", description: "", price: "Coming Soon", category: "money" },
   { type: "wealth", label: "Wealth", description: "", price: "Coming Soon", category: "money" },
 ];

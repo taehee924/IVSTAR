@@ -31,12 +31,17 @@ class ReportResponse(BaseModel):
         from_attributes = True
 
 
+REPORT_STAR_COST = {"daily": 2}
+DEFAULT_REPORT_STAR_COST = 1
+
+
 class ReportCreateRequest(BaseModel):
     birth_profile_id: int
     report_type: ReportType
     price: float = 0.99
     promo_code: str | None = None
     use_star: bool = False
+    star_cost: int | None = None  # 프론트가 명시하지 않으면 서버에서 타입으로 계산
 
 
 class CouponValidateRequest(BaseModel):
@@ -213,18 +218,19 @@ async def create_full_report(
 
     # 스타 사용
     if body.use_star:
-        if (current_user.stars or 0) < 1:
+        cost = body.star_cost if body.star_cost is not None else REPORT_STAR_COST.get(body.report_type.value, DEFAULT_REPORT_STAR_COST)
+        if (current_user.stars or 0) < cost:
             raise HTTPException(status_code=400, detail="Not enough stars")
         star_payment = Payment(
             user_id=current_user.id,
-            amount=99,
+            amount=int(cost * 99),
             currency="USD",
             payment_method=PaymentMethod.star,
             status=PaymentStatus.paid,
         )
         db.add(star_payment)
         db.flush()
-        current_user.stars -= 1
+        current_user.stars -= cost
         report = Report(
             user_id=current_user.id,
             birth_profile_id=profile.id,
@@ -263,6 +269,7 @@ class PairReportCreateRequest(BaseModel):
     price: float = 0.99
     promo_code: str | None = None
     use_star: bool = False
+    star_cost: int | None = None
     partner_name: str | None = None
     partner_birth_date: str | None = None
     partner_birth_time: str | None = None
@@ -348,18 +355,19 @@ async def create_pair_preview(
 
     # 스타 사용
     if body.use_star:
-        if (current_user.stars or 0) < 1:
+        cost = body.star_cost if body.star_cost is not None else REPORT_STAR_COST.get(body.report_type.value, DEFAULT_REPORT_STAR_COST)
+        if (current_user.stars or 0) < cost:
             raise HTTPException(status_code=400, detail="Not enough stars")
         star_payment = Payment(
             user_id=current_user.id,
-            amount=99,
+            amount=int(cost * 99),
             currency="USD",
             payment_method=PaymentMethod.star,
             status=PaymentStatus.paid,
         )
         db.add(star_payment)
         db.flush()
-        current_user.stars -= 1
+        current_user.stars -= cost
         report = Report(
             user_id=current_user.id,
             birth_profile_id=profile.id,
