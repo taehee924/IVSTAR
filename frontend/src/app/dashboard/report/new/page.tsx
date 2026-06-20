@@ -334,30 +334,23 @@ function NewReportContent() {
             >
               {loading ? "Generating..." : "Get Free Reading"}
             </button>
-          ) : starBalance >= STAR_COST ? (
-            <>
-              <button
-                onClick={handleUseStar}
-                disabled={loading}
-                className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
-              >
-                {loading ? "Generating..." : `✦ Use ${STAR_COST} ${STAR_COST === 1 ? "Star" : "Stars"}`}
-              </button>
-              <p className="text-xs text-center text-gray-400">
-                {starBalance} {starBalance === 1 ? "star" : "stars"} remaining
-              </p>
-            </>
           ) : (
             <>
               <button
-                onClick={() => router.push("/dashboard/store")}
+                onClick={starBalance >= STAR_COST ? handleUseStar : () => router.push("/dashboard/store")}
                 disabled={loading}
                 className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
               >
-                Go to Store
+                {loading
+                  ? "Generating..."
+                  : starBalance >= STAR_COST
+                  ? `✦ Use ${STAR_COST} ${STAR_COST === 1 ? "Star" : "Stars"}`
+                  : "Go to Store"}
               </button>
               <p className="text-xs text-center text-gray-400">
-                {STAR_COST} {STAR_COST === 1 ? "star" : "stars"} needed — get stars in the store
+                {starBalance >= STAR_COST
+                  ? `${starBalance} ${starBalance === 1 ? "star" : "stars"} remaining`
+                  : `${STAR_COST} ${STAR_COST === 1 ? "star" : "stars"} needed — buy more in the store`}
               </p>
             </>
           )}
