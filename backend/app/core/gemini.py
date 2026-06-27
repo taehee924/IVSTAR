@@ -16,7 +16,7 @@ _RETRY_DELAYS = [3, 7, 15, 30]  # seconds between retries
 
 _TRANSIENT_CODES = ("529", "503", "overloaded", "429", "rate_limit", "UNAVAILABLE")
 
-_MODEL = "claude-sonnet-4-5"
+_MODEL = "claude-sonnet-4-6"
 
 
 async def _call_claude(system_prompt: str, user_prompt: str) -> str:
