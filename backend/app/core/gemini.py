@@ -1,6 +1,5 @@
 import asyncio
-from google import genai
-from google.genai import types
+import anthropic
 from app.core.config import settings
 from app.core.prompts.about_me import build_about_me_prompt
 from app.core.prompts.LifeCycles import build_life_cycles_prompt
@@ -11,11 +10,40 @@ from app.core.prompts.Situationship import build_situationship_prompt
 from app.core.prompts.Ex import build_ex_prompt
 from app.core.prompts.Couple import build_couple_prompt
 
-client = genai.Client(api_key=settings.GEMINI_API_KEY)
+client = anthropic.AsyncAnthropic(api_key=settings.ANTHROPIC_API_KEY)
 
 _RETRY_DELAYS = [3, 7, 15, 30]  # seconds between retries
 
-_TRANSIENT_CODES = ("503", "529", "UNAVAILABLE", "overloaded", "429", "RESOURCE_EXHAUSTED", "quota")
+_TRANSIENT_CODES = ("529", "503", "overloaded", "429", "rate_limit", "UNAVAILABLE")
+
+_MODEL = "claude-sonnet-4-5"
+
+
+async def _call_claude(system_prompt: str, user_prompt: str) -> str:
+    last_error: Exception | None = None
+    for attempt, delay in enumerate([0] + _RETRY_DELAYS):
+        if delay:
+            await asyncio.sleep(delay)
+        try:
+            response = await client.messages.create(
+                model=_MODEL,
+                max_tokens=8192,
+                system=system_prompt,
+                messages=[{"role": "user", "content": user_prompt}],
+            )
+            return response.content[0].text
+        except Exception as e:
+            last_error = e
+            err_str = str(e)
+            if any(code in err_str for code in _TRANSIENT_CODES):
+                print(f"Claude transient error (attempt {attempt + 1}): {e}")
+                continue
+            print(f"Claude API error: {e}")
+            raise RuntimeError(f"Claude API error: {e}") from e
+
+    raise RuntimeError(
+        "Claude API is temporarily unavailable (high demand). Please try again in a moment."
+    ) from last_error
 
 
 async def generate_report(
@@ -37,7 +65,7 @@ async def generate_report(
     lacking_element: str | None = None,
     chart_strength: str | None = None,
 ) -> str:
-    """Gemini API 호출 → 리포트 텍스트 반환"""
+    """Claude API 호출 → 리포트 텍스트 반환"""
 
     kwargs = dict(
         birth_date=birth_date,
@@ -130,34 +158,7 @@ async def generate_report(
             f"Day Master (일간): {day_master or 'unknown'}."
         )
 
-    last_error: Exception | None = None
-    for attempt, delay in enumerate([0] + _RETRY_DELAYS):
-        if delay:
-            await asyncio.sleep(delay)
-        try:
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=user_prompt,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_prompt,
-                ),
-            )
-            return response.text
-        except Exception as e:
-            last_error = e
-            err_str = str(e)
-            # 503 / 529 / UNAVAILABLE → transient, retry
-            if any(code in err_str for code in _TRANSIENT_CODES):
-                print(f"Gemini transient error (attempt {attempt + 1}): {e}")
-                continue
-            # Other errors → fail immediately
-            print(f"Gemini API error: {e}")
-            raise RuntimeError(f"Gemini API error: {e}") from e
-
-    # All retries exhausted
-    raise RuntimeError(
-        "Gemini API is temporarily unavailable (high demand). Please try again in a moment."
-    ) from last_error
+    return await _call_claude(system_prompt, user_prompt)
 
 
 async def generate_pair_report(
@@ -200,7 +201,7 @@ async def generate_pair_report(
     partner_lacking_element: str | None,
     partner_chart_strength: str | None,
 ) -> str:
-    """2인 리딩 Gemini API 호출 → 리포트 텍스트 반환"""
+    """2인 리딩 Claude API 호출 → 리포트 텍스트 반환"""
 
     user_kwargs = dict(
         user_name=user_name,
@@ -310,28 +311,4 @@ async def generate_pair_report(
     else:
         raise ValueError(f"'{report_type}' is not a valid pair reading type.")
 
-    last_error: Exception | None = None
-    for attempt, delay in enumerate([0] + _RETRY_DELAYS):
-        if delay:
-            await asyncio.sleep(delay)
-        try:
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=user_prompt,
-                config=types.GenerateContentConfig(
-                    system_instruction=system_prompt,
-                ),
-            )
-            return response.text
-        except Exception as e:
-            last_error = e
-            err_str = str(e)
-            if any(code in err_str for code in _TRANSIENT_CODES):
-                print(f"Gemini transient error (attempt {attempt + 1}): {e}")
-                continue
-            print(f"Gemini API error: {e}")
-            raise RuntimeError(f"Gemini API error: {e}") from e
-
-    raise RuntimeError(
-        "Gemini API is temporarily unavailable (high demand). Please try again in a moment."
-    ) from last_error
+    return await _call_claude(system_prompt, user_prompt)
