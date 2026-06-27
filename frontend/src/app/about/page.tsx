@@ -222,7 +222,7 @@ export default function AboutPage() {
         {/* ── ARCHIVE ── */}
         <section>
           <SectionLabel>Archive</SectionLabel>
-          <h2 className="text-sm font-bold text-gray-900 mb-3 font-inknut">Your readings, always there</h2>
+          <h2 className="text-sm font-bold text-gray-900 mb-3 font-inknut">Your readings are with you, always</h2>
           <p className="text-[17px] text-gray-900 leading-relaxed font-urbanist">
           Each and every report of yours is saved.
           Look back at past readings, track how your energy
