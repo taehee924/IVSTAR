@@ -13,7 +13,7 @@ export default function WelcomePopup() {
         <div className="text-4xl">⭐</div>
         <h2 className="text-lg font-semibold text-gray-800">Welcome to IVSTAR!</h2>
         <p className="text-sm text-gray-500 leading-relaxed">
-          Explore your first cosmic insight.
+          You've received <span className="font-semibold text-gray-800">1 free reading</span> as a welcome gift.
         </p>
         <button
           onClick={() => setVisible(false)}
