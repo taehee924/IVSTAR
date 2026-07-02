@@ -189,6 +189,7 @@ function OnboardingContent() {
 
       if (!profileRes.ok) throw new Error("Failed to save birth profile");
       if (!nameRes.ok) throw new Error("Failed to save name");
+      localStorage.setItem("show_welcome_popup", "1");
       router.push(redirect);
     } catch (e: any) {
       setError("Failed to save. Please try again.");
