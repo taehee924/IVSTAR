@@ -228,7 +228,7 @@ export default function MePage() {
         <div className="space-y-2">
           <h2 className="text-sm font-bold text-gray-700">My Stars</h2>
           <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] px-4 py-3 flex items-center justify-between">
-            <p className="text-sm text-gray-600">{stars} {stars === 1 ? "reading" : "Stars"}</p>
+            <p className="text-sm text-gray-600">{stars} {stars === 1 ? "star" : "stars"}</p>
             <Link
               href="/dashboard/store"
               className="text-xs font-medium border border-[#DDD8CE] rounded-lg px-3 py-1.5 hover:bg-[#FFFBF5] transition-colors text-gray-600"
