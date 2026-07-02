@@ -17,7 +17,7 @@ export default function ConstellationLoader() {
     return () => clearInterval(timer);
   }, []);
   return (
-    <main className="fixed inset-0 z-50 flex flex-col items-center justify-center" style={{ background: "#060d18" }}>
+    <main className="fixed inset-0 z-50 flex flex-col items-center justify-center" style={{ backgroundImage: "url('/background.png')", backgroundSize: "cover", backgroundPosition: "center" }}>
 
       {/* ── 전체화면 배경 별 ── */}
       <svg
