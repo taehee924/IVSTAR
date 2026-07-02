@@ -154,7 +154,7 @@ function StarPackCard({
               onClick={() => { setShowPromo((v) => !v); setPromoValid(null); setPromoCode(""); }}
               className="w-full text-xs text-gray-400 hover:text-gray-600 transition-colors text-left"
             >
-              {showPromo ? "▲ Hide promo code" : "Have a promo code?"}
+              {showPromo ? "▲ Hide promo code" : "promo code 입력하기"}
             </button>
             {showPromo && (
               <div className="space-y-2">
