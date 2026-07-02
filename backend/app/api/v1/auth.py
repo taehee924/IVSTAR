@@ -54,6 +54,7 @@ def login_or_create_user(
             email=email,
             name=name,
             profile_image=picture,
+            stars=1,  # 신규 회원 웰컴 스타 (리포트 1회 무료 열람)
         )
         db.add(user)
         db.commit()
