@@ -125,6 +125,22 @@ def validate_coupon(body: CouponValidateRequest):
     return {"valid": False}
 
 
+# 프로모 코드로 1 star 지급
+@router.post("/apply-promo")
+def apply_promo(
+    body: CouponValidateRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """프로모 코드 적용 → 1 star 지급"""
+    if not is_valid_promo(body.code):
+        raise HTTPException(status_code=400, detail="Invalid promo code")
+    current_user.stars += 1
+    db.commit()
+    db.refresh(current_user)
+    return {"stars": current_user.stars, "stars_added": 1}
+
+
 @router.post("/preview")
 async def create_free_preview(
     body: ReportCreateRequest,
