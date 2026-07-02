@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
 
 const PACKS = [
@@ -18,11 +19,41 @@ function StarPackCard({
   session: any;
   paypalReady: boolean;
 }) {
+  const router = useRouter();
   const [showPaypal, setShowPaypal] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const rendered = useRef(false);
   const containerId = `star-paypal-${pack.quantity}`;
+
+  const [showPromo, setShowPromo] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [promoValid, setPromoValid] = useState<boolean | null>(null);
+  const [promoLoading, setPromoLoading] = useState(false);
+
+  const handleValidateCoupon = async () => {
+    if (!promoCode.trim()) return;
+    setPromoLoading(true);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/validate-coupon`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code: promoCode.trim() }),
+        }
+      );
+      const data = await res.json();
+      setPromoValid(data.valid);
+      if (data.valid) {
+        sessionStorage.setItem("ivstar_promo_code", promoCode.trim());
+      }
+    } catch {
+      setPromoValid(false);
+    } finally {
+      setPromoLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!paypalReady || !session || !showPaypal || rendered.current) return;
@@ -114,6 +145,52 @@ function StarPackCard({
           </button>
         ) : (
           <div id={containerId} />
+        )}
+
+        {/* 프로모 코드 */}
+        {session && !showPaypal && (
+          <div className="pt-1 space-y-2">
+            <button
+              onClick={() => { setShowPromo((v) => !v); setPromoValid(null); setPromoCode(""); }}
+              className="w-full text-xs text-gray-400 hover:text-gray-600 transition-colors text-left"
+            >
+              {showPromo ? "▲ Hide promo code" : "Have a promo code?"}
+            </button>
+            {showPromo && (
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Enter promo code"
+                    value={promoCode}
+                    onChange={(e) => { setPromoCode(e.target.value); setPromoValid(null); }}
+                    className="flex-1 rounded-lg border border-[#DDD8CE] bg-[#FFFBF5] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  />
+                  <button
+                    onClick={handleValidateCoupon}
+                    disabled={promoLoading || !promoCode.trim()}
+                    className="rounded-lg border border-[#DDD8CE] px-3 py-2 text-sm font-medium text-gray-600 hover:bg-[#EDE8DC] disabled:opacity-50 transition-colors"
+                  >
+                    {promoLoading ? "..." : "Apply"}
+                  </button>
+                </div>
+                {promoValid === true && (
+                  <div className="space-y-1.5">
+                    <p className="text-xs text-green-600">✓ Promo code applied. Your next reading is free!</p>
+                    <button
+                      onClick={() => router.push("/dashboard/categories")}
+                      className="w-full rounded-lg bg-gray-700 py-2 text-xs font-semibold text-white hover:bg-gray-600 transition-colors"
+                    >
+                      Choose your reading →
+                    </button>
+                  </div>
+                )}
+                {promoValid === false && (
+                  <p className="text-xs text-red-500">Invalid promo code. Please try again.</p>
+                )}
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>
