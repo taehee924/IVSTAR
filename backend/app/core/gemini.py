@@ -10,13 +10,19 @@ from app.core.prompts.Situationship import build_situationship_prompt
 from app.core.prompts.Ex import build_ex_prompt
 from app.core.prompts.Couple import build_couple_prompt
 
-client = anthropic.AsyncAnthropic(api_key=settings.ANTHROPIC_API_KEY)
-
 _RETRY_DELAYS = [3, 7, 15, 30]  # seconds between retries
 
 _TRANSIENT_CODES = ("529", "503", "overloaded", "429", "rate_limit", "UNAVAILABLE")
 
 _MODEL = "claude-sonnet-4-6"
+
+_client: anthropic.AsyncAnthropic | None = None
+
+def _get_client() -> anthropic.AsyncAnthropic:
+    global _client
+    if _client is None:
+        _client = anthropic.AsyncAnthropic(api_key=settings.ANTHROPIC_API_KEY)
+    return _client
 
 
 async def _call_claude(system_prompt: str, user_prompt: str) -> str:
@@ -25,7 +31,7 @@ async def _call_claude(system_prompt: str, user_prompt: str) -> str:
         if delay:
             await asyncio.sleep(delay)
         try:
-            response = await client.messages.create(
+            response = await _get_client().messages.create(
                 model=_MODEL,
                 max_tokens=8192,
                 system=system_prompt,
