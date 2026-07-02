@@ -922,7 +922,7 @@ ACTIONABLE ADVICE RULE: 이 커플이 잘 되려면 지금 당신이 해야 할 
   END OF SYSTEM PROMPT
 ════════════════════════════════════════════════════════════════
 """.strip()
-user_prompt = f"""Please write a Situationship Reading for these two people.
+    user_prompt = f"""Please write a Situationship Reading for these two people.
 
 ──────────────────────────────────────────────
 [나 — User]
