@@ -158,22 +158,21 @@ function StarPackCard({
             </button>
             {showPromo && (
               <div className="space-y-2">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="Enter promo code"
-                    value={promoCode}
-                    onChange={(e) => { setPromoCode(e.target.value); setPromoValid(null); }}
-                    className="flex-1 rounded-lg border border-[#DDD8CE] bg-[#FFFBF5] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
-                  />
-                  <button
-                    onClick={handleValidateCoupon}
-                    disabled={promoLoading || !promoCode.trim()}
-                    className="rounded-lg border border-[#DDD8CE] px-3 py-2 text-sm font-medium text-gray-600 hover:bg-[#EDE8DC] disabled:opacity-50 transition-colors"
-                  >
-                    {promoLoading ? "..." : "Apply"}
-                  </button>
-                </div>
+                <input
+                  type="text"
+                  placeholder="Enter promo code"
+                  value={promoCode}
+                  onChange={(e) => { setPromoCode(e.target.value); setPromoValid(null); }}
+                  onKeyDown={(e) => { if (e.key === "Enter") handleValidateCoupon(); }}
+                  className="w-full rounded-lg border border-[#DDD8CE] bg-[#FFFBF5] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+                />
+                <button
+                  onClick={handleValidateCoupon}
+                  disabled={promoLoading || !promoCode.trim()}
+                  className="w-full rounded-lg border border-[#DDD8CE] py-2 text-sm font-medium text-gray-600 hover:bg-[#EDE8DC] disabled:opacity-50 transition-colors"
+                >
+                  {promoLoading ? "..." : "Apply"}
+                </button>
                 {promoValid === true && (
                   <div className="space-y-1.5">
                     <p className="text-xs text-green-600">✓ Promo code applied. Your next reading is free!</p>
