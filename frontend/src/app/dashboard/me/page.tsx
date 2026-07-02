@@ -62,6 +62,7 @@ export default function MePage() {
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [profile, setProfile] = useState<BirthProfile | null>(null);
+  const [stars, setStars] = useState<number>(0);
 
   useEffect(() => {
     const avatar = localStorage.getItem(AVATAR_KEY);
@@ -73,11 +74,14 @@ export default function MePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [reportsRes, profileRes] = await Promise.all([
+        const [reportsRes, profileRes, userRes] = await Promise.all([
           fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/`, {
             headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
           }),
           fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`, {
+            headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`, {
             headers: { Authorization: `Bearer ${(session as any)?.id_token}` },
           }),
         ]);
@@ -88,6 +92,10 @@ export default function MePage() {
         if (profileRes.ok) {
           const data = await profileRes.json();
           if (data.length > 0) setProfile(data[0]);
+        }
+        if (userRes.ok) {
+          const data = await userRes.json();
+          setStars(data.stars ?? 0);
         }
       } catch (e) {
         console.error(e);
@@ -220,7 +228,7 @@ export default function MePage() {
         <div className="space-y-2">
           <h2 className="text-sm font-bold text-gray-700">My Credits</h2>
           <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] px-4 py-3 flex items-center justify-between">
-            <p className="text-sm text-gray-600">0 readings remaining</p>
+            <p className="text-sm text-gray-600">{stars} {stars === 1 ? "reading" : "readings"} remaining</p>
             <Link
               href="/dashboard/store"
               className="text-xs font-medium border border-[#DDD8CE] rounded-lg px-3 py-1.5 hover:bg-[#FFFBF5] transition-colors text-gray-600"
