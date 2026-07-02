@@ -1,11 +1,9 @@
 import Header from "@/components/layout/Header";
 import Image from "next/image";
-import WelcomePopup from "@/components/WelcomePopup";
 
 export default function DashboardPage() {
   return (
     <main style={{ background: "#F6F3ED" }}>
-      <WelcomePopup />
       <Header />
 
       {/* 데스크톱: background.png / 모바일: 단색 */}

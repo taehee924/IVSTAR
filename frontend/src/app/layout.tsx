@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Carattere, Urbanist, Playfair_Display, Inknut_Antiqu
 import "./globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
+import WelcomePopup from "@/components/WelcomePopup";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -73,7 +74,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${carattere.variable} ${urbanist.variable} ${playfairDisplay.variable} ${inknutAntiqua.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+        <Providers>
+          <WelcomePopup />
+          {children}
+        </Providers>
         <Analytics />
       </body>
     </html>

@@ -1,16 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function WelcomePopup() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.getItem("show_welcome_popup") === "1") {
-      localStorage.removeItem("show_welcome_popup");
-      setVisible(true);
-    }
-  }, []);
+  const [visible, setVisible] = useState(true);
 
   if (!visible) return null;
 
