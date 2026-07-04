@@ -46,6 +46,7 @@ class ReportCreateRequest(BaseModel):
 
 class CouponValidateRequest(BaseModel):
     code: str
+    quantity: int = 1
 
 
 # ── 헬퍼 ──────────────────────────────────────────────────
@@ -125,20 +126,21 @@ def validate_coupon(body: CouponValidateRequest):
     return {"valid": False}
 
 
-# 프로모 코드로 1 star 지급
+# 프로모 코드로 star 지급
 @router.post("/apply-promo")
 def apply_promo(
     body: CouponValidateRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """프로모 코드 적용 → 1 star 지급"""
+    """프로모 코드 적용 → quantity만큼 star 지급"""
     if not is_valid_promo(body.code):
         raise HTTPException(status_code=400, detail="Invalid promo code")
-    current_user.stars += 1
+    stars_to_add = max(1, body.quantity)
+    current_user.stars = (current_user.stars or 0) + stars_to_add
     db.commit()
     db.refresh(current_user)
-    return {"stars": current_user.stars, "stars_added": 1}
+    return {"stars": current_user.stars, "stars_added": stars_to_add}
 
 
 @router.post("/preview")
@@ -207,6 +209,13 @@ async def create_full_report(
     if not profile:
         raise HTTPException(status_code=404, detail="Birth profile not found")
 
+    # 스타 잔액 확인 (AI 호출 전에 먼저 체크)
+    star_cost: int | None = None
+    if body.use_star:
+        star_cost = body.star_cost if body.star_cost is not None else REPORT_STAR_COST.get(body.report_type.value, DEFAULT_REPORT_STAR_COST)
+        if (current_user.stars or 0) < star_cost:
+            raise HTTPException(status_code=400, detail="Not enough stars")
+
     try:
         content = await generate_report(
             report_type=body.report_type.value,
@@ -232,21 +241,18 @@ async def create_full_report(
     except RuntimeError as e:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
 
-    # 스타 사용
-    if body.use_star:
-        cost = body.star_cost if body.star_cost is not None else REPORT_STAR_COST.get(body.report_type.value, DEFAULT_REPORT_STAR_COST)
-        if (current_user.stars or 0) < cost:
-            raise HTTPException(status_code=400, detail="Not enough stars")
+    # 스타 차감 및 리포트 저장
+    if body.use_star and star_cost is not None:
         star_payment = Payment(
             user_id=current_user.id,
-            amount=int(cost * 99),
+            amount=int(star_cost * 99),
             currency="USD",
             payment_method=PaymentMethod.star,
             status=PaymentStatus.paid,
         )
         db.add(star_payment)
         db.flush()
-        current_user.stars -= cost
+        current_user.stars = (current_user.stars or 0) - star_cost
         report = Report(
             user_id=current_user.id,
             birth_profile_id=profile.id,
@@ -311,7 +317,7 @@ async def create_pair_preview(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """2인 리딩 무료 미리보기 (crush / situationship / ex / love)"""
+    """2인 리딩 (crush / situationship / ex / love)"""
     if body.report_type.value not in PAIR_TYPES:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -324,6 +330,13 @@ async def create_pair_preview(
     ).first()
     if not profile:
         raise HTTPException(status_code=404, detail="Birth profile not found")
+
+    # 스타 잔액 확인 (AI 호출 전에 먼저 체크)
+    star_cost: int | None = None
+    if body.use_star:
+        star_cost = body.star_cost if body.star_cost is not None else REPORT_STAR_COST.get(body.report_type.value, DEFAULT_REPORT_STAR_COST)
+        if (current_user.stars or 0) < star_cost:
+            raise HTTPException(status_code=400, detail="Not enough stars")
 
     try:
         content = await generate_pair_report(
@@ -369,21 +382,18 @@ async def create_pair_preview(
     except RuntimeError as e:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
 
-    # 스타 사용
-    if body.use_star:
-        cost = body.star_cost if body.star_cost is not None else REPORT_STAR_COST.get(body.report_type.value, DEFAULT_REPORT_STAR_COST)
-        if (current_user.stars or 0) < cost:
-            raise HTTPException(status_code=400, detail="Not enough stars")
+    # 스타 차감 및 리포트 저장
+    if body.use_star and star_cost is not None:
         star_payment = Payment(
             user_id=current_user.id,
-            amount=int(cost * 99),
+            amount=int(star_cost * 99),
             currency="USD",
             payment_method=PaymentMethod.star,
             status=PaymentStatus.paid,
         )
         db.add(star_payment)
         db.flush()
-        current_user.stars -= cost
+        current_user.stars = (current_user.stars or 0) - star_cost
         report = Report(
             user_id=current_user.id,
             birth_profile_id=profile.id,

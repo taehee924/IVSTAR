@@ -31,6 +31,8 @@ function StarPackCard({
   const [promoValid, setPromoValid] = useState<boolean | null>(null);
   const [promoLoading, setPromoLoading] = useState(false);
 
+  const [starsAdded, setStarsAdded] = useState<number>(0);
+
   const handleValidateCoupon = async () => {
     if (!promoCode.trim() || !session) return;
     setPromoLoading(true);
@@ -43,10 +45,12 @@ function StarPackCard({
             "Content-Type": "application/json",
             Authorization: `Bearer ${(session as any)?.id_token}`,
           },
-          body: JSON.stringify({ code: promoCode.trim() }),
+          body: JSON.stringify({ code: promoCode.trim(), quantity: pack.quantity }),
         }
       );
       if (res.ok) {
+        const data = await res.json();
+        setStarsAdded(data.stars_added ?? pack.quantity);
         setPromoValid(true);
       } else {
         setPromoValid(false);
@@ -177,7 +181,7 @@ function StarPackCard({
                   {promoLoading ? "..." : "Apply"}
                 </button>
                 {promoValid === true && (
-                  <p className="text-xs text-green-600">✓ 1 star added! You can now unlock 1 free reading.</p>
+                  <p className="text-xs text-green-600">✓ {starsAdded} {starsAdded === 1 ? "star" : "stars"} added! You can now unlock {starsAdded} free {starsAdded === 1 ? "reading" : "readings"}.</p>
                 )}
                 {promoValid === false && (
                   <p className="text-xs text-red-500">Invalid promo code. Please try again.</p>
