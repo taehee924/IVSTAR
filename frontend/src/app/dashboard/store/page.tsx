@@ -146,7 +146,7 @@ function StarPackCard({
           <button
             onClick={() => { setError(""); setSuccess(""); setShowPaypal(true); }}
             disabled={!paypalReady}
-            className="w-full rounded-xl bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-40 hover:bg-gray-700"
+            className="w-full rounded-xl bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-40 hover:bg-gray-700 font-crimson"
           >
             {paypalReady ? `Pay ${pack.price}` : "Loading..."}
           </button>
@@ -159,7 +159,7 @@ function StarPackCard({
           <div className="pt-1 space-y-2">
             <button
               onClick={() => { setShowPromo((v) => !v); setPromoValid(null); setPromoCode(""); }}
-              className="w-full text-xs text-gray-400 hover:text-gray-600 transition-colors text-left"
+              className="w-full text-xs text-gray-400 hover:text-gray-600 transition-colors text-left font-crimson"
             >
               {showPromo ? "▲ Hide promo code" : "Enter promo code"}
             </button>
