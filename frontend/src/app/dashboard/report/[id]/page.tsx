@@ -224,7 +224,7 @@ function ReportAccordion({
             </button>
 
             {isOpen && (
-              <div className="px-4 py-3 bg-white border-t border-[#DDD8CE]/60 prose prose-sm max-w-none text-gray-700">
+              <div className="px-4 py-3 bg-[#FFFBF5] border-t border-[#DDD8CE]/60 prose prose-sm max-w-none text-gray-700">
                 <ReactMarkdown components={mdComponents}>{sec.content}</ReactMarkdown>
               </div>
             )}
@@ -423,7 +423,15 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
   }
 
   return (
-    <main className="min-h-screen pt-14 pb-10">
+    <main
+      className="min-h-screen pt-14 pb-10"
+      style={{
+        backgroundImage: "url('/background.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <Header />
       <div className="max-w-md mx-auto px-4 pt-8 space-y-6">
 
@@ -478,7 +486,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
                   reportType={report.report_type}
                 />
               ) : (
-                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5 prose prose-sm max-w-none text-gray-700">
+                <div className="rounded-2xl border border-[#DDD8CE] bg-[#FFFBF5] p-5 prose prose-sm max-w-none text-gray-700">
                   <ReactMarkdown components={mdComponents}>{report.content}</ReactMarkdown>
                 </div>
               )}
