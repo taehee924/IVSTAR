@@ -130,10 +130,10 @@ function StarPackCard({
   return (
     <div className="rounded-2xl border border-[#DDD8CE] bg-[#EDE8DC] overflow-hidden w-full max-w-[200px]">
       <div className="p-5 space-y-2">
-        <p className="text-xs text-gray-400 uppercase tracking-widest">Star Pack</p>
+        <p className="text-xs text-gray-400 uppercase tracking-widest font-crimson">Star Pack</p>
         <p className="text-2xl font-bold text-gray-800">{pack.symbol}</p>
-        <p className="text-base font-semibold text-gray-800">{pack.label}</p>
-        <p className="text-xl font-bold text-gray-900">{pack.price}</p>
+        <p className="text-lg font-semibold text-gray-800 font-crimson">{pack.label}</p>
+        <p className="text-2xl font-bold text-gray-900 font-crimson">{pack.price}</p>
       </div>
 
       <div className="px-4 pb-4 space-y-2">
@@ -176,15 +176,15 @@ function StarPackCard({
                 <button
                   onClick={handleValidateCoupon}
                   disabled={promoLoading || !promoCode.trim()}
-                  className="w-full rounded-lg border border-[#DDD8CE] py-2 text-sm font-medium text-gray-600 hover:bg-[#EDE8DC] disabled:opacity-50 transition-colors"
+                  className="w-full rounded-lg border border-[#DDD8CE] py-2 text-sm font-medium text-gray-600 hover:bg-[#EDE8DC] disabled:opacity-50 transition-colors font-crimson"
                 >
                   {promoLoading ? "..." : "Apply"}
                 </button>
                 {promoValid === true && (
-                  <p className="text-xs text-green-600">✓ {starsAdded} {starsAdded === 1 ? "star" : "stars"} added! You can now unlock {starsAdded} free {starsAdded === 1 ? "reading" : "readings"}.</p>
+                  <p className="text-xs text-green-600 font-crimson">✓ {starsAdded} {starsAdded === 1 ? "star" : "stars"} added! You can now unlock {starsAdded} free {starsAdded === 1 ? "reading" : "readings"}.</p>
                 )}
                 {promoValid === false && (
-                  <p className="text-xs text-red-500">Invalid promo code. Please try again.</p>
+                  <p className="text-xs text-red-500 font-crimson">Invalid promo code. Please try again.</p>
                 )}
               </div>
             )}

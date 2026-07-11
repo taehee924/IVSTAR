@@ -191,7 +191,7 @@ function ReportAccordion({
     <div className="space-y-1.5">
       {/* Opening Card / Snapshot — 항상 노출 */}
       {opening && (
-        <div className="rounded-xl border border-[#DDD8CE]/60 bg-[#EDE8DC] px-4 py-3 prose prose-sm max-w-none text-gray-700">
+        <div className="rounded-xl border border-[#DDD8CE]/60 bg-[#EDE8DC] px-4 py-3 prose prose-sm max-w-none text-gray-700 font-crimson text-[17px]">
           <ReactMarkdown components={mdComponents}>{opening}</ReactMarkdown>
         </div>
       )}
@@ -210,7 +210,7 @@ function ReportAccordion({
                 isOpen ? "bg-[#E8E2D4]" : "bg-[#EDE8DC] hover:bg-[#E8E2D4]"
               }`}
             >
-              <span className="flex items-center gap-1.5 text-[15px] font-semibold text-gray-800">
+              <span className="flex items-center gap-1.5 text-[17px] font-semibold text-gray-800 font-crimson">
                 <span className="text-sm">{sec.emoji}</span>
                 <span>{sec.title}</span>
               </span>
@@ -224,7 +224,7 @@ function ReportAccordion({
             </button>
 
             {isOpen && (
-              <div className="px-4 py-3 bg-[#FFFBF5] border-t border-[#DDD8CE]/60 prose prose-sm max-w-none text-gray-700">
+              <div className="px-4 py-3 bg-[#FFFBF5] border-t border-[#DDD8CE]/60 prose prose-sm max-w-none text-gray-700 font-crimson text-[17px]">
                 <ReactMarkdown components={mdComponents}>{sec.content}</ReactMarkdown>
               </div>
             )}
@@ -486,7 +486,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
                   reportType={report.report_type}
                 />
               ) : (
-                <div className="rounded-2xl border border-[#DDD8CE] bg-[#FFFBF5] p-5 prose prose-sm max-w-none text-gray-700">
+                <div className="rounded-2xl border border-[#DDD8CE] bg-[#FFFBF5] p-5 prose prose-sm max-w-none text-gray-700 font-crimson text-[17px]">
                   <ReactMarkdown components={mdComponents}>{report.content}</ReactMarkdown>
                 </div>
               )}

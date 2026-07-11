@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Carattere, Urbanist, Playfair_Display, Inknut_Antiqua } from "next/font/google";
+import { Geist, Geist_Mono, Carattere, Urbanist, Playfair_Display, Inknut_Antiqua, Crimson_Text } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
@@ -39,6 +39,13 @@ const inknutAntiqua = Inknut_Antiqua({
   weight: ["400", "500", "600", "700"],
 });
 
+const crimsonText = Crimson_Text({
+  variable: "--font-crimson",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  style: ["normal", "italic"],
+});
+
 // 환경에 따라 URL 결정
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.4fourstar.com";
 
@@ -71,7 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${carattere.variable} ${urbanist.variable} ${playfairDisplay.variable} ${inknutAntiqua.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${carattere.variable} ${urbanist.variable} ${playfairDisplay.variable} ${inknutAntiqua.variable} ${crimsonText.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Providers>

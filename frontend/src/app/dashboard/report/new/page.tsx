@@ -244,7 +244,7 @@ function NewReportContent() {
       <div className="w-full max-w-md space-y-6">
 
         <div className="space-y-1">
-          <h1 className="text-2xl font-semibold text-gray-800">
+          <h1 className="text-2xl font-semibold text-gray-800 font-crimson">
             {REPORT_LABELS[type]} Reading
           </h1>
         </div>
@@ -252,7 +252,7 @@ function NewReportContent() {
         {WHAT_INSIDE[type] && (
           <ul className="space-y-1.5 w-full">
             {WHAT_INSIDE[type].map((item, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+              <li key={i} className="flex items-start gap-2 text-base text-gray-600 font-crimson">
                 <span className="mt-0.5 text-gray-400">✦</span>
                 <span>{item}</span>
               </li>
@@ -261,18 +261,18 @@ function NewReportContent() {
         )}
 
         {error && (
-          <p className="text-sm text-red-500">{error}</p>
+          <p className="text-sm text-red-500 font-crimson">{error}</p>
         )}
 
         <div className="space-y-2">
           <button
             onClick={starBalance >= STAR_COST ? handleUseStar : () => router.push("/dashboard/store")}
             disabled={loading}
-            className="w-full rounded-lg bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700"
+            className="w-full rounded-lg bg-gray-900 py-3 text-base font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700 font-crimson"
           >
             {loading ? "Generating..." : `✦ Use ${STAR_COST} ${STAR_COST === 1 ? "Star" : "Stars"}`}
           </button>
-          <p className="text-xs text-center text-gray-400">
+          <p className="text-sm text-center text-gray-400 font-crimson">
             {starBalance >= STAR_COST
               ? `${starBalance} ${starBalance === 1 ? "star" : "stars"} remaining`
               : `${STAR_COST} ${STAR_COST === 1 ? "star" : "stars"} needed — buy more in the store`}
@@ -281,7 +281,7 @@ function NewReportContent() {
 
         <button
           onClick={() => router.back()}
-          className="w-full text-sm text-gray-400 hover:text-gray-600 transition-colors"
+          className="w-full text-sm text-gray-400 hover:text-gray-600 transition-colors font-crimson"
         >
           ← Back
         </button>

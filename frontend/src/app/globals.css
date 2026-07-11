@@ -41,3 +41,7 @@ body {
 .font-inknut {
   font-family: var(--font-inknut), Georgia, serif;
 }
+
+.font-crimson {
+  font-family: var(--font-crimson), Georgia, serif;
+}
