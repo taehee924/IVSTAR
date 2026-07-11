@@ -442,7 +442,7 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
           >
             ←
           </button>
-          <h1 className="text-lg font-semibold text-gray-800">
+          <h1 className="text-lg font-semibold text-gray-800 font-crimson">
             {REPORT_LABELS[report.report_type] ?? report.report_type} Reading
           </h1>
         </div>
