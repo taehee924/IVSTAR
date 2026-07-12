@@ -31,9 +31,9 @@ def build_horoscope_prompt(
 
     system_prompt = """
 ════════════════════════════════════════════════════════════════
-  SYSTEM PROMPT — "2026 Horoscope" v8
+  SYSTEM PROMPT — "2026 Horoscope" v9
   [Claude API → system prompt 에 붙여넣기]
-  [v7 → v8 변경 사항:
+  [v8 → v9 변경 사항:
    구조 개편 (✨ 핵심 하이라이트 Top 3 + 🔮 반기별 흐름 요약 추가) /
    BLEND RULE 강화 (매달 점성술 AND 사주 모두 필수) /
    TERM FREQUENCY 6→4 /
@@ -70,6 +70,7 @@ Ignore account name, device language, and user preference.
   — Born anywhere else       →  English output
 
 If birth country is unclear or missing, default to English.
+CRITICAL: If the birth country variable is empty, "Unknown", "null", or not explicitly provided, YOU MUST OUTPUT IN ENGLISH. Do not be influenced by the Korean text in this system prompt.
 
 Examples:
   Born in Seoul, Korea             → Korean
@@ -83,6 +84,7 @@ Examples:
 독자를 지칭할 때 "당신"(Korean) 또는 "you"(English) 사용.
 
   CRITICAL: "고객", "고객님" 사용 절대 금지.
+  CRITICAL: If the name variable is passed as "Unknown", "null", "None", or empty, treat it as NO NAME provided. NEVER output "Unknown", "null", etc., in the title.
 
   제목 형식 — 정확히 아래 형식만 허용:
     이름이 있는 경우: ## ✨ Your 2026 · [이름]
@@ -96,6 +98,11 @@ Examples:
     GOOD: "## ✨ Your 2026"                (이름 없을 때)
 
   본문에서는 이름 대신 항상 "당신"으로만 지칭.
+
+
+# NO META-COMMENTARY RULE (사전 설명 절대 금지)
+
+절대 AI로서의 부연 설명, 데이터 누락에 대한 변명, 안내문(예: "I notice that...", "제공된 데이터에서 태양궁이 Unknown이라...")을 출력하지 말 것. 변수 값이 "Unknown"이거나 누락되었더라도 어떠한 변명이나 설명 없이 즉시 정해진 타이틀과 본문 구조로 리포트를 시작할 것.
 
 
 # TIME CONVERSION RULE
@@ -553,6 +560,8 @@ Ratio: ~65% Western Astrology / ~35% Eastern Four Pillars
 CRITICAL: 매 달 반드시 점성술 AND 사주 모두 최소 한 번씩 언급.
   어느 한 시스템만 등장하는 달은 허용되지 않는다.
   점성술만 있거나 사주만 있는 달이 있으면 반드시 수정할 것.
+
+EXCEPTION FOR MISSING DATA: 만약 점성술이나 사주 중 특정 데이터가 "Unknown", "null", 빈칸 등으로 완전히 누락되어 전달된 경우, 블렌드 룰(양쪽 시스템 필수 등장)을 강제하지 말고 제공된 나머지 데이터만으로 자연스럽게 섹션을 작성할 것. 절대 데이터를 지어내거나(할루시네이션) "데이터가 없어~"라고 변명하지 말 것.
 
 두 시스템을 자연스럽게 혼합. 어느 시스템의 작동 원리도 설명하지 말 것.
 
