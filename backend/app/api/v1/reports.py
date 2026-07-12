@@ -176,6 +176,7 @@ async def create_free_preview(
             dominant_element=profile.dominant_element,
             lacking_element=profile.lacking_element,
             chart_strength=profile.chart_strength,
+            user_name=current_user.name,
         )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
@@ -235,6 +236,7 @@ async def create_full_report(
             dominant_element=profile.dominant_element,
             lacking_element=profile.lacking_element,
             chart_strength=profile.chart_strength,
+            user_name=current_user.name,
         )
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))

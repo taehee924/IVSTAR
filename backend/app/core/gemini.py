@@ -70,6 +70,7 @@ async def generate_report(
     dominant_element: str | None = None,
     lacking_element: str | None = None,
     chart_strength: str | None = None,
+    user_name: str | None = None,
 ) -> str:
     """Claude API 호출 → 리포트 텍스트 반환"""
 
@@ -90,6 +91,7 @@ async def generate_report(
         dominant_element=dominant_element,
         lacking_element=lacking_element,
         chart_strength=chart_strength,
+        user_name=user_name,
     )
 
     # ── 타입별 프롬프트 라우팅 ─────────────────────────────────

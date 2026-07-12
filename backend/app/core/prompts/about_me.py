@@ -15,14 +15,20 @@ def build_about_me_prompt(
     dominant_element: str | None,
     lacking_element: str | None,
     chart_strength: str | None,
+    user_name: str | None = None,
 ) -> tuple[str, str]:
     """About Me 리포트 시스템 프롬프트 + 유저 프롬프트 반환"""
 
+    # birth_place 에서 국가 추출 ("City, Country" 형식)
+    birth_country: str | None = None
+    if birth_place and ", " in birth_place:
+        birth_country = birth_place.rsplit(", ", 1)[-1]
+
     system_prompt = """
 ════════════════════════════════════════════════════════════════
-  SYSTEM PROMPT — "About Me" Personality Reading  v11
+  SYSTEM PROMPT — "About Me" Reading  v12
   [Claude API → system prompt 에 붙여넣기]
-  [v10 → v11 변경 사항:
+  [v11 → v12 변경 사항:
    TITLE RULE 신설 (✨ About Me · [이름] 최상단 타이틀 필수) /
    PARAGRAPH LIMIT RULE 신설 (섹션당 최대 2문단 엄격 제한) /
    SECTION 1+2 역할 재정의: 1번=[남들이 보는 무기/외면] / 2번=[나만 아는 동력/내면] /
@@ -49,6 +55,7 @@ Ignore account name, device language, and user preference.
   — Born anywhere else       →  English output
 
 If birth country is unclear or missing, default to English.
+CRITICAL: If the birth country variable is empty, "Unknown", "null", or not explicitly provided, YOU MUST OUTPUT IN ENGLISH. Do not be influenced by the Korean text in this system prompt.
 
 CRITICAL: The output must be in ONE language only.
 Korean output: Korean + Chinese characters (한자) only. No English words.
@@ -63,12 +70,19 @@ Mixing the two languages anywhere in the output is forbidden.
 독자를 지칭할 때 반드시 "당신"(Korean) 또는 "you"(English)만 사용.
 
   CRITICAL: "고객", "고객님" 사용 절대 금지.
+  CRITICAL: If the name variable is passed as "Unknown", "null", "None", or empty, treat it as NO NAME provided. NEVER output "Unknown", "null", etc., in the title or text.
+
   이름이 제공된 경우에도 About Me 리포트 본문에서는 이름 대신
   "당신"으로 지칭할 것. 이름은 타이틀 라인에만 사용.
 
   BAD:  "고객님의 차트를 보면..."
   BAD:  "지아는 황소자리 에너지를 가지고 있어요."
   GOOD: "당신은 황소자리 에너지를 가지고 있어요."
+
+
+# NO META-COMMENTARY RULE (사전 설명 절대 금지)
+
+절대 AI로서의 부연 설명, 데이터 누락에 대한 변명, 안내문(예: "I notice that...", "제공된 데이터에서 태양궁이 Unknown이라...")을 출력하지 말 것. 변수 값이 "Unknown"이거나 누락되었더라도 어떠한 변명이나 설명 없이 즉시 정해진 타이틀과 본문 구조로 리포트를 시작할 것.
 
 
 ════════════════════════════════════════════════════════════════
@@ -499,6 +513,8 @@ Ratio: ~75% Western Astrology / ~25% Eastern Four Pillars
 CRITICAL: 모든 섹션에서 점성술 AND 사주 최소 한 번씩 등장.
 어느 한 시스템만 나오는 섹션은 허용되지 않는다.
 
+EXCEPTION FOR MISSING DATA: 만약 점성술이나 사주 중 특정 데이터가 "Unknown", "null", 빈칸 등으로 완전히 누락되어 전달된 경우, 블렌드 룰(양쪽 시스템 필수 등장)을 강제하지 말고 제공된 나머지 데이터만으로 자연스럽게 섹션을 작성할 것. 절대 데이터를 지어내거나(할루시네이션) "데이터가 없어~"라고 변명하지 말 것.
+
   GOOD (Korean):
     "황소자리 태양인 당신은..."
     "사주 원국(태어날 때부터 타고난 기운)에서도 이 기운이 그대로 나타나는데..."
@@ -622,7 +638,7 @@ Do NOT copy the instruction text into the output.
 
 CRITICAL:
   — 반드시 INPUT DATA의 이름({user_name}) 사용. 임의로 만든 이름 금지.
-  — 이름이 없으면: ### ✨ About Me
+  — 이름이 없거나, "Unknown", "null" 등으로 전달되면: ### ✨ About Me
   — "당신"으로 대체하지 말 것 (본문에서만 "당신" 사용)
   — 타이틀 이후 Opening Snapshot이 바로 이어짐. 줄바꿈만.
 
@@ -737,7 +753,7 @@ A real, grounded direction — not a spiritual title.
                Scattered → rich, multi-chapter life
 
   LIFE DIRECTION RULE 적용 필수:
-    "치유하는 사람", "이끌어주는 사람", "빛을 비추는 사람" 절대 금지.
+    "치유하는 사람", "이끌어주는 단어", "빛을 비추는 사람" 절대 금지.
     MC 별자리 + 태양 에너지 + 강한 오행에서 도출한 실용적 방향성 제시.
     (예: "데이터와 사람의 심리를 동시에 읽는 기획자" 수준의 구체성)
   ACTIONABLE ADVICE RULE: 지금 당장 이 방향으로 내딛을 수 있는 구체적 첫 걸음 1개.
@@ -875,9 +891,11 @@ Lacking Element: {lacking_element or "Unknown"}
 Chart Strength: {chart_strength or "Unknown"}
 
 [User Info]
+Name: {user_name or "Unknown"}
 Birth Date: {birth_date}
 Birth Time: {birth_time or "Unknown"}
 Birth Place: {birth_place or "Unknown"}
+Birth Country: {birth_country or "Unknown"}
 Gender: {gender or "Unknown"}
 """.strip()
 
