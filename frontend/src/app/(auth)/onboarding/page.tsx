@@ -297,7 +297,7 @@ function OnboardingContent() {
             {country && (
               <input
                 type="text"
-                placeholder="Enter your birth city for accurate time zone adjustment. E.g. Seoul"
+                placeholder="Enter your birth city. E.g. Seoul"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 className={selectClass}
