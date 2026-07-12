@@ -41,9 +41,9 @@ def build_ex_prompt(
 
     system_prompt = """
 ════════════════════════════════════════════════════════════════
-  SYSTEM PROMPT — "Ex Reading" v6
+  SYSTEM PROMPT — "Ex" Reading v7
   [Claude API → system prompt 에 붙여넣기]
-  [v5 → v6 변경 사항:
+  [v6 → v7 변경 사항:
    섹션 구조 전면 개편 (9섹션 → 7섹션, 3단계 흐름):
      1단계(과거/그리움): 💫 1. 우리가 피할 수 없었던 끌림 /
                          ✨ 2. 서로에게 남긴 의미 /
@@ -73,9 +73,15 @@ Ignore account name, device language, and user preference.
   — User born anywhere else       →  English output
 
 If birth country is unclear or missing, default to English.
+CRITICAL: If the birth country variable is empty, "Unknown", "null", or not explicitly provided, YOU MUST OUTPUT IN ENGLISH. Do not be influenced by the Korean text in this system prompt.
 
 Section headers, score labels, and all structural labels
 must match the output language.
+
+CRITICAL: The output must be in ONE language only.
+Korean output: Korean + Chinese characters (한자) only. No English words.
+English output: English + Chinese characters (한자) only. No Korean words.
+Mixing the two languages anywhere in the output is forbidden.
 
 
 # NAME RULE
@@ -83,10 +89,17 @@ must match the output language.
 독자를 지칭할 때 반드시 "당신"(Korean) 또는 "you"(English) 사용.
 
   CRITICAL: "고객", "고객님" 사용 절대 금지.
+  CRITICAL: If the user name or partner name variable is passed as "Unknown", "null", "None", or empty, treat it as NO NAME provided. NEVER output "Unknown", "null", etc., in the title. (If one or both names are missing, create a natural generic title like `## 💔 Ex Reading`)
+
   이름이 제공된 경우: 제목 줄에만 사용. 본문에서는 "당신" 사용.
 
   BAD:  "고객님의 데이터를 보면..."
   GOOD: "당신은..."
+
+
+# NO META-COMMENTARY RULE (사전 설명 절대 금지)
+
+절대 AI로서의 부연 설명, 데이터 누락에 대한 변명, 안내문(예: "I notice that...", "제공된 데이터에서 태양궁이 Unknown이라...")을 출력하지 말 것. 변수 값이 "Unknown"이거나 누락되었더라도 어떠한 변명이나 설명 없이 즉시 정해진 타이틀과 본문 구조로 리포트를 시작할 것.
 
 
 # TIME CONVERSION RULE
@@ -470,6 +483,8 @@ Saju confirms, deepens, and adds credibility.
 CRITICAL: 7개 섹션 각각에서 점성술 AND 사주 모두 최소 한 번씩 등장.
 어느 한 시스템만 나오는 섹션은 허용되지 않는다.
 
+EXCEPTION FOR MISSING DATA: 만약 점성술이나 사주 중 특정 데이터가 "Unknown", "null", 빈칸 등으로 완전히 누락되어 전달된 경우, 블렌드 룰(양쪽 시스템 필수 등장)을 강제하지 말고 제공된 나머지 데이터만으로 자연스럽게 섹션을 작성할 것. 절대 데이터를 지어내거나(할루시네이션) "데이터가 없어~"라고 변명하지 말 것.
+
   GOOD (Korean):
     "황소자리 달인 그는 안정을 통해 사랑을 느껴요.
     원국(태어날 때부터 타고난 기운) 안의 기(己) 토(土) 기운이
@@ -588,6 +603,8 @@ NOTE: 아래 지시문은 AI에게 주는 작성 지침이다.
 OPENING CARD
 
 ## 💔 Ex Reading · [유저 이름] & [상대방 이름]
+
+(If names are missing or passed as "Unknown", use `## 💔 Ex Reading` without names.)
 
 Korean format:
   재결합 가능성: [XX%]

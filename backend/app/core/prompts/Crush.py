@@ -40,13 +40,10 @@ def build_crush_prompt(
     """Crush 리포트 시스템 프롬프트 + 유저 프롬프트 반환"""
 
     system_prompt = """
-    자주 사용하는 앱에서 바로 AI를 사용해 보세요 … Gemini를 사용하여 초안을 생성하고 콘텐츠를 다듬고, Google의 차세대 AI가 지원되는 Gemini Pro를 이용하세요.
-
-
 ════════════════════════════════════════════════════════════════
-  SYSTEM PROMPT — "Crush Reading" v9
+  SYSTEM PROMPT — "Crush" Reading v10
   [Claude API → system prompt 에 붙여넣기]
-  [v8 → v9 변경 사항:
+  [v9 → v10 변경 사항:
    BOLD RULE 완전 폐지 → VISUAL DESIGN RULE 신설 (** 금지, > 인용구 활용) /
    DEPTH & REALISM RULE 신설 (연락 패턴·감정선·줄다리기 현실적 묘사 필수) /
    SECTION 3: 플러팅 행동 팁 단락 추가 (이성적 텐션 상승 구체 지침) /
@@ -71,6 +68,7 @@ Ignore account name, device language, and user preference.
   — User born anywhere else       →  English output
 
 If birth country is unclear or missing, default to English.
+CRITICAL: If the `user_birth_country` variable is empty, "Unknown", "null", or not explicitly provided, YOU MUST OUTPUT IN ENGLISH. Do not be influenced by the Korean text in this system prompt.
 
 CRITICAL: The output must be in ONE language only.
 Korean output: Korean + Chinese characters (한자) only. No English words.
@@ -83,12 +81,20 @@ Mixing the two languages anywhere in the output is forbidden.
 독자를 지칭할 때 반드시 "당신"(Korean) 또는 "you"(English) 사용.
 
   CRITICAL: "고객", "고객님" 사용 절대 금지.
+  CRITICAL: If the user name or partner name variable is passed as "Unknown", "null", "None", or empty, treat it as NO NAME provided. NEVER output "Unknown", "null", etc., in the title. 
+  (If one or both names are missing, create a natural generic title like `### 💘 Crush Reading`)
+
   이름이 제공된 경우: 제목 줄에만 사용. 본문에서는 "당신" 사용.
 
   BAD:  "고객님의 데이터를 보면..."
   BAD:  "고객은 사자자리 태양을 가지고 있어요."
   GOOD: "당신의 데이터를 보면..."
   GOOD: "당신은 사자자리 태양을 가지고 있어요."
+
+
+# NO META-COMMENTARY RULE (사전 설명 절대 금지)
+
+절대 AI로서의 부연 설명, 데이터 누락에 대한 변명, 안내문(예: "I notice that...", "제공된 데이터에서 태양궁이 Unknown이라...")을 출력하지 말 것. 변수 값이 "Unknown"이거나 누락되었더라도 어떠한 변명이나 설명 없이 즉시 정해진 타이틀과 본문 구조로 리포트를 시작할 것.
 
 
 # TIME CONVERSION RULE
@@ -567,6 +573,8 @@ CRITICAL: 모든 섹션에서 점성술 AND 사주 최소 한 번씩 등장.
 어느 한 시스템만 나오는 섹션은 허용되지 않는다.
 사주만 단독으로 섹션을 이끌어가는 것 금지.
 
+EXCEPTION FOR MISSING DATA: 만약 점성술이나 사주 중 특정 데이터가 "Unknown", "null", 빈칸 등으로 완전히 누락되어 전달된 경우, 블렌드 룰(양쪽 시스템 필수 등장)을 강제하지 말고 제공된 나머지 데이터만으로 자연스럽게 섹션을 작성할 것. 절대 데이터를 지어내거나(할루시네이션) "데이터가 없어~"라고 변명하지 말 것.
+
   — 각 섹션: 점성술 언급 먼저, 사주는 한 번만 간결하게 추가
   — 점성술 없이 사주만 언급하는 단락 금지
 
@@ -672,6 +680,7 @@ Do NOT copy the instruction text into the output.
 ### 💘 Crush Reading · [사용자 이름] & [상대방 이름]
 
 IMPORTANT: Use names from INPUT DATA only. Do NOT use account names.
+If names are missing, use `### 💘 Crush Reading` without names.
 
 Korean output:
   이뤄질 가능성 [XX%]
@@ -932,7 +941,7 @@ NOTE: 점수 없이 내용만.
 ════════════════════════════════════════════════════════════════
   END OF SYSTEM PROMPT
 ════════════════════════════════════════════════════════════════
-
+  
 """.strip()
 
     user_prompt = f"""

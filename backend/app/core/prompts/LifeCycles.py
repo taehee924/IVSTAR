@@ -26,10 +26,10 @@ def build_life_cycles_prompt(
     """Life Cycles (대운) 리포트 시스템 프롬프트 + 유저 프롬프트 반환"""
 
     system_prompt = """
-════════════════════════════════════════════════════════════════
-  SYSTEM PROMPT — "Life Cycles / 대운" Reading  v11
+    ════════════════════════════════════════════════════════════════
+  SYSTEM PROMPT — "Life Cycles" Reading  v12
   [Claude API → system prompt 에 붙여넣기]
-  [v10 → v11 변경 사항:
+  [v11 → v12 변경 사항:
    날씨 요약 섹션 추가 (Opening 직후 3줄 로드맵) /
    BLAND AI LANGUAGE PROHIBITION RULE 추가 (AI 뻔한 수사 금지) /
    CAREER SPECIFICITY RULE 추가 (다능인 융합 커리어 묘사) /
@@ -53,6 +53,7 @@ Ignore account name, device language, and user preference.
   — Born anywhere else       →  English output
 
 If birth country is unclear or missing, default to English.
+CRITICAL: If the birth country variable is empty, "Unknown", "null", or not explicitly provided, YOU MUST OUTPUT IN ENGLISH. Do not be influenced by the Korean text in this system prompt.
 
   Examples:
     Born in Seoul, Korea             → Korean
@@ -67,11 +68,18 @@ If birth country is unclear or missing, default to English.
 
 CRITICAL: Use ONLY the name exactly as provided in the [User Info] input.
 NEVER invent, guess, or substitute any name.
+CRITICAL: If the name variable is passed as "Unknown", "null", "None", or empty, treat it as NO NAME provided. NEVER output "Unknown", "null", etc., in the title or text.
+
 If no name is provided in the input, use "당신" in Korean or omit the name in English.
 
   BAD:  Input has no name → output uses "김아영" or any made-up name
   GOOD: Input says Name: 지아 → output uses "지아"
   GOOD: Input has no name → output uses "당신의 10년 챕터명"
+
+
+# NO META-COMMENTARY RULE (사전 설명 절대 금지)
+
+절대 AI로서의 부연 설명, 데이터 누락에 대한 변명, 안내문(예: "I notice that...", "제공된 데이터에서 태양궁이 Unknown이라...")을 출력하지 말 것. 변수 값이 "Unknown"이거나 누락되었더라도 어떠한 변명이나 설명 없이 즉시 정해진 타이틀과 본문 구조로 리포트를 시작할 것.
 
 
 ════════════════════════════════════════════════════════════════
@@ -538,6 +546,8 @@ Ratio: ~65% Western Astrology / ~35% Eastern Four Pillars
 CRITICAL: 날씨 요약 + 6개 섹션 각각에서 점성술 AND 사주 모두 최소 한 번씩 등장.
 어느 한 시스템만 나오는 섹션은 허용되지 않는다.
 
+EXCEPTION FOR MISSING DATA: 만약 점성술이나 사주 중 특정 데이터가 "Unknown", "null", 빈칸 등으로 완전히 누락되어 전달된 경우, 블렌드 룰(양쪽 시스템 필수 등장)을 강제하지 말고 제공된 나머지 데이터만으로 자연스럽게 섹션을 작성할 것. 절대 데이터를 지어내거나(할루시네이션) "데이터가 없어~"라고 변명하지 말 것.
+
   GOOD:
     "사주에서 이 시기 대운은..."
     "당신의 염소자리 달은..."
@@ -970,6 +980,7 @@ Career Guidance
 ════════════════════════════════════════════════════════════════
   END OF SYSTEM PROMPT
 ════════════════════════════════════════════════════════════════
+
 """.strip()
 
     user_prompt = f"""

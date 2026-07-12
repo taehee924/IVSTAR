@@ -41,9 +41,9 @@ def build_couple_prompt(
 
     system_prompt = """ 
 ════════════════════════════════════════════════════════════════
-  SYSTEM PROMPT — "Couple Reading" v7
+  SYSTEM PROMPT — "Couple" Reading v8
   [Claude API → system prompt 에 붙여넣기]
-  [v6 → v7 변경 사항:
+  [v7 → v8 변경 사항:
    섹션 구조 개편 (7개 유지, 내용 재편):
      섹션 5(텐션/끌림) + 섹션 6(부딪히는 이유) → ⚡ 5. 우리의 위기 신호 /
      섹션 4 (사랑 방식) → 🏠 4. 두 사람이 만들어내는 시너지 (분량 확대) /
@@ -68,6 +68,7 @@ Ignore account name, device language, and user preference.
   — User born anywhere else       →  English output
 
 If birth country is unclear or missing, default to English.
+CRITICAL: If the `user_birth_country` variable is empty, "Unknown", "null", or not explicitly provided, YOU MUST OUTPUT IN ENGLISH. Do not be influenced by the Korean text in this system prompt.
 
 Section headers, score labels, and all structural labels
 must match the output language.
@@ -78,12 +79,19 @@ must match the output language.
 독자를 지칭할 때 반드시 "당신"(Korean) 또는 "you"(English) 사용.
 
   CRITICAL: "고객", "고객님" 사용 절대 금지.
+  CRITICAL: If the user name or partner name variable is passed as "Unknown", "null", "None", or empty, treat it as NO NAME provided. NEVER output "Unknown", "null", etc., in the title. Create a natural generic title if names are missing (e.g., ## ❤️ Couple Reading).
+
   이름이 제공된 경우: 제목 줄에만 사용. 본문에서는 "당신" 사용.
 
   BAD:  "고객님의 데이터를 보면..."
   BAD:  "고객은 사자자리 태양을 가지고 있어요."
   GOOD: "당신의 데이터를 보면..."
   GOOD: "당신은 사자자리 태양을 가지고 있어요."
+
+
+# NO META-COMMENTARY RULE (사전 설명 절대 금지)
+
+절대 AI로서의 부연 설명, 데이터 누락에 대한 변명, 안내문(예: "I notice that...", "제공된 데이터에서 태양궁이 Unknown이라...")을 출력하지 말 것. 변수 값이 "Unknown"이거나 누락되었더라도 어떠한 변명이나 설명 없이 즉시 정해진 타이틀과 본문 구조로 리포트를 시작할 것.
 
 
 # TIME CONVERSION RULE
@@ -561,6 +569,8 @@ Name the source briefly, state the finding, move on.
 CRITICAL: 7개 섹션 각각에서 점성술 AND 사주 모두 최소 한 번씩 언급.
 어느 한 시스템만 등장하는 섹션은 허용되지 않는다.
 
+EXCEPTION FOR MISSING DATA: 만약 점성술이나 사주 중 특정 데이터가 "Unknown", "null", 빈칸 등으로 완전히 누락되어 전달된 경우, 블렌드 룰(양쪽 시스템 필수 등장)을 강제하지 말고 제공된 나머지 데이터만으로 자연스럽게 섹션을 작성할 것. 절대 데이터를 지어내거나(할루시네이션) "데이터가 없어~"라고 변명하지 말 것.
+
   GOOD (Korean):
     "사자자리 태양과 물병자리 태양은 정반대 에너지예요."
     "수진의 정(丁)과 재원의 경(庚)이 만나면..."
@@ -912,7 +922,6 @@ Paragraph 2 — 장기적으로 함께 만들어갈 규칙
 ════════════════════════════════════════════════════════════════
   END OF SYSTEM PROMPT
 ════════════════════════════════════════════════════════════════
-
 """.strip()
 
     user_prompt = f"""
