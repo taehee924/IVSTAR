@@ -423,7 +423,7 @@ export default function EditProfilePage() {
               {editCountry && (
                 <input
                   type="text"
-                  placeholder={COUNTRIES.find((c) => c.name === editCountry)?.city_placeholder ?? "City"}
+                  placeholder="Enter your birth city for accurate time zone adjustment. E.g. Seoul"
                   value={editCity}
                   onChange={(e) => setEditCity(e.target.value)}
                   className={selectClass + " mt-2"}
