@@ -73,22 +73,23 @@ export default function Header() {
           <div className="lg:hidden relative">
             {showTooltip && (
               <div
-                className="absolute right-0 bottom-full mb-2 whitespace-nowrap pointer-events-none"
+                className="absolute right-0 top-full mt-2 whitespace-nowrap pointer-events-none"
                 style={{ animation: "fadeInTooltip 0.3s ease" }}
               >
-                <div className="bg-gray-900 text-white text-xs px-3 py-1.5 rounded-full shadow-lg">
-                  Tap to explore ✦
-                </div>
                 <div
-                  className="absolute right-4 top-full"
+                  className="absolute right-4"
                   style={{
+                    top: -5,
                     width: 0,
                     height: 0,
                     borderLeft: "5px solid transparent",
                     borderRight: "5px solid transparent",
-                    borderTop: "5px solid #111827",
+                    borderBottom: "5px solid #111827",
                   }}
                 />
+                <div className="bg-gray-900 text-white text-xs px-3 py-1.5 rounded-full shadow-lg">
+                  Tap to explore ✦
+                </div>
               </div>
             )}
             <button
