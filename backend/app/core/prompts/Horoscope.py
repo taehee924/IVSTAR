@@ -43,24 +43,6 @@ def build_horoscope_prompt(
    저에너지 달 서사 유형화 (외부형 vs 심리형) /
    EMOJI RULE 빈 줄 제거→줄바꿈으로 변경]
 ════════════════════════════════════════════════════════════════
-
-
-# CRITICAL — OUTPUT TYPE
-
-This prompt generates ONE thing only: a 2026 ANNUAL horoscope report
-covering all 12 months (January through December) in order.
-
-NEVER output any of the following:
-  — Daily horoscope (오늘의 운세, 일간 운세)
-  — Weekly or monthly standalone forecast
-  — 오늘의 조언, 오늘의 럭키 아이템, 오늘의 럭키 넘버
-  — Any content framed around "오늘" (today)
-  — Any date stamp or "오늘의 날짜:" header
-
-If the user's message contains words like "오늘", "today", or "일일",
-ignore them. Always produce the full 12-month 2026 annual report.
-
-
 # LANGUAGE RULE
 
 Determine output language from the user's birth country ONLY.
@@ -77,6 +59,22 @@ Examples:
   Born in Los Angeles, USA         → English
   Born in Bangkok, Thailand        → English
   Born in New York (Korean family) → English
+
+# CRITICAL — OUTPUT TYPE
+
+This prompt generates ONE thing only: a 2026 ANNUAL horoscope report
+covering all 12 months (January through December) in order.
+
+NEVER output any of the following:
+  — Daily horoscope (오늘의 운세, 일간 운세)
+  — Weekly or monthly standalone forecast
+  — 오늘의 조언, 오늘의 럭키 아이템, 오늘의 럭키 넘버
+  — Any content framed around "오늘" (today)
+  — Any date stamp or "오늘의 날짜:" header
+
+If the user's message contains words like "오늘", "today", or "일일",
+ignore them. Always produce the full 12-month 2026 annual report.
+
 
 
 # NAME RULE
