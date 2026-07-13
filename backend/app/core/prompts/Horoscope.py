@@ -674,39 +674,62 @@ RULES:
   — 오프닝부터 긍정 일변도 금지.
 
 
-✨ 핵심 하이라이트 — 2026 가장 중요한 달 Top 3  ★ v8 신규 ★
+✨ KEY HIGHLIGHTS SECTION  ★ v8 신규 ★
 
 오프닝 바로 아래, 월별 내용 시작 전에 배치.
-이 달에 가장 중요한 3개 달과 그 이유를 한 줄씩 요약.
+가장 중요한 3개 달과 그 이유를 한 줄씩 요약.
 
-  형식:
+  Korean output 형식:
     ✨ 핵심 하이라이트 — 2026 가장 중요한 달 Top 3
     [N월]: [이 달이 중요한 이유 — 한 줄]
     [N월]: [이 달이 중요한 이유 — 한 줄]
     [N월]: [이 달이 중요한 이유 — 한 줄]
 
+  English output format:
+    ✨ Key Highlights — Top 3 Most Important Months of 2026
+    [Month name]: [why this month matters — one line]
+    [Month name]: [why this month matters — one line]
+    [Month name]: [why this month matters — one line]
+
   RULES:
     — 이모지 없이, 볼드 없이, 레이블 없이.
-    — 중요도 순서로 나열하되 1월·12월은 되도록 제외.
-    — 각 줄은 "N월: [이유]" 형식으로 간결하게.
+    — 중요도 순서로 나열하되 1월(January)·12월(December)은 되도록 제외.
     — 긍정 달과 어려운 달이 섞여 있어야 함.
 
 
-🔮 상반기 흐름 (1~6월)  ★ v8 신규 ★
+🔮 FIRST/SECOND HALF OVERVIEW SECTION  ★ v8 신규 ★
 
-1월 내용 시작 전에 배치. 상반기 전체 흐름을 2~3문장으로 요약.
-어느 영역(연애/재물/건강/커리어)이 상반기의 주요 흐름인지 언급.
+상반기: 1월(January) 내용 시작 전에 배치. 전체 흐름 2~3문장 요약.
+하반기: 7월(July) 내용 시작 전에 배치. 상반기와의 차이 및 흐름 2~3문장 요약.
+어느 영역(연애/관계, 재물/돈, 건강, 커리어)이 주요 흐름인지 언급.
 
-  형식: 🔮 상반기 흐름 (1~6월)
-  [상반기 전체 에너지 특성 — 1문장]
-  [상반기 주요 영역 및 핵심 달 언급 — 1~2문장]
+  Korean output 형식:
+    🔮 상반기 흐름 (1~6월)
+    [상반기 전체 에너지 특성 — 1문장]
+    [상반기 주요 영역 및 핵심 달 언급 — 1~2문장]
+
+    🔮 하반기 흐름 (7~12월)
+    [하반기 전체 에너지 특성 및 상반기와의 차이 — 1문장]
+    [하반기 주요 영역 및 핵심 달 언급 — 1~2문장]
+
+  English output format:
+    🔮 First Half Overview (January–June)
+    [Overall energy character of the first half — 1 sentence]
+    [Key areas and pivotal months — 1–2 sentences]
+
+    🔮 Second Half Overview (July–December)
+    [How the second half differs from the first — 1 sentence]
+    [Key areas and pivotal months — 1–2 sentences]
+
+  CRITICAL: English output must use English section headers above. Never use Korean headers in English output.
 
 
-12 MONTHS — 1월~6월
+12 MONTHS — January through December
 
 각 달의 구성:
   1. 월 헤더 한 줄:
-       [이모지] N월: [한 줄 요약 — 키워드 스타일, 사주 전문 용어 금지]
+       Korean:  [이모지] N월: [한 줄 요약 — 키워드 스타일, 사주 전문 용어 금지]
+       English: [emoji] [Month name]: [one-line summary — keyword style, no jargon]
 
   2. 본문 단락: 5~6문장
        - 점성술 AND 사주 요소 모두 최소 한 번씩 언급 (BLEND RULE)
@@ -715,54 +738,49 @@ RULES:
        - 구체적인 행동 지침 최소 1개로 마무리 (ACTIONABLE ADVICE RULE)
        - 어려운 달은 직접 명시하고, 완화 문장 없이 마무리
 
-  3. (해당 달에만) ⭐ 이달의 핵심 — 2문장
+  3. (해당 달에만) ⭐ Key Event / 이달의 핵심 — 2문장
        전체 리포트에서 반드시 3~4회 배치.
        연속된 달 배치 금지. 두 달 이상 간격.
        형식: 본문 마지막 문장 뒤 줄바꿈 → 바로 레이블 (빈 줄 없음).
 
-  4. (해당 달에만) 🍀 터닝 포인트 — 2문장
+  4. (해당 달에만) 🍀 Turning Point / 터닝 포인트 — 2문장
        전체 리포트에서 1~2회.
-       1월, 12월 배치 금지. 흐름의 변곡점이 되는 달에 배치.
+       1월(January), 12월(December) 배치 금지.
        형식: 본문 마지막 문장 뒤 줄바꿈 → 바로 레이블 (빈 줄 없음).
 
-레이블 출력 예시 (정확히 이 형식):
-  "...신뢰할 수 있는 사람에게 먼저 말해보세요.
-  ⭐ 이달의 핵심: 새로운 방향을 입밖에 내는 것이 이 달의 과제예요."
+레이블 출력 예시:
+  Korean:
+    "...신뢰할 수 있는 사람에게 먼저 말해보세요.
+    ⭐ 이달의 핵심: 새로운 방향을 입밖에 내는 것이 이 달의 과제예요."
+    "...이 기회는 기다린다고 다시 오지 않아요.
+    🍀 터닝 포인트: 이 달 내린 결정이 하반기 흐름 전체를 정해요."
 
-  "...이 기회는 기다린다고 다시 오지 않아요.
-  🍀 터닝 포인트: 이 달 내린 결정이 하반기 흐름 전체를 정해요."
+  English:
+    "...Tell one person you trust about the direction you're leaning.
+    ⭐ Key Event: Getting your intentions out of your head and into words is this month's task."
+    "...This window does not come back if you wait it out.
+    🍀 Turning Point: The decision you make this month sets the trajectory for the rest of the year."
 
-
-🔮 하반기 흐름 (7~12월)  ★ v8 신규 ★
-
-7월 내용 시작 전에 배치. 하반기 전체 흐름을 2~3문장으로 요약.
-상반기와 어떻게 달라지는지, 어느 영역이 하반기의 주요 흐름인지 언급.
-
-  형식: 🔮 하반기 흐름 (7~12월)
-  [하반기 전체 에너지 특성 및 상반기와의 차이 — 1문장]
-  [하반기 주요 영역 및 핵심 달 언급 — 1~2문장]
-
-
-12 MONTHS — 7월~12월
-
-(1월~6월과 동일한 구성 규칙 적용)
+  CRITICAL: English output must use "⭐ Key Event:" and "🍀 Turning Point:" — never Korean labels.
 
 
 월 헤더 이모지 선택 규칙:
   — ⭐ 와 🍀 와 🔮 와 ✨ 는 구조 전용. 월 헤더에 절대 사용 금지.
   — 12개월 각각 서로 다른 이모지 사용.
-  — 🍀 터닝 포인트가 있는 달의 월 헤더에는 🍀 사용 금지.
+  — 🍀 터닝 포인트(Turning Point)가 있는 달의 월 헤더에는 🍀 사용 금지.
   — 이모지는 그 달의 전체 에너지·분위기를 반영해서 선택.
 
 한 줄 요약 규칙:
-  — 키워드 스타일. 3~5 단어. 그 달의 핵심 분위기.
+  — 키워드 스타일. 3~5 단어(words). 그 달의 핵심 분위기.
   — 사주 전문 용어 금지 (목(木), 화(火), 식상, 도화, 화개살 등).
-  — 이모지 없음 (이모지는 월 번호 앞에만).
+  — 이모지 없음 (이모지는 월 번호/이름 앞에만).
   — 어려운 달은 한 줄 요약도 솔직하게 쓸 것.
 
   GOOD (Korean): "🌱 1월: 내 중심 잡는 조용한 첫 달"
   GOOD (Korean): "🌫️ 6월: 에너지가 바닥을 찍는 달"
-  BAD (Korean):  "🌱 1월: 목(木) 기운 상승, 도화 활성화"
+  GOOD (English): "🌱 January: Quiet reset before the climb"
+  GOOD (English): "🌫️ June: The month energy hits a low point"
+  BAD: Any Korean month label in English output (e.g., "🌱 1월:" when outputting English)
 
 
 ════════════════════════════════════════════════════════════════
@@ -809,9 +827,13 @@ RULES:
 [ ] 제목: "## ✨ Your 2026" 또는 "## ✨ Your 2026 · [이름]" 형식인가?
 [ ] Opening: 3문장, 라벨 없이, 점성술 + 사주 모두 언급?
 [ ] Opening에 올해의 도전 요소가 포함되어 있는가?
-[ ] ✨ 핵심 하이라이트 Top 3 배치되어 있는가?  ★ v8 ★
-[ ] 🔮 상반기 흐름 (1~6월) 요약 있는가?  ★ v8 ★
-[ ] 🔮 하반기 흐름 (7~12월) 요약 있는가?  ★ v8 ★
+[ ] ✨ Key Highlights / 핵심 하이라이트 Top 3 배치되어 있는가?  ★ v8 ★
+[ ] English output: "✨ Key Highlights — Top 3 Most Important Months of 2026" 헤더 사용했는가?
+[ ] English output: "🔮 First Half Overview (January–June)" 헤더 사용했는가?
+[ ] English output: "🔮 Second Half Overview (July–December)" 헤더 사용했는가?
+[ ] English output: 월 헤더가 "January:", "February:" 등 영어 월 이름인가? ("1월:" 금지)
+[ ] English output: "⭐ Key Event:" / "🍀 Turning Point:" 레이블 사용했는가? (한국어 레이블 금지)
+[ ] Korean output: "🔮 상반기 흐름 (1~6월)" / "🔮 하반기 흐름 (7~12월)" 헤더 사용했는가?
 [ ] 반기 요약에 영역(연애/재물/건강/커리어) 언급 있는가?  ★ v8 ★
 [ ] Korean output: 모든 별자리 이름 한국어만?
 [ ] Korean output: 영어 병기 없는가? (Capricorn, Key Event 등)
