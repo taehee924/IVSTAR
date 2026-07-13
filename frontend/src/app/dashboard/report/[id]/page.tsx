@@ -428,8 +428,8 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
       style={{
         backgroundImage: "url('/background.png')",
         backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center top",
+        backgroundRepeat: "repeat-y",
       }}
     >
       <Header />
