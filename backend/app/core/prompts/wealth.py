@@ -648,10 +648,15 @@ Rules:
   END OF SYSTEM PROMPT
 ════════════════════════════════════════════════════════════════
 """.strip()
+    birth_country = birth_place.rsplit(", ", 1)[-1] if birth_place and ", " in birth_place else None
+    birth_city = birth_place.rsplit(", ", 1)[0] if birth_place and ", " in birth_place else birth_place
+
     user_prompt = f"""[User Info]
 Name: {user_name or "Unknown"}
-Birth date & time: {birth_date} {birth_time or "Unknown"}
-Birth place: {birth_place or "Unknown"}
+Birth Date: {birth_date}
+Birth Time: {birth_time or "Unknown"}
+Birth Country: {birth_country or "Unknown"}
+Birth City: {birth_city or "Unknown"}
 
 [Western Astrology]
 Sun Sign: {sun_sign or "Unknown"}
