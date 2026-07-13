@@ -1007,7 +1007,8 @@ Current 대운: {current_daewoon or "Unknown"} (Age range: {daewoon_age_range or
 [User Info]
 Birth Date: {birth_date}
 Birth Time: {birth_time or "Unknown"}
-Birth Place: {birth_place or "Unknown"}
+Birth Country: {birth_place.rsplit(", ", 1)[-1] if birth_place and ", " in birth_place else "Unknown"}
+Birth City: {birth_place.rsplit(", ", 1)[0] if birth_place and ", " in birth_place else (birth_place or "Unknown")}
 Gender: {gender or "Unknown"}
 Current Age: {current_age or "Unknown"}
 """.strip()

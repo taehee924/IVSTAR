@@ -929,7 +929,8 @@ ACTIONABLE ADVICE RULE: 이 커플이 잘 되려면 지금 당신이 해야 할 
 Name: {user_name or "Unknown"}
 Birth Date: {birth_date}
 Birth Time: {birth_time or "Unknown"}
-Birth Place: {birth_place or "Unknown"}
+Birth Country: {birth_place.rsplit(", ", 1)[-1] if birth_place and ", " in birth_place else "Unknown"}
+Birth City: {birth_place.rsplit(", ", 1)[0] if birth_place and ", " in birth_place else (birth_place or "Unknown")}
 Gender: {gender or "Unknown"}
 
 [Western Astrology — User]
