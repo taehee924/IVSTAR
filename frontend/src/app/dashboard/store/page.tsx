@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
@@ -141,7 +141,12 @@ function StarPackCard({
         {success && <p className="text-xs text-green-600 font-medium">✓ {success}</p>}
 
         {!session ? (
-          <p className="text-xs text-gray-400">Sign in to purchase.</p>
+          <button
+            onClick={() => signIn("google")}
+            className="w-full rounded-xl bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity hover:bg-gray-700 font-crimson"
+          >
+            Sign in to purchase.
+          </button>
         ) : !showPaypal ? (
           <button
             onClick={() => { setError(""); setSuccess(""); setShowPaypal(true); }}
