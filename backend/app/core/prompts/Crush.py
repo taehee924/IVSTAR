@@ -944,7 +944,12 @@ NOTE: 점수 없이 내용만.
   
 """.strip()
 
+    birth_country = birth_place.rsplit(", ", 1)[-1] if birth_place and ", " in birth_place else "Unknown"
+    output_language = "Korean" if birth_country == "South Korea" else "English"
+
     user_prompt = f"""
+LANGUAGE INSTRUCTION: Write this entire reading in {output_language}. Do not use any other language.
+
 Please write a Crush Reading for these two people.
 
 ──────────────────────────────────────────────
