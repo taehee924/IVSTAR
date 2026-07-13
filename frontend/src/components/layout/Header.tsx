@@ -23,7 +23,7 @@ export default function Header() {
   useEffect(() => {
     if (status === "unauthenticated") {
       setShowTooltip(true);
-      const timer = setTimeout(() => setShowTooltip(false), 4000);
+      const timer = setTimeout(() => setShowTooltip(false), 10000);
       return () => clearTimeout(timer);
     } else {
       setShowTooltip(false);
