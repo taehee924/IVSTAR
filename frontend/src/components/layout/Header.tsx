@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,7 +15,28 @@ const MENU_ITEMS = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const seen = localStorage.getItem("menu_tooltip_seen");
+    if (!seen) {
+      setShowTooltip(true);
+      const timer = setTimeout(() => {
+        setShowTooltip(false);
+        localStorage.setItem("menu_tooltip_seen", "1");
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleMenuOpen = () => {
+    setOpen(true);
+    if (showTooltip) {
+      setShowTooltip(false);
+      localStorage.setItem("menu_tooltip_seen", "1");
+    }
+  };
 
   return (
     <>
@@ -52,17 +73,39 @@ export default function Header() {
           </nav>
 
           {/* 모바일 햄버거 버튼 (lg 미만) */}
-          <button
-            onClick={() => setOpen(true)}
-            className="lg:hidden p-2 text-gray-600 hover:text-gray-900 transition-colors"
-            aria-label="Open menu"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          </button>
+          <div className="lg:hidden relative">
+            {showTooltip && (
+              <div
+                className="absolute right-0 bottom-full mb-2 whitespace-nowrap pointer-events-none"
+                style={{ animation: "fadeInTooltip 0.3s ease" }}
+              >
+                <div className="bg-gray-900 text-white text-xs px-3 py-1.5 rounded-full shadow-lg">
+                  Tap to explore ✦
+                </div>
+                <div
+                  className="absolute right-4 top-full"
+                  style={{
+                    width: 0,
+                    height: 0,
+                    borderLeft: "5px solid transparent",
+                    borderRight: "5px solid transparent",
+                    borderTop: "5px solid #111827",
+                  }}
+                />
+              </div>
+            )}
+            <button
+              onClick={handleMenuOpen}
+              className="p-2 text-gray-600 hover:text-gray-900 transition-colors"
+              aria-label="Open menu"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
 

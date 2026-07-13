@@ -26,6 +26,11 @@ body {
   font-family: var(--font-urbanist), Arial, Helvetica, sans-serif;
 }
 
+@keyframes fadeInTooltip {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .font-carattere {
   font-family: var(--font-carattere), serif;
 }
