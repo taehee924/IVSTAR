@@ -9,6 +9,7 @@ import {
   getHeavenlyStemElement,
   getEarthlyBranchElement,
 } from "manseryeok";
+import CountrySelect, { ALL_COUNTRIES } from "@/components/CountrySelect";
 
 // ── 상수 ──────────────────────────────────────────────────────────
 const REPORT_LABELS: Record<string, string> = {
@@ -25,26 +26,6 @@ const PARTNER_LABELS: Record<string, string> = {
   love: "Partner",
 };
 
-const COUNTRIES = [
-  { name: "South Korea", city_placeholder: "e.g. Seoul" },
-  { name: "United States", city_placeholder: "e.g. New York" },
-  { name: "Japan", city_placeholder: "e.g. Tokyo" },
-  { name: "China", city_placeholder: "e.g. Beijing" },
-  { name: "United Kingdom", city_placeholder: "e.g. London" },
-  { name: "Canada", city_placeholder: "e.g. Toronto" },
-  { name: "Australia", city_placeholder: "e.g. Sydney" },
-  { name: "Germany", city_placeholder: "e.g. Berlin" },
-  { name: "France", city_placeholder: "e.g. Paris" },
-  { name: "Singapore", city_placeholder: "e.g. Singapore" },
-  { name: "Hong Kong", city_placeholder: "e.g. Hong Kong" },
-  { name: "Taiwan", city_placeholder: "e.g. Taipei" },
-  { name: "Vietnam", city_placeholder: "e.g. Ho Chi Minh City" },
-  { name: "Thailand", city_placeholder: "e.g. Bangkok" },
-  { name: "Brazil", city_placeholder: "e.g. São Paulo" },
-  { name: "Mexico", city_placeholder: "e.g. Mexico City" },
-  { name: "India", city_placeholder: "e.g. Mumbai" },
-  { name: "Other", city_placeholder: "e.g. Your city" },
-];
 
 const YEARS = Array.from({ length: 107 }, (_, i) => 2026 - i);
 const MONTHS = [
@@ -336,16 +317,15 @@ function PairReportContent() {
             <label className="text-sm font-medium text-gray-700">
               Birth Place <span className="text-gray-400 text-xs">(optional)</span>
             </label>
-            <select value={country} onChange={(e) => setCountry(e.target.value)} className={selectClass}>
-              <option value="">Select country</option>
-              {COUNTRIES.map((c) => (
-                <option key={c.name} value={c.name}>{c.name}</option>
-              ))}
-            </select>
+            <CountrySelect
+              value={country}
+              onChange={setCountry}
+              className={selectClass}
+            />
             {country && (
               <input
                 type="text"
-                placeholder={COUNTRIES.find((c) => c.name === country)?.city_placeholder ?? "City"}
+                placeholder={ALL_COUNTRIES.find((c) => c.name === country)?.city_placeholder ?? "Enter your birth city. E.g. Seoul"}
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 className={selectClass}
