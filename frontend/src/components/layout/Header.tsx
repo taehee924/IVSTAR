@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const MENU_ITEMS = [
   { href: "/about", label: "About" },
@@ -17,25 +18,21 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const pathname = usePathname();
+  const { status } = useSession();
 
   useEffect(() => {
-    const seen = localStorage.getItem("menu_tooltip_seen");
-    if (!seen) {
+    if (status === "unauthenticated") {
       setShowTooltip(true);
-      const timer = setTimeout(() => {
-        setShowTooltip(false);
-        localStorage.setItem("menu_tooltip_seen", "1");
-      }, 4000);
+      const timer = setTimeout(() => setShowTooltip(false), 4000);
       return () => clearTimeout(timer);
+    } else {
+      setShowTooltip(false);
     }
-  }, []);
+  }, [status]);
 
   const handleMenuOpen = () => {
     setOpen(true);
-    if (showTooltip) {
-      setShowTooltip(false);
-      localStorage.setItem("menu_tooltip_seen", "1");
-    }
+    setShowTooltip(false);
   };
 
   return (
