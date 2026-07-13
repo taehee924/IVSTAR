@@ -32,62 +32,62 @@ export default function ConstellationLoader() {
             <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
         </defs>
-        <circle cx="7"  cy="13"  r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="23" cy="4"   r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="41" cy="19"  r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="58" cy="7"   r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="72" cy="22"  r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="89" cy="11"  r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="15" cy="33"  r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="34" cy="41"  r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="51" cy="28"  r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="67" cy="45"  r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="83" cy="36"  r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="96" cy="50"  r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="4"  cy="57"  r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="22" cy="62"  r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="39" cy="53"  r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="56" cy="71"  r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="73" cy="58"  r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="88" cy="67"  r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="11" cy="79"  r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="29" cy="86"  r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="47" cy="74"  r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="63" cy="91"  r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="79" cy="82"  r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="94" cy="95"  r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="6"  cy="103" r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="21" cy="97"  r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="38" cy="108" r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="54" cy="115" r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="70" cy="104" r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="85" cy="118" r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="13" cy="127" r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="31" cy="121" r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="48" cy="133" r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="64" cy="126" r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="80" cy="138" r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="97" cy="130" r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="9"  cy="146" r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="26" cy="153" r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="43" cy="143" r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="60" cy="158" r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="76" cy="149" r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="91" cy="162" r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="17" cy="170" r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="35" cy="165" r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="52" cy="177" r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="68" cy="172" r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="84" cy="183" r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="3"  cy="188" r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="44" cy="193" r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="78" cy="196" r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="19" cy="47"  r="0.14" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
-        <circle cx="93" cy="143" r="0.18" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="37" cy="87"  r="0.14" fill="#ffffff" opacity="0.49" filter="url(#bgsg)" />
-        <circle cx="55" cy="137" r="0.21" fill="#ffffff" opacity="0.70" filter="url(#bgsg)" />
-        <circle cx="71" cy="25"  r="0.14" fill="#ffffff" opacity="0.56" filter="url(#bgsg)" />
-        <circle cx="2"  cy="116" r="0.18" fill="#ffffff" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="7"  cy="13"  r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="23" cy="4"   r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="41" cy="19"  r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="58" cy="7"   r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="72" cy="22"  r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="89" cy="11"  r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="15" cy="33"  r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="34" cy="41"  r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="51" cy="28"  r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="67" cy="45"  r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="83" cy="36"  r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="96" cy="50"  r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="4"  cy="57"  r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="22" cy="62"  r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="39" cy="53"  r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="56" cy="71"  r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="73" cy="58"  r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="88" cy="67"  r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="11" cy="79"  r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="29" cy="86"  r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="47" cy="74"  r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="63" cy="91"  r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="79" cy="82"  r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="94" cy="95"  r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="6"  cy="103" r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="21" cy="97"  r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="38" cy="108" r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="54" cy="115" r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="70" cy="104" r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="85" cy="118" r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="13" cy="127" r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="31" cy="121" r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="48" cy="133" r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="64" cy="126" r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="80" cy="138" r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="97" cy="130" r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="9"  cy="146" r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="26" cy="153" r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="43" cy="143" r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="60" cy="158" r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="76" cy="149" r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="91" cy="162" r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="17" cy="170" r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="35" cy="165" r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="52" cy="177" r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="68" cy="172" r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="84" cy="183" r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="3"  cy="188" r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="44" cy="193" r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="78" cy="196" r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="19" cy="47"  r="0.14" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
+        <circle cx="93" cy="143" r="0.18" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="37" cy="87"  r="0.14" fill="#c9a84c" opacity="0.49" filter="url(#bgsg)" />
+        <circle cx="55" cy="137" r="0.21" fill="#c9a84c" opacity="0.70" filter="url(#bgsg)" />
+        <circle cx="71" cy="25"  r="0.14" fill="#c9a84c" opacity="0.56" filter="url(#bgsg)" />
+        <circle cx="2"  cy="116" r="0.18" fill="#c9a84c" opacity="0.63" filter="url(#bgsg)" />
       </svg>
 
       {/* ── 별자리 SVG ── */}
@@ -99,10 +99,13 @@ export default function ConstellationLoader() {
               <feGaussianBlur in="SourceGraphic" stdDeviation="8"  result="blur1" />
               <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur2" />
               <feGaussianBlur in="SourceGraphic" stdDeviation="32" result="blur3" />
+              <feColorMatrix in="blur3" type="matrix" values="1.2 0.8 0 0 0  0.9 0.7 0 0 0  0 0 0 0 0  0 0 0 1 0" result="gold3" />
+              <feColorMatrix in="blur2" type="matrix" values="1.2 0.8 0 0 0  0.9 0.7 0 0 0  0 0 0 0 0  0 0 0 1 0" result="gold2" />
+              <feColorMatrix in="blur1" type="matrix" values="1.2 0.8 0 0 0  0.9 0.7 0 0 0  0 0 0 0 0  0 0 0 1 0" result="gold1" />
               <feMerge>
-                <feMergeNode in="blur3" />
-                <feMergeNode in="blur2" />
-                <feMergeNode in="blur1" />
+                <feMergeNode in="gold3" />
+                <feMergeNode in="gold2" />
+                <feMergeNode in="gold1" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
@@ -125,13 +128,13 @@ export default function ConstellationLoader() {
               animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
               opacity: 0;
             }
-            .cstar { fill: #ffffff; }
+            .cstar { fill: #c9a84c; }
             .cline {
-              stroke: #ffffff;
+              stroke: #c9a84c;
               stroke-width: 3.5;
               stroke-linecap: round;
               fill: none;
-              filter: drop-shadow(0 0 6px rgba(255,255,255,0.9)) drop-shadow(0 0 14px rgba(255,255,255,0.6));
+              filter: drop-shadow(0 0 6px rgba(201,168,76,0.95)) drop-shadow(0 0 14px rgba(201,168,76,0.7));
             }
 
             /* ── Stars ── */
@@ -254,7 +257,7 @@ export default function ConstellationLoader() {
           <g className="star-g s7" style={{ transformOrigin: "150px 80px"  }}><circle cx="150" cy="80"  r="8.5" className="cstar" filter="url(#starglow)" /></g>
         </svg>
       </div>
-      <p className="mt-6 text-sm text-white tracking-widest uppercase transition-opacity duration-500">
+      <p className="mt-6 text-sm tracking-widest uppercase transition-opacity duration-500" style={{ color: "#c9a84c" }}>
         {MESSAGES[msgIdx]}
       </p>
     </main>
