@@ -855,6 +855,9 @@ RULES:
 ════════════════════════════════════════════════════════════════
 """.strip()
 
+    birth_country = birth_place.rsplit(", ", 1)[-1] if birth_place and ", " in birth_place else None
+    birth_city = birth_place.rsplit(", ", 1)[0] if birth_place and ", " in birth_place else birth_place
+
     user_prompt = f"""
 Please write a 2026 Horoscope for this person.
 
@@ -863,7 +866,8 @@ Please write a 2026 Horoscope for this person.
 Name: {user_name or "Unknown"}
 Birth Date: {birth_date}
 Birth Time: {birth_time or "Unknown"}
-Birth Place: {birth_place or "Unknown"}
+Birth Country: {birth_country or "Unknown"}
+Birth City: {birth_city or "Unknown"}
 Gender: {gender or "Unknown"}
 
 [Western Astrology]
