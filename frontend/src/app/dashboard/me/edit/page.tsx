@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -453,15 +453,6 @@ export default function EditProfilePage() {
           {saveLoading ? "Saving..." : "Save"}
         </button>
 
-        <div className="border-t border-[#DDD8CE] pt-4">
-          {/* Logout */}
-          <button
-            onClick={() => signOut({ callbackUrl: "/" })}
-            className="flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            ↪ Logout
-          </button>
-        </div>
 
       </div>
     </main>

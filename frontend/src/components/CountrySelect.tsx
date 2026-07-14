@@ -181,9 +181,13 @@ export default function CountrySelect({
         onFocus={() => { setOpen(true); setQuery(""); }}
         onChange={(e) => setQuery(e.target.value)}
         className={className}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="none"
+        spellCheck={false}
       />
       {open && (
-        <div className="absolute z-50 w-full mt-1 max-h-52 overflow-y-auto rounded-lg border border-[#DDD8CE] bg-[#FFFBF5] shadow-lg">
+        <div className="absolute z-[9999] w-full mt-1 max-h-52 overflow-y-auto rounded-lg border border-[#DDD8CE] bg-[#FFFBF5] shadow-lg">
           {filtered.length === 0 ? (
             <div className="px-3 py-2 text-sm text-gray-400">No results</div>
           ) : (
