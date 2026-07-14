@@ -9,6 +9,10 @@ from pydantic import BaseModel
 from app.core.database import get_db
 from app.api.deps import get_current_user
 from app.models.user import User
+from app.models.compatibility import Compatibility
+from app.models.report import Report
+from app.models.payment import Payment
+from app.models.birth_profile import BirthProfile
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -80,6 +84,12 @@ def delete_my_account(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """회원 탈퇴"""
+    """회원 탈퇴 — FK 순서에 맞춰 연관 데이터 전체 삭제"""
+    uid = current_user.id
+    # Compatibility → Report → Payment → BirthProfile → User 순으로 삭제
+    db.query(Compatibility).filter(Compatibility.user_id == uid).delete()
+    db.query(Report).filter(Report.user_id == uid).delete()
+    db.query(Payment).filter(Payment.user_id == uid).delete()
+    db.query(BirthProfile).filter(BirthProfile.user_id == uid).delete()
     db.delete(current_user)
     db.commit()
