@@ -3,7 +3,7 @@
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import Header from "@/components/layout/Header";
 
@@ -55,6 +55,7 @@ function formatBirthDate(birth_date: string, birth_time: string | null) {
 export default function MePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingReportId, setDeletingReportId] = useState<number | null>(null);
@@ -154,7 +155,7 @@ export default function MePage() {
   const name = displayName ?? session?.user?.name ?? "";
 
   if (status !== "loading" && !session) {
-    router.replace("/login");
+    router.replace(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
     return null;
   }
 

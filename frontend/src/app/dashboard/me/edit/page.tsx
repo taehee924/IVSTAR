@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import Header from "@/components/layout/Header";
 import CountrySelect, { ALL_COUNTRIES } from "@/components/CountrySelect";
@@ -84,6 +84,7 @@ function getDaysInMonth(year: number, month: number) {
 export default function EditProfilePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
 
   const [profile, setProfile] = useState<BirthProfile | null>(null);
   const [pageLoading, setPageLoading] = useState(true);
@@ -112,7 +113,7 @@ export default function EditProfilePage() {
 
   useEffect(() => {
     if (status !== "loading" && !session) {
-      router.replace("/login");
+      router.replace(`/login?callbackUrl=${encodeURIComponent(pathname)}`);
       return;
     }
     if (!session) return;
@@ -237,10 +238,11 @@ export default function EditProfilePage() {
       }
 
       const [profileRes, userRes] = await Promise.all(requests);
-      if (!profileRes.ok) throw new Error("Error saving birth profile");
-      if (userRes && !userRes.ok) throw new Error("Error saving user info");
 
       if (trimmedName) localStorage.setItem(NAME_KEY, trimmedName);
+
+      if (!profileRes.ok) throw new Error("Error saving birth profile");
+      if (userRes && !userRes.ok) throw new Error("Error saving user info");
 
       router.push("/dashboard/me");
     } catch (e) {

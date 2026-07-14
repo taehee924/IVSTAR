@@ -142,7 +142,7 @@ function StarPackCard({
 
         {!session ? (
           <button
-            onClick={() => signIn("google")}
+            onClick={() => signIn("google", { callbackUrl: "/dashboard/store" })}
             className="w-full rounded-xl bg-gray-900 py-3 text-sm font-semibold text-white transition-opacity hover:bg-gray-700 font-crimson"
           >
             Sign in to purchase.

@@ -9,7 +9,8 @@ export default auth((req) => {
   const isProtected = protectedRoutes.some((r) => pathname.startsWith(r));
 
   if (isProtected && !isLoggedIn) {
-    return NextResponse.redirect(new URL("/login", req.url));
+    const callbackUrl = encodeURIComponent(req.nextUrl.pathname + req.nextUrl.search);
+    return NextResponse.redirect(new URL(`/login?callbackUrl=${callbackUrl}`, req.url));
   }
 
   if (isLoggedIn && pathname === "/login") {
