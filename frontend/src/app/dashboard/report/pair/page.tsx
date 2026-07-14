@@ -36,7 +36,7 @@ const MONTHS = [
   { value: 9, label: "September" }, { value: 10, label: "October" },
   { value: 11, label: "November" }, { value: 12, label: "December" },
 ];
-const HOURS = Array.from({ length: 24 }, (_, i) => i); // 0~23
+const HOURS = Array.from({ length: 12 }, (_, i) => i + 1); // 1~12
 const MINUTES = Array.from({ length: 60 }, (_, i) => String(i).padStart(2, "0"));
 
 function getDaysInMonth(year: number, month: number) {
@@ -92,6 +92,7 @@ function PairReportContent() {
   // 시간 드롭다운
   const [hour, setHour] = useState("");
   const [minute, setMinute] = useState("");
+  const [ampm, setAmpm] = useState("AM");
   const [timeUnknown, setTimeUnknown] = useState(false);
 
   // 태어난 장소
@@ -136,7 +137,10 @@ function PairReportContent() {
     const partnerBirthDate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     let partnerBirthTime: string | null = null;
     if (!timeUnknown && hour !== "" && minute) {
-      partnerBirthTime = `${String(parseInt(hour)).padStart(2, "0")}:${minute}`;
+      let h = parseInt(hour);
+      if (ampm === "PM" && h !== 12) h += 12;
+      if (ampm === "AM" && h === 12) h = 0;
+      partnerBirthTime = `${String(h).padStart(2, "0")}:${minute}`;
     }
     const partnerBirthPlace = country && city ? `${city}, ${country}` : (city || country || null);
     const [py, pm, pd] = partnerBirthDate.split("-").map(Number);
@@ -286,7 +290,7 @@ function PairReportContent() {
               <span className="text-gray-400 text-xs">(optional)</span>
             </label>
             {!timeUnknown && (
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 <select value={hour} onChange={(e) => setHour(e.target.value)} className={selectClass}>
                   <option value="">Hour</option>
                   {HOURS.map((h) => (
@@ -298,6 +302,10 @@ function PairReportContent() {
                   {MINUTES.map((m) => (
                     <option key={m} value={m}>{m}</option>
                   ))}
+                </select>
+                <select value={ampm} onChange={(e) => setAmpm(e.target.value)} className={selectClass}>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
                 </select>
               </div>
             )}
