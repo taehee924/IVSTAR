@@ -22,6 +22,7 @@ def build_life_cycles_prompt(
     # 대운
     current_daewoon: str | None,
     daewoon_age_range: str | None,
+    user_name: str | None = None,
 ) -> tuple[str, str]:
     """Life Cycles (대운) 리포트 시스템 프롬프트 + 유저 프롬프트 반환"""
 
@@ -1005,6 +1006,7 @@ Chart Strength: {chart_strength or "Unknown"}
 Current 대운: {current_daewoon or "Unknown"} (Age range: {daewoon_age_range or "Unknown"})
 
 [User Info]
+Name: {user_name or "Unknown"}
 Birth Date: {birth_date}
 Birth Time: {birth_time or "Unknown"}
 Birth Country: {birth_place.rsplit(", ", 1)[-1] if birth_place and ", " in birth_place else "Unknown"}

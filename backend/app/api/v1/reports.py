@@ -8,7 +8,7 @@ from app.models.user import User
 from app.models.report import Report, ReportType
 from app.models.payment import Payment, PaymentStatus, PaymentMethod
 from app.models.birth_profile import BirthProfile
-from app.core.gemini import generate_report, generate_pair_report
+from app.core.claude import generate_report, generate_pair_report
 from app.core.config import settings
 
 router = APIRouter(prefix="/reports", tags=["reports"])
