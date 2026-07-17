@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
-from app.core.database import get_db
+from app.core.database import get_db, SessionLocal
 from app.api.deps import get_current_user
 from app.models.user import User
 from app.models.report import Report, ReportType
@@ -85,6 +85,7 @@ def format_report(report: Report, db: Session) -> dict:
         "content": content,
         "is_unlocked": unlocked or is_free,
         "price": float(report.price),
+        "status": report.status or "ready",
         "created_at": str(report.created_at),
     }
 
@@ -94,6 +95,68 @@ def is_valid_promo(code: str | None) -> bool:
     if not code:
         return False
     return code.strip() == settings.PROMO_CODE
+
+
+def _profile_kwargs(profile: BirthProfile) -> dict:
+    """generate_report / generate_pair_report에 공통으로 넘기는 프로필 필드"""
+    return dict(
+        birth_date=str(profile.birth_date),
+        birth_time=str(profile.birth_time) if profile.birth_time else None,
+        birth_place=profile.birth_place,
+        gender=profile.gender.value if profile.gender else None,
+        sun_sign=profile.sun_sign,
+        moon_sign=profile.moon_sign,
+        rising_sign=profile.rising_sign,
+        mc_sign=profile.mc_sign,
+        year_pillar=profile.year_pillar,
+        month_pillar=profile.month_pillar,
+        day_pillar=profile.day_pillar,
+        hour_pillar=profile.hour_pillar,
+        day_master=profile.day_master,
+        dominant_element=profile.dominant_element,
+        lacking_element=profile.lacking_element,
+        chart_strength=profile.chart_strength,
+    )
+
+
+async def _run_generation(
+    report_id: int,
+    is_pair: bool,
+    gen_kwargs: dict,
+    star_refund: int = 0,
+) -> None:
+    """백그라운드 리포트 생성.
+
+    요청 세션과 분리된 자체 DB 세션을 사용한다.
+    성공 → content 저장 + status=ready
+    실패 → status=failed, 별 환불 + 결제 refunded 처리
+    """
+    db = SessionLocal()
+    try:
+        report = db.query(Report).filter(Report.id == report_id).first()
+        if report is None:
+            return
+        try:
+            if is_pair:
+                content = await generate_pair_report(**gen_kwargs)
+            else:
+                content = await generate_report(**gen_kwargs)
+            report.content = content
+            report.status = "ready"
+        except Exception as e:
+            print(f"Report {report_id} generation failed: {e}")
+            report.status = "failed"
+            if star_refund:
+                user = db.query(User).filter(User.id == report.user_id).first()
+                if user:
+                    user.stars = (user.stars or 0) + star_refund
+            if report.payment_id:
+                payment = db.query(Payment).filter(Payment.id == report.payment_id).first()
+                if payment and payment.payment_method == PaymentMethod.star:
+                    payment.status = PaymentStatus.refunded
+        db.commit()
+    finally:
+        db.close()
 
 
 # ── 라우트 ────────────────────────────────────────────────
@@ -199,10 +262,21 @@ async def create_free_preview(
 @router.post("/full")
 async def create_full_report(
     body: ReportCreateRequest,
+    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """유료 전체 리포트 생성 (프로모 코드 적용 시 무료)"""
+    """유료 전체 리포트 생성 (프로모 코드 적용 시 무료).
+
+    즉시 status=generating 리포트를 반환하고, AI 생성은 백그라운드에서 진행한다.
+    프론트는 GET /reports/{id}를 폴링해 status=ready가 되면 내용을 표시한다.
+    """
+    if body.report_type.value in PAIR_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"'{body.report_type.value}' reading requires partner data. Use /reports/pair/preview.",
+        )
+
     profile = db.query(BirthProfile).filter(
         BirthProfile.id == body.birth_profile_id,
         BirthProfile.user_id == current_user.id,
@@ -210,41 +284,13 @@ async def create_full_report(
     if not profile:
         raise HTTPException(status_code=404, detail="Birth profile not found")
 
-    # 스타 잔액 확인 (AI 호출 전에 먼저 체크)
+    # 스타 잔액 확인 후 선차감 (실패 시 백그라운드에서 환불)
     star_cost: int | None = None
+    payment_id: int | None = None
     if body.use_star:
         star_cost = body.star_cost if body.star_cost is not None else REPORT_STAR_COST.get(body.report_type.value, DEFAULT_REPORT_STAR_COST)
         if (current_user.stars or 0) < star_cost:
             raise HTTPException(status_code=400, detail="Not enough stars")
-
-    try:
-        content = await generate_report(
-            report_type=body.report_type.value,
-            birth_date=str(profile.birth_date),
-            birth_time=str(profile.birth_time) if profile.birth_time else None,
-            birth_place=profile.birth_place,
-            gender=profile.gender.value if profile.gender else None,
-            sun_sign=profile.sun_sign,
-            moon_sign=profile.moon_sign,
-            rising_sign=profile.rising_sign,
-            mc_sign=profile.mc_sign,
-            year_pillar=profile.year_pillar,
-            month_pillar=profile.month_pillar,
-            day_pillar=profile.day_pillar,
-            hour_pillar=profile.hour_pillar,
-            day_master=profile.day_master,
-            dominant_element=profile.dominant_element,
-            lacking_element=profile.lacking_element,
-            chart_strength=profile.chart_strength,
-            user_name=current_user.name,
-        )
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-    except RuntimeError as e:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
-
-    # 스타 차감 및 리포트 저장
-    if body.use_star and star_cost is not None:
         star_payment = Payment(
             user_id=current_user.id,
             amount=int(star_cost * 99),
@@ -255,32 +301,37 @@ async def create_full_report(
         db.add(star_payment)
         db.flush()
         current_user.stars = (current_user.stars or 0) - star_cost
-        report = Report(
-            user_id=current_user.id,
-            birth_profile_id=profile.id,
-            report_type=body.report_type,
-            content=content,
-            price=body.price,
-            payment_id=star_payment.id,
-        )
-        db.add(report)
-        db.commit()
-        db.refresh(report)
-        return format_report(report, db)
-
-    # 프로모 코드 유효하면 무료
-    final_price = 0.00 if is_valid_promo(body.promo_code) else body.price
+        payment_id = star_payment.id
+        final_price = body.price
+    else:
+        # 프로모 코드 유효하면 무료
+        final_price = 0.00 if is_valid_promo(body.promo_code) else body.price
 
     report = Report(
         user_id=current_user.id,
         birth_profile_id=profile.id,
         report_type=body.report_type,
-        content=content,
+        content="",
         price=final_price,
+        payment_id=payment_id,
+        status="generating",
     )
     db.add(report)
     db.commit()
     db.refresh(report)
+
+    gen_kwargs = dict(
+        report_type=body.report_type.value,
+        user_name=current_user.name,
+        **_profile_kwargs(profile),
+    )
+    background_tasks.add_task(
+        _run_generation,
+        report.id,
+        False,
+        gen_kwargs,
+        star_cost or 0,
+    )
     return format_report(report, db)
 
 
@@ -316,10 +367,14 @@ class PairReportCreateRequest(BaseModel):
 @router.post("/pair/preview")
 async def create_pair_preview(
     body: PairReportCreateRequest,
+    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """2인 리딩 (crush / situationship / ex / love)"""
+    """2인 리딩 (crush / situationship / ex / love).
+
+    즉시 status=generating 리포트를 반환하고, AI 생성은 백그라운드에서 진행한다.
+    """
     if body.report_type.value not in PAIR_TYPES:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -333,59 +388,13 @@ async def create_pair_preview(
     if not profile:
         raise HTTPException(status_code=404, detail="Birth profile not found")
 
-    # 스타 잔액 확인 (AI 호출 전에 먼저 체크)
+    # 스타 잔액 확인 후 선차감 (실패 시 백그라운드에서 환불)
     star_cost: int | None = None
+    payment_id: int | None = None
     if body.use_star:
         star_cost = body.star_cost if body.star_cost is not None else REPORT_STAR_COST.get(body.report_type.value, DEFAULT_REPORT_STAR_COST)
         if (current_user.stars or 0) < star_cost:
             raise HTTPException(status_code=400, detail="Not enough stars")
-
-    try:
-        content = await generate_pair_report(
-            report_type=body.report_type.value,
-            user_name=current_user.name,
-            birth_date=str(profile.birth_date),
-            birth_time=str(profile.birth_time) if profile.birth_time else None,
-            birth_place=profile.birth_place,
-            gender=profile.gender.value if profile.gender else None,
-            sun_sign=profile.sun_sign,
-            moon_sign=profile.moon_sign,
-            rising_sign=profile.rising_sign,
-            mc_sign=profile.mc_sign,
-            venus_sign=None,
-            year_pillar=profile.year_pillar,
-            month_pillar=profile.month_pillar,
-            day_pillar=profile.day_pillar,
-            hour_pillar=profile.hour_pillar,
-            day_master=profile.day_master,
-            dominant_element=profile.dominant_element,
-            lacking_element=profile.lacking_element,
-            chart_strength=profile.chart_strength,
-            partner_name=body.partner_name,
-            partner_birth_date=body.partner_birth_date,
-            partner_birth_time=body.partner_birth_time,
-            partner_birth_place=body.partner_birth_place,
-            partner_gender=body.partner_gender,
-            partner_sun_sign=body.partner_sun_sign,
-            partner_moon_sign=body.partner_moon_sign,
-            partner_rising_sign=body.partner_rising_sign,
-            partner_venus_sign=body.partner_venus_sign,
-            partner_year_pillar=body.partner_year_pillar,
-            partner_month_pillar=body.partner_month_pillar,
-            partner_day_pillar=body.partner_day_pillar,
-            partner_hour_pillar=body.partner_hour_pillar,
-            partner_day_master=body.partner_day_master,
-            partner_dominant_element=body.partner_dominant_element,
-            partner_lacking_element=body.partner_lacking_element,
-            partner_chart_strength=body.partner_chart_strength,
-        )
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-    except RuntimeError as e:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
-
-    # 스타 차감 및 리포트 저장
-    if body.use_star and star_cost is not None:
         star_payment = Payment(
             user_id=current_user.id,
             amount=int(star_cost * 99),
@@ -396,32 +405,55 @@ async def create_pair_preview(
         db.add(star_payment)
         db.flush()
         current_user.stars = (current_user.stars or 0) - star_cost
-        report = Report(
-            user_id=current_user.id,
-            birth_profile_id=profile.id,
-            report_type=body.report_type,
-            content=content,
-            price=body.price,
-            payment_id=star_payment.id,
-        )
-        db.add(report)
-        db.commit()
-        db.refresh(report)
-        return format_report(report, db)
-
-    # 프로모 코드 유효하면 무료
-    final_price = 0.00 if is_valid_promo(body.promo_code) else body.price
+        payment_id = star_payment.id
+        final_price = body.price
+    else:
+        # 프로모 코드 유효하면 무료
+        final_price = 0.00 if is_valid_promo(body.promo_code) else body.price
 
     report = Report(
         user_id=current_user.id,
         birth_profile_id=profile.id,
         report_type=body.report_type,
-        content=content,
+        content="",
         price=final_price,
+        payment_id=payment_id,
+        status="generating",
     )
     db.add(report)
     db.commit()
     db.refresh(report)
+
+    gen_kwargs = dict(
+        report_type=body.report_type.value,
+        user_name=current_user.name,
+        venus_sign=None,
+        **_profile_kwargs(profile),
+        partner_name=body.partner_name,
+        partner_birth_date=body.partner_birth_date,
+        partner_birth_time=body.partner_birth_time,
+        partner_birth_place=body.partner_birth_place,
+        partner_gender=body.partner_gender,
+        partner_sun_sign=body.partner_sun_sign,
+        partner_moon_sign=body.partner_moon_sign,
+        partner_rising_sign=body.partner_rising_sign,
+        partner_venus_sign=body.partner_venus_sign,
+        partner_year_pillar=body.partner_year_pillar,
+        partner_month_pillar=body.partner_month_pillar,
+        partner_day_pillar=body.partner_day_pillar,
+        partner_hour_pillar=body.partner_hour_pillar,
+        partner_day_master=body.partner_day_master,
+        partner_dominant_element=body.partner_dominant_element,
+        partner_lacking_element=body.partner_lacking_element,
+        partner_chart_strength=body.partner_chart_strength,
+    )
+    background_tasks.add_task(
+        _run_generation,
+        report.id,
+        True,
+        gen_kwargs,
+        star_cost or 0,
+    )
     return format_report(report, db)
 
 

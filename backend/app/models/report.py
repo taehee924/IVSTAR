@@ -33,6 +33,9 @@ class Report(Base):
     report_type = Column(Enum(ReportType), nullable=False)
     content = Column(Text, nullable=False)  # AI 생성 결과 텍스트
 
+    # 생성 상태: generating(백그라운드 생성 중) / ready(완료) / failed(실패, 별 환불됨)
+    status = Column(String(20), nullable=False, server_default="ready")
+
     # 리포트 가격 (무료 미리보기는 0.00, 유료는 실제 금액)
     price = Column(Numeric(10, 2), nullable=False, default=0.00)
 

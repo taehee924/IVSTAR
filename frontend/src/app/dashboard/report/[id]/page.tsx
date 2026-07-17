@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, use, useRef } from "react";
 import ReactMarkdown, { Components } from "react-markdown";
 import Header from "@/components/layout/Header";
+import ConstellationLoader from "@/components/ConstellationLoader";
 
 interface Report {
   id: number;
@@ -12,6 +13,7 @@ interface Report {
   content: string;
   is_unlocked: boolean;
   price: number;
+  status: string; // generating | ready | failed
   created_at: string;
 }
 
@@ -325,6 +327,13 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
     if (session) fetchReport();
   }, [session]);
 
+  // 생성 중이면 3초 간격으로 폴링 (백그라운드 생성 완료 대기)
+  useEffect(() => {
+    if (report?.status !== "generating") return;
+    const timer = setTimeout(() => fetchReport(), 3000);
+    return () => clearTimeout(timer);
+  }, [report]);
+
   // PayPal 리다이렉트 후 자동 캡처
   useEffect(() => {
     if (!session || !paypalToken || !payerId || !report) return;
@@ -418,6 +427,33 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
       <main className="min-h-screen flex items-center justify-center">
         <Header />
         <p className="text-sm text-red-500">{error || "Report not found."}</p>
+      </main>
+    );
+  }
+
+  // 백그라운드 생성 중 → 로더 표시 (폴링이 완료를 감지하면 자동 전환)
+  if (report.status === "generating") {
+    return <ConstellationLoader />;
+  }
+
+  if (report.status === "failed") {
+    return (
+      <main className="min-h-screen flex items-center justify-center p-4">
+        <Header />
+        <div className="max-w-md w-full rounded-2xl border border-gray-200 bg-gray-50 p-6 text-center space-y-3">
+          <p className="text-sm font-medium text-gray-700">
+            We couldn&apos;t finish your reading.
+          </p>
+          <p className="text-xs text-gray-400">
+            Your star has been refunded. Please try again in a moment.
+          </p>
+          <button
+            onClick={() => router.push(`/dashboard/report/new?type=${report.report_type}`)}
+            className="w-full rounded-lg bg-gray-900 py-2.5 text-sm font-semibold text-white hover:bg-gray-700"
+          >
+            Try Again
+          </button>
+        </div>
       </main>
     );
   }
