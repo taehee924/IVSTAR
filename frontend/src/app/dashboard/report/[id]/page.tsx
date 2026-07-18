@@ -328,8 +328,20 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
   }, [session]);
 
   // 생성 중이면 3초 간격으로 폴링 (백그라운드 생성 완료 대기)
+  // 8분 넘게 generating이면 폴링 중단 (서버는 5분 시점에 자동으로 failed 처리함)
+  const pollStartRef = useRef<number | null>(null);
+  const [pollTimedOut, setPollTimedOut] = useState(false);
+
   useEffect(() => {
-    if (report?.status !== "generating") return;
+    if (report?.status !== "generating") {
+      pollStartRef.current = null;
+      return;
+    }
+    if (pollStartRef.current === null) pollStartRef.current = Date.now();
+    if (Date.now() - pollStartRef.current > 8 * 60_000) {
+      setPollTimedOut(true);
+      return;
+    }
     const timer = setTimeout(() => fetchReport(), 3000);
     return () => clearTimeout(timer);
   }, [report]);
@@ -433,6 +445,27 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
 
   // 백그라운드 생성 중 → 로더 표시 (폴링이 완료를 감지하면 자동 전환)
   if (report.status === "generating") {
+    if (pollTimedOut) {
+      return (
+        <main className="min-h-screen flex items-center justify-center p-4">
+          <Header />
+          <div className="max-w-md w-full rounded-2xl border border-gray-200 bg-gray-50 p-6 text-center space-y-3">
+            <p className="text-sm font-medium text-gray-700">
+              This is taking longer than expected.
+            </p>
+            <p className="text-xs text-gray-400">
+              If the reading doesn&apos;t complete, your star will be refunded automatically.
+            </p>
+            <button
+              onClick={() => router.push("/dashboard/categories")}
+              className="w-full rounded-lg bg-gray-900 py-2.5 text-sm font-semibold text-white hover:bg-gray-700"
+            >
+              Back to Readings
+            </button>
+          </div>
+        </main>
+      );
+    }
     return <ConstellationLoader />;
   }
 

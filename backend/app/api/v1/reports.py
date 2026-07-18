@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -228,6 +228,42 @@ async def _run_generation(
         db.close()
 
 
+STALE_GENERATING_MINUTES = 5
+
+
+def _fail_stale_generating(report: Report, db: Session) -> bool:
+    """서버 재시작 등으로 고아가 된 generating 리포트를 실패 처리.
+
+    생성은 정상적으로 오래 걸려도 2~3분이므로, 5분 넘게 generating이면
+    백그라운드 작업이 죽은 것으로 판단 → failed + 별 환불.
+    호출자가 True를 받으면 db.commit() 해야 한다.
+    """
+    if report.status != "generating":
+        return False
+    created = report.created_at
+    if created is None:
+        return False
+    if created.tzinfo is None:
+        created = created.replace(tzinfo=timezone.utc)
+    if datetime.now(timezone.utc) - created < timedelta(minutes=STALE_GENERATING_MINUTES):
+        return False
+
+    report.status = "failed"
+    if report.payment_id:
+        payment = db.query(Payment).filter(Payment.id == report.payment_id).first()
+        if (
+            payment
+            and payment.payment_method == PaymentMethod.star
+            and payment.status == PaymentStatus.paid
+        ):
+            payment.status = PaymentStatus.refunded
+            user = db.query(User).filter(User.id == report.user_id).first()
+            if user:
+                user.stars = (user.stars or 0) + max(1, (payment.amount or 99) // 99)
+    print(f"Report {report.id}: stale generating -> failed (star refunded if applicable)")
+    return True
+
+
 # ── 라우트 ────────────────────────────────────────────────
 
 @router.get("/")
@@ -238,6 +274,8 @@ def get_my_reports(
     reports = db.query(Report).filter(
         Report.user_id == current_user.id
     ).order_by(Report.created_at.desc()).all()
+    if sum(_fail_stale_generating(r, db) for r in reports):
+        db.commit()
     return [format_report(r, db) for r in reports]
 
 
@@ -547,6 +585,8 @@ def get_report(
     db: Session = Depends(get_db),
 ):
     report = get_report_or_404(report_id, current_user.id, db)
+    if _fail_stale_generating(report, db):
+        db.commit()
     return format_report(report, db)
 
 

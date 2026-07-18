@@ -34,6 +34,26 @@ app.include_router(payments_router, prefix="/api/v1")
 app.include_router(compatibility_router, prefix="/api/v1")
 
 
+@app.on_event("startup")
+def cleanup_orphan_reports():
+    """재시작으로 죽은 백그라운드 생성 작업의 고아 리포트 정리 (failed 처리 + 별 환불)"""
+    from app.core.database import SessionLocal
+    from app.models.report import Report
+    from app.api.v1.reports import _fail_stale_generating
+
+    db = SessionLocal()
+    try:
+        stale = db.query(Report).filter(Report.status == "generating").all()
+        changed = sum(1 for r in stale if _fail_stale_generating(r, db))
+        if changed:
+            db.commit()
+            print(f"Startup cleanup: {changed} orphaned generating report(s) -> failed")
+    except Exception as e:
+        print(f"Startup cleanup error: {e}")
+    finally:
+        db.close()
+
+
 @app.get("/")
 def root():
     return {"message": "API running"}
