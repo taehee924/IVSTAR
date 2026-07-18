@@ -27,6 +27,27 @@ const TABS = [
   { key: "other", label: "Other" },
 ];
 
+// 카드 좌측 상단 스타버스트(도장) 배지
+function StarburstBadge({ text }: { text: string }) {
+  return (
+    <div className="absolute left-1.5 top-1.5 z-10 h-12 w-12 drop-shadow-md">
+      <svg viewBox="0 0 100 100" className="h-full w-full">
+        <polygon
+          points="59.6,1.9 65.3,13.0 77.2,9.3 78.3,21.7 90.7,22.8 87.0,34.7 98.1,40.4 90.0,50.0 98.1,59.6 87.0,65.3 90.7,77.2 78.3,78.3 77.2,90.7 65.3,87.0 59.6,98.1 50.0,90.0 40.4,98.1 34.7,87.0 22.8,90.7 21.7,78.3 9.3,77.2 13.0,65.3 1.9,59.6 10.0,50.0 1.9,40.4 13.0,34.7 9.3,22.8 21.7,21.7 22.8,9.3 34.7,13.0 40.4,1.9 50.0,10.0"
+          fill="#992222"
+        />
+        <polygon
+          points="50.0,1.0 57.8,10.8 68.8,4.7 72.2,16.7 84.6,15.4 83.3,27.8 95.3,31.2 89.2,42.2 99.0,50.0 89.2,57.8 95.3,68.8 83.3,72.2 84.6,84.6 72.2,83.3 68.8,95.3 57.8,89.2 50.0,99.0 42.2,89.2 31.2,95.3 27.8,83.3 15.4,84.6 16.7,72.2 4.7,68.8 10.8,57.8 1.0,50.0 10.8,42.2 4.7,31.2 16.7,27.8 15.4,15.4 27.8,16.7 31.2,4.7 42.2,10.8"
+          fill="#C62F2F"
+        />
+      </svg>
+      <span className="absolute inset-0 flex items-center justify-center text-[13px] font-extrabold uppercase tracking-tight text-white">
+        {text}
+      </span>
+    </div>
+  );
+}
+
 export default function CategoriesPage() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -93,6 +114,8 @@ export default function CategoriesPage() {
             <div key={r.type + r.label} onClick={() => !checkingProfile && handleCardClick(r.type)} className={`rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow ${checkingProfile ? "opacity-60 pointer-events-none" : ""}`}>
               {["daily", "general", "love", "life_cycle", "ex", "crush", "career", "wealth", "situationship"].includes(r.type) ? (
                 <div className="relative aspect-[3/4] w-full">
+                  {r.type === "daily" && <StarburstBadge text="Best" />}
+                  {r.type === "ex" && <StarburstBadge text="Hot" />}
                   <Image
                     src={
                       r.type === "daily" ? "/horoscope.png" :
@@ -116,14 +139,7 @@ export default function CategoriesPage() {
                 </div>
               )}
               <div className="bg-[#EDE8DC] p-3 flex items-center justify-between">
-                <div className="flex items-center gap-1.5 min-w-0">
-                  <p className="font-medium text-sm text-gray-800 truncate">{r.label}</p>
-                  {(r.type === "ex" || r.type === "daily") && (
-                    <span className="shrink-0 rounded-md bg-gray-900 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white">
-                      Best
-                    </span>
-                  )}
-                </div>
+                <p className="font-medium text-sm text-gray-800 truncate">{r.label}</p>
                 <p className="shrink-0 text-xs font-semibold text-gray-700">{r.price}</p>
               </div>
             </div>
