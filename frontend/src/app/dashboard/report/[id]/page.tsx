@@ -262,9 +262,32 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
       // html-to-image uses SVG foreignObject → browser handles oklch/modern CSS
       const { toPng } = await import("html-to-image");
 
+      // 배경 텍스처를 data URL로 미리 인라인 (Safari에서 CSS url() 배경이
+      // 캡처 시점에 로드되지 않아 깨지는 문제 방지)
+      let bgDataUrl = "";
+      try {
+        const bgBlob = await fetch("/background.png").then((r) => r.blob());
+        bgDataUrl = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(bgBlob);
+        });
+      } catch {
+        // 배경 로드 실패 시 단색 배경으로 진행
+      }
+
       const dataUrl = await toPng(reportRef.current, {
         backgroundColor: "#FFFBF5",
         pixelRatio: 2,
+        style: bgDataUrl
+          ? {
+              backgroundImage: `url('${bgDataUrl}')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center top",
+              padding: "20px",
+            }
+          : { padding: "20px" },
       });
 
       const fileName = `ivstar-reading-${id}.png`;
