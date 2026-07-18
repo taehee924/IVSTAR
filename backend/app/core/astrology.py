@@ -52,6 +52,14 @@ def calculate_chart(
     moon_pos, _ = swe.calc_ut(jd, swe.MOON)
     moon_sign = get_zodiac_sign(moon_pos[0])
 
+    # Venus 계산
+    venus_pos, _ = swe.calc_ut(jd, swe.VENUS)
+    venus_sign = get_zodiac_sign(venus_pos[0])
+
+    # Mars 계산
+    mars_pos, _ = swe.calc_ut(jd, swe.MARS)
+    mars_sign = get_zodiac_sign(mars_pos[0])
+
     # Rising (Ascendant) + MC 계산 - 출생 시간 있을 때만
     rising_sign = None
     mc_sign = None
@@ -65,4 +73,6 @@ def calculate_chart(
         "moon_sign": moon_sign,
         "rising_sign": rising_sign,
         "mc_sign": mc_sign,
+        "venus_sign": venus_sign,
+        "mars_sign": mars_sign,
     }

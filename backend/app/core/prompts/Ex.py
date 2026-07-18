@@ -10,6 +10,7 @@ def build_ex_prompt(
     rising_sign: str | None,
     mc_sign: str | None,
     venus_sign: str | None,
+    mars_sign: str | None,
     year_pillar: str | None,
     month_pillar: str | None,
     day_pillar: str | None,
@@ -28,6 +29,7 @@ def build_ex_prompt(
     ex_moon_sign: str | None,
     ex_rising_sign: str | None,
     ex_venus_sign: str | None,
+    ex_mars_sign: str | None,
     ex_year_pillar: str | None,
     ex_month_pillar: str | None,
     ex_day_pillar: str | None,
@@ -960,6 +962,7 @@ Moon Sign: {moon_sign or "Unknown"}
 Rising Sign: {rising_sign or "Unknown (birth time not provided)"}
 MC (Midheaven): {mc_sign or "Unknown"}
 Venus Sign: {venus_sign or "Unknown"}
+Mars Sign: {mars_sign or "Unknown"}
 
 [Eastern Four Pillars — User]
 Year Pillar: {year_pillar or "Unknown"}
@@ -984,6 +987,7 @@ Sun Sign: {ex_sun_sign or "Unknown"}
 Moon Sign: {ex_moon_sign or "Unknown"}
 Rising Sign: {ex_rising_sign or "Unknown (birth time not provided)"}
 Venus Sign: {ex_venus_sign or "Unknown"}
+Mars Sign: {ex_mars_sign or "Unknown"}
 
 [Eastern Four Pillars — Ex]
 Year Pillar: {ex_year_pillar or "Unknown"}

@@ -48,6 +48,8 @@ class BirthProfileResponse(BaseModel):
     moon_sign: str | None
     rising_sign: str | None
     mc_sign: str | None
+    venus_sign: str | None = None
+    mars_sign: str | None = None
     year_pillar: str | None
     month_pillar: str | None
     day_pillar: str | None
@@ -117,6 +119,8 @@ def format_profile(p: BirthProfile) -> dict:
         "moon_sign": p.moon_sign,
         "rising_sign": p.rising_sign,
         "mc_sign": p.mc_sign,
+        "venus_sign": p.venus_sign,
+        "mars_sign": p.mars_sign,
         "year_pillar": p.year_pillar,
         "month_pillar": p.month_pillar,
         "day_pillar": p.day_pillar,
@@ -145,6 +149,8 @@ def compute_astrology(profile: BirthProfile) -> None:
         profile.moon_sign = chart["moon_sign"]
         profile.rising_sign = chart["rising_sign"]
         profile.mc_sign = chart.get("mc_sign")
+        profile.venus_sign = chart.get("venus_sign")
+        profile.mars_sign = chart.get("mars_sign")
     except Exception as e:
         print(f"Astrology calculation error: {e}")
 
@@ -159,6 +165,16 @@ def get_my_birth_profiles(
     profiles = db.query(BirthProfile).filter(
         BirthProfile.user_id == current_user.id
     ).all()
+
+    # 구버전 프로필 백필: venus/mars 없으면 재계산 후 저장
+    backfilled = False
+    for p in profiles:
+        if p.venus_sign is None and p.latitude and p.longitude:
+            compute_astrology(p)
+            backfilled = True
+    if backfilled:
+        db.commit()
+
     return [format_profile(p) for p in profiles]
 
 

@@ -182,6 +182,7 @@ async def generate_pair_report(
     rising_sign: str | None,
     mc_sign: str | None,
     venus_sign: str | None,
+    mars_sign: str | None,
     year_pillar: str | None,
     month_pillar: str | None,
     day_pillar: str | None,
@@ -200,6 +201,7 @@ async def generate_pair_report(
     partner_moon_sign: str | None,
     partner_rising_sign: str | None,
     partner_venus_sign: str | None,
+    partner_mars_sign: str | None,
     partner_year_pillar: str | None,
     partner_month_pillar: str | None,
     partner_day_pillar: str | None,
@@ -277,6 +279,8 @@ async def generate_pair_report(
     elif report_type == "ex":
         system_prompt, user_prompt = build_ex_prompt(
             **user_kwargs,
+            mars_sign=mars_sign,
+            ex_mars_sign=partner_mars_sign,
             ex_name=partner_name,
             ex_birth_date=partner_birth_date,
             ex_birth_time=partner_birth_time,

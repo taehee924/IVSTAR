@@ -34,6 +34,8 @@ class BirthProfile(Base):
     moon_sign = Column(String(50), nullable=True)
     rising_sign = Column(String(50), nullable=True)
     mc_sign = Column(String(50), nullable=True)
+    venus_sign = Column(String(50), nullable=True)
+    mars_sign = Column(String(50), nullable=True)
 
     # 사주 (프론트에서 계산 후 전송)
     year_pillar = Column(String(10), nullable=True)   # 년주 (ex. 임신)

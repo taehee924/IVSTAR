@@ -1,8 +1,11 @@
+from datetime import datetime
+
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
 from app.core.database import get_db, SessionLocal
+from app.core.astrology import calculate_chart
 from app.api.deps import get_current_user
 from app.models.user import User
 from app.models.report import Report, ReportType
@@ -117,6 +120,72 @@ def _profile_kwargs(profile: BirthProfile) -> dict:
         lacking_element=profile.lacking_element,
         chart_strength=profile.chart_strength,
     )
+
+
+def _partner_chart(
+    birth_date_str: str | None,
+    birth_time_str: str | None,
+    birth_place: str | None,
+    sun_sign: str | None,
+    moon_sign: str | None,
+    rising_sign: str | None,
+    venus_sign: str | None,
+    mars_sign: str | None,
+) -> dict:
+    """파트너 서양 차트 계산.
+
+    프론트가 보낸 값이 있으면 그대로 쓰고, 없으면 생년월일로 swisseph 계산해 채운다.
+    (pair 페이지는 사주만 계산해서 보내므로 서양 별자리는 여기서 채워진다)
+    """
+    out = {
+        "sun_sign": sun_sign,
+        "moon_sign": moon_sign,
+        "rising_sign": rising_sign,
+        "venus_sign": venus_sign,
+        "mars_sign": mars_sign,
+    }
+    if sun_sign or not birth_date_str:
+        return out
+
+    try:
+        pdate = datetime.strptime(birth_date_str.strip()[:10], "%Y-%m-%d").date()
+    except ValueError:
+        return out
+
+    ptime = None
+    if birth_time_str:
+        for fmt in ("%H:%M:%S", "%H:%M"):
+            try:
+                ptime = datetime.strptime(birth_time_str.strip(), fmt).time()
+                break
+            except ValueError:
+                continue
+
+    lat = lng = tz = None
+    if birth_place:
+        from app.api.v1.birth_profiles import get_location_info
+        loc = get_location_info(birth_place)
+        lat, lng, tz = loc["latitude"], loc["longitude"], loc["timezone"]
+
+    try:
+        chart = calculate_chart(
+            birth_date=pdate,
+            birth_time=ptime,
+            birth_timezone=tz,
+            latitude=lat if lat is not None else 0.0,
+            longitude=lng if lng is not None else 0.0,
+        )
+    except Exception as e:
+        print(f"Partner chart calculation failed: {e}")
+        return out
+
+    out["sun_sign"] = chart["sun_sign"]
+    out["moon_sign"] = moon_sign or chart["moon_sign"]
+    # 좌표가 없으면 하우스 계산이 부정확하므로 rising은 채우지 않음
+    out["rising_sign"] = rising_sign or (chart["rising_sign"] if lat is not None else None)
+    out["venus_sign"] = venus_sign or chart["venus_sign"]
+    out["mars_sign"] = mars_sign or chart["mars_sign"]
+    return out
 
 
 async def _run_generation(
@@ -354,6 +423,7 @@ class PairReportCreateRequest(BaseModel):
     partner_moon_sign: str | None = None
     partner_rising_sign: str | None = None
     partner_venus_sign: str | None = None
+    partner_mars_sign: str | None = None
     partner_year_pillar: str | None = None
     partner_month_pillar: str | None = None
     partner_day_pillar: str | None = None
@@ -424,20 +494,33 @@ async def create_pair_preview(
     db.commit()
     db.refresh(report)
 
+    partner_astro = _partner_chart(
+        birth_date_str=body.partner_birth_date,
+        birth_time_str=body.partner_birth_time,
+        birth_place=body.partner_birth_place,
+        sun_sign=body.partner_sun_sign,
+        moon_sign=body.partner_moon_sign,
+        rising_sign=body.partner_rising_sign,
+        venus_sign=body.partner_venus_sign,
+        mars_sign=body.partner_mars_sign,
+    )
+
     gen_kwargs = dict(
         report_type=body.report_type.value,
         user_name=current_user.name,
-        venus_sign=None,
+        venus_sign=profile.venus_sign,
+        mars_sign=profile.mars_sign,
         **_profile_kwargs(profile),
         partner_name=body.partner_name,
         partner_birth_date=body.partner_birth_date,
         partner_birth_time=body.partner_birth_time,
         partner_birth_place=body.partner_birth_place,
         partner_gender=body.partner_gender,
-        partner_sun_sign=body.partner_sun_sign,
-        partner_moon_sign=body.partner_moon_sign,
-        partner_rising_sign=body.partner_rising_sign,
-        partner_venus_sign=body.partner_venus_sign,
+        partner_sun_sign=partner_astro["sun_sign"],
+        partner_moon_sign=partner_astro["moon_sign"],
+        partner_rising_sign=partner_astro["rising_sign"],
+        partner_venus_sign=partner_astro["venus_sign"],
+        partner_mars_sign=partner_astro["mars_sign"],
         partner_year_pillar=body.partner_year_pillar,
         partner_month_pillar=body.partner_month_pillar,
         partner_day_pillar=body.partner_day_pillar,
