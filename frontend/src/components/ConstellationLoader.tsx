@@ -260,6 +260,9 @@ export default function ConstellationLoader() {
       <p className="mt-6 text-sm tracking-widest uppercase transition-opacity duration-500" style={{ color: "#c9a84c" }}>
         {MESSAGES[msgIdx]}
       </p>
+      <p className="mt-3 text-xs tracking-widest uppercase" style={{ color: "#c9a84c" }}>
+        Writing your reading — hang tight, about a minute.
+      </p>
     </main>
   );
 }
