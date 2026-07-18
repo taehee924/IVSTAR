@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 const MENU_ITEMS = [
   { href: "/about", label: "About" },
@@ -18,17 +17,13 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const pathname = usePathname();
-  const { status } = useSession();
 
+  // 로그인 여부와 무관하게 7초간 표시
   useEffect(() => {
-    if (status === "unauthenticated") {
-      setShowTooltip(true);
-      const timer = setTimeout(() => setShowTooltip(false), 10000);
-      return () => clearTimeout(timer);
-    } else {
-      setShowTooltip(false);
-    }
-  }, [status]);
+    setShowTooltip(true);
+    const timer = setTimeout(() => setShowTooltip(false), 7000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleMenuOpen = () => {
     setOpen(true);

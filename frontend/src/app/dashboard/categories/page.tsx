@@ -116,8 +116,15 @@ export default function CategoriesPage() {
                 </div>
               )}
               <div className="bg-[#EDE8DC] p-3 flex items-center justify-between">
-                <p className="font-medium text-sm text-gray-800">{r.label}</p>
-                <p className="text-xs font-semibold text-gray-700">{r.price}</p>
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <p className="font-medium text-sm text-gray-800 truncate">{r.label}</p>
+                  {(r.type === "ex" || r.type === "daily") && (
+                    <span className="shrink-0 rounded-md bg-gray-900 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white">
+                      Best
+                    </span>
+                  )}
+                </div>
+                <p className="shrink-0 text-xs font-semibold text-gray-700">{r.price}</p>
               </div>
             </div>
           ))}
