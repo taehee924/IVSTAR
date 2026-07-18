@@ -2,7 +2,7 @@ import Image from "next/image";
 import { LoginButtons } from "@/components/auth/LoginButtons";
 
 export default function LoginPage({ searchParams }: { searchParams: { callbackUrl?: string } }) {
-  const callbackUrl = searchParams.callbackUrl || "/dashboard";
+  const callbackUrl = searchParams.callbackUrl || "/dashboard/me";
   return (
     <main className="min-h-screen flex items-center justify-center bg-[#FFFBF5] p-6">
       <div className="w-full max-w-sm space-y-6">

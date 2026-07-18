@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 
-export function LoginButtons({ callbackUrl = "/dashboard" }: { callbackUrl?: string }) {
+export function LoginButtons({ callbackUrl = "/dashboard/me" }: { callbackUrl?: string }) {
   return (
     <button
       onClick={() => signIn("google", { callbackUrl })}
