@@ -118,7 +118,7 @@ export default function CategoriesPage() {
                   {r.type === "ex" && <StarburstBadge text="Hot" />}
                   {(r.type === "career" || r.type === "wealth") && (
                     <div className="absolute inset-0 z-10 flex items-center justify-center">
-                      <span className="rounded-lg border-2 border-[#992222] bg-[#C62F2F] px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-tight text-white drop-shadow-md">
+                      <span className="border-2 border-[#992222] bg-[#C62F2F] px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-tight text-white drop-shadow-md">
                         Coming Soon
                       </span>
                     </div>
