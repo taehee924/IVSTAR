@@ -53,7 +53,7 @@ export default function DashboardPage() {
       </div>
 
       {/* 소셜 미디어 링크 (우측 하단 고정) */}
-      <div className="fixed bottom-20 right-5 z-40 flex flex-col items-center gap-3">
+      <div className="fixed bottom-6 right-5 z-40 flex flex-col items-center gap-3">
         {/* Instagram */}
         <a
           href="https://www.instagram.com/ivstarastrology/"
@@ -85,8 +85,7 @@ export default function DashboardPage() {
       {/* 하단 고정 CTA — 테마 페이지로 이동 */}
       <Link
         href="/dashboard/categories"
-        className="fixed bottom-0 left-0 right-0 z-40 block bg-gray-900 py-4 text-center text-base font-semibold text-white font-crimson hover:bg-gray-700 transition-colors"
-        style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom))" }}
+        className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 bg-gray-900 px-8 py-3 text-base font-semibold text-white font-crimson shadow-lg hover:bg-gray-700 transition-colors"
       >
         Start My Reading
       </Link>
