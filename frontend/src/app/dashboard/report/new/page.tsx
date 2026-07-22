@@ -285,6 +285,10 @@ function NewReportContent() {
         >
           ← Back
         </button>
+
+        <p className="pt-4 text-center text-xs text-gray-600 font-crimson">
+          Your personal information is used only to generate your reading.
+        </p>
       </div>
     </main>
   );
