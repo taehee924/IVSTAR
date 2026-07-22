@@ -6,6 +6,7 @@ import { useEffect, useState, use, useRef } from "react";
 import ReactMarkdown, { Components } from "react-markdown";
 import Header from "@/components/layout/Header";
 import ConstellationLoader from "@/components/ConstellationLoader";
+import { enlargePercent } from "@/lib/enlargePercent";
 
 interface Report {
   id: number;
@@ -167,6 +168,12 @@ const mdComponents: Components = {
   ),
 };
 
+// ── 오프닝 카드 전용: 퍼센트 수치만 1.5배 크게 ──────────────
+const openingMdComponents: Components = {
+  ...mdComponents,
+  p: ({ children }) => <p>{enlargePercent(children)}</p>,
+};
+
 // ── 범용 아코디언 컴포넌트 ────────────────────────────────────
 function ReportAccordion({
   content,
@@ -194,7 +201,7 @@ function ReportAccordion({
       {/* Opening Card / Snapshot — 항상 노출 */}
       {opening && (
         <div className="rounded-xl border border-[#DDD8CE]/60 bg-[#EDE8DC] px-4 py-3 prose prose-sm max-w-none text-gray-700 font-crimson text-[17px]">
-          <ReactMarkdown components={mdComponents}>{opening}</ReactMarkdown>
+          <ReactMarkdown components={openingMdComponents}>{opening}</ReactMarkdown>
         </div>
       )}
 
