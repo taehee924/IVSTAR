@@ -40,7 +40,7 @@ const REPORT_SECTION_EMOJIS: Record<string, string[]> = {
   crush:         ["👀", "💭", "🫧", "📊", "💕", "💌", "🔮"],
   ex:            ["🌊","✨", "💫","🏠","🔍","⚡", "💞", "🧭", "🔮"],
   situationship: ["👀", "🫧", "💞", "💌", "🚩", "💕", "🔮"],
-  love:          ["🌌", "✨", "💞", "🏠", "🔥", "⚡", "🔮"],
+  love:          ["🌌", "✨", "💞", "⚡", "💡", "🔮"],
 };
 
 interface ParsedSection {
