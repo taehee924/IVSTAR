@@ -128,7 +128,8 @@ async def generate_report(
         )
         system_prompt, user_prompt = build_life_cycles_prompt(
             **kwargs,
-            venus_sign=None,
+            venus_sign=venus_sign,
+            mars_sign=mars_sign,
             current_age=current_age,
             current_daewoon=current_daewoon,
             daewoon_age_range=daewoon_age_range,
