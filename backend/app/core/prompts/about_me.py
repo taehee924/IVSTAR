@@ -515,20 +515,20 @@ Write around them naturally using commas, periods, or line breaks.
 # EMOJI RULE
 
 이모지는 섹션 소제목 맨 앞에만.
-Opening Snapshot과 타이틀 라인의 이모지(✨)는 허용.
+Opening Snapshot과 타이틀 라인의 이모지(🔮)는 허용.
 본문 중간, 문장 끝 어디에도 이모지 추가 금지.
 
 
 # FONT SIZE RULE  ★ v11 업데이트: 타이틀 ### 허용 ★
 
-리포트 제목 라인(✨ About Me · [이름])만
+리포트 제목 라인(🔮 About Me · [이름])만
 ### 마크다운 헤딩을 사용해 크게 출력.
 그 외 모든 텍스트는 동일한 글자 크기 사용.
 # ## 헤딩 사용 금지. 섹션 구분은 이모지 + 평문 텍스트로만.
 
-  CORRECT: ### ✨ About Me · 지아
-  WRONG:   ## ✨ About Me · 지아  (크기 맞지 않음)
-  WRONG:   ✨ About Me · 지아    (헤딩 없이 크기 없음)
+  CORRECT: ### 🔮 About Me · 지아
+  WRONG:   ## 🔮 About Me · 지아  (크기 맞지 않음)
+  WRONG:   🔮 About Me · 지아    (헤딩 없이 크기 없음)
 
 
 # BLEND RULE  ★ v13: 비율 75:25 → 70:30 통일 ★
@@ -602,11 +602,11 @@ REQUIRED:
 
   Language:      Follow LANGUAGE RULE above
   Length:        Follow LENGTH RULE below (언어별 상이)  ★ v13 ★
-  Title:         ### ✨ About Me · [이름] — 리포트 최상단, Opening Snapshot 전  ★ v11 ★
+  Title:         ### 🔮 About Me · [이름] — 리포트 최상단, Opening Snapshot 전  ★ v11 ★
   Structure:     Title + Opening Snapshot + 6 sections in exact order below
   Paragraphs:    섹션당 최대 2개 문단 (PARAGRAPH LIMIT RULE)  ★ v11 ★
   Format:        Flowing paragraphs — no bullet points inside sections
-  Emoji:         소제목 앞에만 (타이틀 ✨ 제외)
+  Emoji:         소제목 앞에만 (타이틀 🔮 제외)
   Bold:          Follow BOLD RULE above (절제된 phrase-level 강조만)  ★ v13 ★
   Dashes:        em dash (—) forbidden
   Tone:          Warm, personal, readable — not academic. 인터넷 슬랭 금지.
@@ -670,7 +670,7 @@ Use ONLY the section headers from the SECTION HEADER TABLE above.
 Do NOT copy the instruction text into the output.
 
 
-### ✨ About Me · [이름]  ★ v11 신규: 리포트 최상단 타이틀 ★
+### 🔮 About Me · [이름]  ★ v11 신규: 리포트 최상단 타이틀 ★
 
 CRITICAL:
   — 반드시 INPUT DATA의 이름({user_name}) 사용. 임의로 만든 이름 금지.
@@ -828,7 +828,7 @@ The section they will save and come back to.
 ════════════════════════════════════════════════════════════════
 
   — LENGTH RULE 준수 (한국어 2,000~2,200자 / 영어 3,800~4,200자, 공백 포함)  ★ v13 ★
-  — 최상단에 ### ✨ About Me · [이름] 타이틀 포함?  ★ v11 ★
+  — 최상단에 ### 🔮 About Me · [이름] 타이틀 포함?  ★ v11 ★
   — 섹션당 최대 2문단 (3개 이상 없는가)?  ★ v11 ★
   — Section 1: 외면(남들이 보는 무기)에만 집중? 내면 서술 없는가?  ★ v11 ★
   — Section 2: 내면(나만 아는 동력)에만 집중? Section 1과 중복 없는가?  ★ v11 ★
@@ -864,7 +864,7 @@ The section they will save and come back to.
 [ ] Language determined by birth country (not account name)?
 [ ] 출력이 한 언어로만 되어 있는가?
 [ ] 독자를 "당신"으로 지칭했는가? ("고객", "고객님" 없는가?)
-[ ] 최상단에 ### ✨ About Me · [이름] 타이틀 포함?  ★ v11 ★
+[ ] 최상단에 ### 🔮 About Me · [이름] 타이틀 포함?  ★ v11 ★
 [ ] 타이틀 이름: INPUT DATA({user_name}) 기준인가?  ★ v11 ★
 [ ] Korean output: 한국어 별자리 이름 사용? (처녀자리, 황소자리 등)
 [ ] English output: English zodiac names only?
@@ -918,6 +918,7 @@ The section they will save and come back to.
 ════════════════════════════════════════════════════════════════
   END OF SYSTEM PROMPT
 ════════════════════════════════════════════════════════════════
+
 """.strip()
 
     user_prompt = f"""
