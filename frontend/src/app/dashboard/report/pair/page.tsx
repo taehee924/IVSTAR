@@ -98,6 +98,7 @@ function PairReportContent() {
   // 태어난 장소
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
+  const [cityUnknown, setCityUnknown] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -330,7 +331,7 @@ function PairReportContent() {
               onChange={setCountry}
               className={selectClass}
             />
-            {country && (
+            {country && !cityUnknown && (
               <input
                 type="text"
                 placeholder={ALL_COUNTRIES.find((c) => c.name === country)?.city_placeholder ?? "Enter your birth city. E.g. Seoul"}
@@ -339,6 +340,18 @@ function PairReportContent() {
                 className={selectClass}
               />
             )}
+            <label className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={cityUnknown}
+                onChange={(e) => {
+                  setCityUnknown(e.target.checked);
+                  if (e.target.checked) setCity("");
+                }}
+                className="rounded"
+              />
+              I don't know their birth city
+            </label>
           </div>
 
           {/* 성별 */}
