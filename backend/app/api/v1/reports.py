@@ -430,6 +430,8 @@ async def create_full_report(
     gen_kwargs = dict(
         report_type=body.report_type.value,
         user_name=current_user.name,
+        venus_sign=profile.venus_sign,
+        mars_sign=profile.mars_sign,
         **_profile_kwargs(profile),
     )
     background_tasks.add_task(

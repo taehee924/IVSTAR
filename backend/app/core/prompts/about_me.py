@@ -16,6 +16,8 @@ def build_about_me_prompt(
     lacking_element: str | None,
     chart_strength: str | None,
     user_name: str | None = None,
+    venus_sign: str | None = None,
+    mars_sign: str | None = None,
 ) -> tuple[str, str]:
     """About Me 리포트 시스템 프롬프트 + 유저 프롬프트 반환"""
 
@@ -906,6 +908,8 @@ Sun Sign: {sun_sign or "Unknown"}
 Moon Sign: {moon_sign or "Unknown"}
 Rising Sign: {rising_sign or "Unknown (birth time not provided)"}
 MC (Midheaven): {mc_sign or "Unknown"}
+Venus Sign: {venus_sign or "Unknown"}
+Mars Sign: {mars_sign or "Unknown"}
 
 [Eastern Four Pillars (사주)]
 Year Pillar: {year_pillar or "Unknown"}

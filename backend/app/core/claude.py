@@ -87,6 +87,8 @@ async def generate_report(
     lacking_element: str | None = None,
     chart_strength: str | None = None,
     user_name: str | None = None,
+    venus_sign: str | None = None,
+    mars_sign: str | None = None,
 ) -> str:
     """Claude API 호출 → 리포트 텍스트 반환"""
 
@@ -112,7 +114,9 @@ async def generate_report(
 
     # ── 타입별 프롬프트 라우팅 ─────────────────────────────────
     if report_type == "general":
-        system_prompt, user_prompt = build_about_me_prompt(**kwargs)
+        system_prompt, user_prompt = build_about_me_prompt(
+            **kwargs, venus_sign=venus_sign, mars_sign=mars_sign
+        )
 
     elif report_type == "life_cycle":
         current_age = calculate_current_age(birth_date)
@@ -242,6 +246,7 @@ async def generate_pair_report(
         rising_sign=rising_sign,
         mc_sign=mc_sign,
         venus_sign=venus_sign,
+        mars_sign=mars_sign,
         year_pillar=year_pillar,
         month_pillar=month_pillar,
         day_pillar=day_pillar,
@@ -264,6 +269,7 @@ async def generate_pair_report(
             crush_moon_sign=partner_moon_sign,
             crush_rising_sign=partner_rising_sign,
             crush_venus_sign=partner_venus_sign,
+            crush_mars_sign=partner_mars_sign,
             crush_year_pillar=partner_year_pillar,
             crush_month_pillar=partner_month_pillar,
             crush_day_pillar=partner_day_pillar,
@@ -285,6 +291,7 @@ async def generate_pair_report(
             crush_moon_sign=partner_moon_sign,
             crush_rising_sign=partner_rising_sign,
             crush_venus_sign=partner_venus_sign,
+            crush_mars_sign=partner_mars_sign,
             crush_year_pillar=partner_year_pillar,
             crush_month_pillar=partner_month_pillar,
             crush_day_pillar=partner_day_pillar,
@@ -297,7 +304,6 @@ async def generate_pair_report(
     elif report_type == "ex":
         system_prompt, user_prompt = build_ex_prompt(
             **user_kwargs,
-            mars_sign=mars_sign,
             ex_mars_sign=partner_mars_sign,
             ex_name=partner_name,
             ex_birth_date=partner_birth_date,
@@ -329,6 +335,7 @@ async def generate_pair_report(
             partner_moon_sign=partner_moon_sign,
             partner_rising_sign=partner_rising_sign,
             partner_venus_sign=partner_venus_sign,
+            partner_mars_sign=partner_mars_sign,
             partner_year_pillar=partner_year_pillar,
             partner_month_pillar=partner_month_pillar,
             partner_day_pillar=partner_day_pillar,
