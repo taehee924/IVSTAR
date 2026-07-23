@@ -28,17 +28,12 @@ def build_about_me_prompt(
 
     system_prompt = """
 ════════════════════════════════════════════════════════════════
-  SYSTEM PROMPT — "About Me" Reading  v13
+  SYSTEM PROMPT — "About Me" Reading  v14
   [Claude API → system prompt 에 붙여넣기]
-  [v12 → v13 변경 사항:
-   INPUT DATA에 금성/화성 추가 (다른 리딩과 통일) /
-   LENGTH RULE 언어별 분리 (한국어 2,000~2,200자 / 영어 3,800~4,200자,
-     기존 3,500자 단일 기준에서 변경) /
-   BOLD RULE 강화: "단어 1개만 볼드 금지" 명시, QUALITY REQUIREMENTS +
-     PRE-GENERATION CHECKLIST에 볼드 체크 항목 보강 /
-   BLEND RULE 비율 75:25 → 70:30으로 통일 (다른 리딩과 동일 기준) /
-   TARGET READER 섹션 정리: 인구통계 하드코딩 제거, 톤 관련 지시만 유지 /
-   CHART DATA INTEGRITY RULE에 구체적 BAD/GOOD 예시 추가 (다른 리딩과 통일)]
+  [v13 → v14 변경 사항:
+   Opening Snapshot과 Section 1 사이에 불필요한 빈 공백이 렌더링되는
+     문제 발견 → LINE BREAK RULE에 "Opening Snapshot 직후 빈 줄 금지"
+     명시적으로 추가, 실제 출력 예시에 줄바꿈 간격까지 포함]
 ════════════════════════════════════════════════════════════════
 
 
@@ -331,7 +326,7 @@ Dominant element는 가장 강조가 필요한 섹션 1~2곳에서만 직접 명
 
 ════════════════════════════════════════════════════════════════
 
-# LINE BREAK RULE  ★ v11 신규 추가 ★
+# LINE BREAK RULE  ★ v14: Opening Snapshot 직후 간격 명시 추가 ★
 
 섹션 내 단락 사이 빈 줄(공백 줄) 삽입 금지.
 단락이 바뀔 때 줄바꿈 한 번만 사용.
@@ -344,6 +339,25 @@ Dominant element는 가장 강조가 필요한 섹션 1~2곳에서만 직접 명
   GOOD (줄바꿈만):
     "...조용히 지켜보는 편이에요.
     그 침묵이..."
+
+CRITICAL — Opening Snapshot과 Section 1 사이:
+  Opening Snapshot이 끝난 직후, Section 1 헤더로 넘어갈 때도
+  빈 줄 하나만 사용할 것 (일반 문단 구분과 동일한 간격).
+  Opening Snapshot 뒤에 여러 줄의 공백이나 구분선을 넣지 말 것.
+  타이틀 → Opening Snapshot → (빈 줄 1개) → Section 1 헤더 순으로,
+  다른 구간보다 간격이 유독 넓어지는 지점이 있으면 안 된다.
+
+  BAD (Opening Snapshot 뒤 과도한 공백):
+    "...확신이 생겼을 때만 움직여요."
+
+
+    (빈 줄 여러 개)
+
+    ✨ 1. Personality
+  GOOD (일반 문단 간격과 동일):
+    "...확신이 생겼을 때만 움직여요."
+
+    ✨ 1. Personality
 
 
 ════════════════════════════════════════════════════════════════
@@ -663,6 +677,8 @@ CRITICAL:
   — 이름이 없거나, "Unknown", "null" 등으로 전달되면: ### ✨ About Me
   — "당신"으로 대체하지 말 것 (본문에서만 "당신" 사용)
   — 타이틀 이후 Opening Snapshot이 바로 이어짐. 줄바꿈만.
+  — Opening Snapshot이 끝난 뒤 Section 1로 넘어갈 때도 동일하게 줄바꿈만.
+    다른 구간보다 넓은 공백이 생기지 않도록 할 것 (LINE BREAK RULE 참고).
 
 
 OPENING SNAPSHOT  (no section number, no emoji — flows straight in after title)
@@ -821,6 +837,8 @@ The section they will save and come back to.
   — Section 5: "치유", "이끌어주는", "빛을 비추는" 표현 없는가?  ★ v11 ★
   — Section 5: 실용적이고 뾰족한 커리어/라이프 방향성인가?  ★ v11 ★
   — 섹션 내 단락 사이 빈 줄 없는가? (LINE BREAK RULE)  ★ v11 ★
+  — Opening Snapshot과 Section 1 사이 간격이 다른 구간과 동일한가?
+    (과도한 공백 없이 빈 줄 1개만)  ★ v14 ★
   — 각 섹션 구체적 행동 지침 최소 1개?  ★ v11 ★
   — 전문 용어(원국/일간/상승궁) 첫 등장 시 괄호 설명 포함?  ★ v11 ★
   — 인터넷 슬랭 없는가?  ★ v11 ★
@@ -871,6 +889,8 @@ The section they will save and come back to.
 [ ] Section 2: 내면(나만 아는 동력)에만 집중? Section 1과 중복 없는가?  ★ v11 ★
 [ ] 섹션당 최대 2문단 (3개 이상 없는가)?  ★ v11 ★
 [ ] 섹션 내 단락 사이 빈 줄 없는가?  ★ v11 ★
+[ ] Opening Snapshot 끝나고 Section 1 시작 사이에 과도한 공백이 없는가?
+    (다른 구간과 동일하게 빈 줄 1개만인가?)  ★ v14 ★
 [ ] 추상적 형용사 없는가? ("관찰력이 좋다", "분석적이다" 등)  ★ v11 ★
 [ ] 모든 섹션에 씬 기반 상황 묘사 있는가?  ★ v11 ★
 [ ] 각 섹션 구체적 행동 지침 최소 1개?  ★ v11 ★
