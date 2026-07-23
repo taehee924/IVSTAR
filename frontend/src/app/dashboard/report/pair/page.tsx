@@ -123,14 +123,15 @@ function PairReportContent() {
     ? Array.from({ length: getDaysInMonth(Number(year), Number(month)) }, (_, i) => i + 1)
     : Array.from({ length: 31 }, (_, i) => i + 1);
 
-  const isValid = year !== "" && month !== "" && day !== "";
+  const isValid = year !== "" && month !== "" && day !== "" && country !== "";
 
   const selectClass =
     "w-full rounded-lg border border-[#DDD8CE] bg-[#EDE8DC] px-3 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-violet-400";
 
   const handleCreate = async () => {
     if (!session) { router.push("/login"); return; }
-    if (!isValid) { setError("Please enter their date of birth."); return; }
+    if (year === "" || month === "" || day === "") { setError("Please enter their date of birth."); return; }
+    if (country === "") { setError("Please select their birth country."); return; }
 
     setLoading(true);
     setError("");
@@ -324,7 +325,7 @@ function PairReportContent() {
           {/* 태어난 장소 */}
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-gray-700">
-              Birth Place <span className="text-gray-400 text-xs">(optional)</span>
+              Birth Country <span className="text-red-400">*</span>
             </label>
             <CountrySelect
               value={country}
