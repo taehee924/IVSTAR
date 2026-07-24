@@ -31,12 +31,14 @@ def _get_client() -> anthropic.AsyncAnthropic:
 
 
 async def _call_claude(system_prompt: str, user_prompt: str, cache: bool = False) -> str:
-    # cache=True면 시스템 프롬프트를 캐시 가능한 블록으로 전달 (기본 TTL 5분)
+    # cache=True면 시스템 프롬프트를 캐시 가능한 블록으로 전달.
+    # TTL 1시간: 쓰기 2배(5분은 1.25배)로 비싸지만 유지 시간이 12배 길어,
+    # 요청이 띄엄띄엄 들어오는 현재 트래픽에서 적중률이 훨씬 높다.
     system_param = (
         [{
             "type": "text",
             "text": system_prompt,
-            "cache_control": {"type": "ephemeral"},
+            "cache_control": {"type": "ephemeral", "ttl": "1h"},
         }]
         if cache
         else system_prompt
