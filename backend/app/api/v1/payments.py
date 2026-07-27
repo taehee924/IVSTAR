@@ -76,6 +76,50 @@ def get_payment_or_404(payment_id: int, user_id: int, db: Session) -> Payment:
     return payment
 
 
+def _extract_capture(capture_data: dict) -> dict:
+    """PayPal capture 응답에서 첫 번째 capture 객체를 뽑는다."""
+    return (
+        capture_data
+        .get("purchase_units", [{}])[0]
+        .get("payments", {})
+        .get("captures", [{}])[0]
+    )
+
+
+def _verify_capture(
+    capture: dict,
+    expected_cents: int,
+    expected_currency: str,
+    payment: Payment,
+    db: Session,
+) -> None:
+    """캡처의 상태와 금액이 기대값과 일치하는지 검증.
+
+    불일치 시 payment를 failed로 기록하고 예외를 던진다.
+    - status가 COMPLETED가 아니면 결제가 실제로 완료되지 않은 것
+    - 금액/통화가 다르면 클라이언트가 주문 금액을 조작한 것
+    """
+    def fail(detail: str):
+        payment.status = PaymentStatus.failed
+        db.commit()
+        raise HTTPException(status_code=400, detail=detail)
+
+    if capture.get("status") != "COMPLETED":
+        fail(f"Capture not completed (status={capture.get('status')})")
+
+    amount = capture.get("amount", {})
+    value = amount.get("value")
+    currency = amount.get("currency_code")
+    if value is None:
+        fail("Capture amount missing")
+
+    captured_cents = int(round(float(value) * 100))
+    if captured_cents != expected_cents:
+        fail(f"Captured amount {value} does not match expected {expected_cents / 100:.2f}")
+    if currency != expected_currency:
+        fail(f"Captured currency {currency} does not match expected {expected_currency}")
+
+
 async def get_paypal_access_token() -> str:
     """PayPal OAuth 토큰 발급"""
     async with httpx.AsyncClient() as client:
@@ -239,24 +283,25 @@ async def paypal_capture_order(
         raise HTTPException(status_code=502, detail="PayPal 캡처 실패")
 
     capture_data = res.json()
-    capture_id = (
-        capture_data
-        .get("purchase_units", [{}])[0]
-        .get("payments", {})
-        .get("captures", [{}])[0]
-        .get("id")
-    )
+    capture = _extract_capture(capture_data)
+
+    # 캡처 상태·금액 검증 (조작·미완료 캡처 차단)
+    _verify_capture(capture, expected_cents=payment.amount, expected_currency=payment.currency, payment=payment, db=db)
 
     # Payment 업데이트
     payment.status = PaymentStatus.paid
-    payment.paypal_capture_id = capture_id
+    payment.paypal_capture_id = capture.get("id")
 
-    # Report에 payment_id 연결
+    # Report에 payment_id 연결 — 결제 금액이 리포트 가격과 일치할 때만
     report = db.query(Report).filter(
         Report.id == body.report_id,
         Report.user_id == current_user.id,
     ).first()
     if report:
+        if int(round(float(report.price) * 100)) != payment.amount:
+            payment.status = PaymentStatus.failed
+            db.commit()
+            raise HTTPException(status_code=400, detail="Payment amount does not match report price")
         report.payment_id = payment.id
 
     db.commit()
@@ -362,20 +407,17 @@ async def star_capture_order(
         raise HTTPException(status_code=502, detail="PayPal 캡처 실패")
 
     capture_data = res.json()
-    capture_id = (
-        capture_data
-        .get("purchase_units", [{}])[0]
-        .get("payments", {})
-        .get("captures", [{}])[0]
-        .get("id")
-    )
+    capture = _extract_capture(capture_data)
+
+    # 캡처 상태·금액 검증 (조작·미완료 캡처 차단)
+    _verify_capture(capture, expected_cents=payment.amount, expected_currency=payment.currency, payment=payment, db=db)
 
     stars_to_add = next(
         (qty for qty, pack in STAR_PACKS.items() if pack["amount_cents"] == payment.amount),
         1,
     )
     payment.status = PaymentStatus.paid
-    payment.paypal_capture_id = capture_id
+    payment.paypal_capture_id = capture.get("id")
     current_user.stars = (current_user.stars or 0) + stars_to_add
     db.commit()
     db.refresh(current_user)
