@@ -16,11 +16,6 @@ _TRANSIENT_CODES = ("529", "503", "overloaded", "429", "rate_limit", "UNAVAILABL
 
 _MODEL = "claude-sonnet-4-6"
 
-# 프롬프트 캐싱(5분 TTL) 적용 대상 리딩 타입.
-# 시스템 프롬프트는 타입별로 고정이라 캐시 가능 — 개인 데이터는 user 메시지로만 전달된다.
-# 캐시 적중 시 해당 입력분 비용 약 90% 절감, 미적중 시 쓰기 프리미엄 25%만 발생.
-_CACHED_REPORT_TYPES = {"general", "ex"}
-
 _client: anthropic.AsyncAnthropic | None = None
 
 def _get_client() -> anthropic.AsyncAnthropic:
@@ -30,20 +25,7 @@ def _get_client() -> anthropic.AsyncAnthropic:
     return _client
 
 
-async def _call_claude(system_prompt: str, user_prompt: str, cache: bool = False) -> str:
-    # cache=True면 시스템 프롬프트를 캐시 가능한 블록으로 전달.
-    # TTL 1시간: 쓰기 2배(5분은 1.25배)로 비싸지만 유지 시간이 12배 길어,
-    # 요청이 띄엄띄엄 들어오는 현재 트래픽에서 적중률이 훨씬 높다.
-    system_param = (
-        [{
-            "type": "text",
-            "text": system_prompt,
-            "cache_control": {"type": "ephemeral", "ttl": "1h"},
-        }]
-        if cache
-        else system_prompt
-    )
-
+async def _call_claude(system_prompt: str, user_prompt: str) -> str:
     last_error: Exception | None = None
     for attempt, delay in enumerate([0] + _RETRY_DELAYS):
         if delay:
@@ -52,7 +34,7 @@ async def _call_claude(system_prompt: str, user_prompt: str, cache: bool = False
             response = await _get_client().messages.create(
                 model=_MODEL,
                 max_tokens=8192,
-                system=system_param,
+                system=system_prompt,
                 messages=[{"role": "user", "content": user_prompt}],
             )
             return response.content[0].text
@@ -189,9 +171,7 @@ async def generate_report(
             f"Day Master (일간): {day_master or 'unknown'}."
         )
 
-    return await _call_claude(
-        system_prompt, user_prompt, cache=report_type in _CACHED_REPORT_TYPES
-    )
+    return await _call_claude(system_prompt, user_prompt)
 
 
 async def generate_pair_report(
@@ -351,6 +331,4 @@ async def generate_pair_report(
     else:
         raise ValueError(f"'{report_type}' is not a valid pair reading type.")
 
-    return await _call_claude(
-        system_prompt, user_prompt, cache=report_type in _CACHED_REPORT_TYPES
-    )
+    return await _call_claude(system_prompt, user_prompt)
