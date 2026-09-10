@@ -9,6 +9,8 @@ from app.core.prompts.Crush import build_crush_prompt
 from app.core.prompts.Situationship import build_situationship_prompt
 from app.core.prompts.Ex import build_ex_prompt
 from app.core.prompts.Couple import build_couple_prompt
+from app.core.prompts.career import build_career_prompt
+from app.core.prompts.wealth import build_wealth_prompt
 
 _RETRY_DELAYS = [3, 7, 15, 30]  # seconds between retries
 
@@ -161,8 +163,40 @@ async def generate_report(
             "Use the /api/v1/reports/pair endpoint instead."
         )
 
+    elif report_type == "career":
+        system_prompt, user_prompt = build_career_prompt(
+            user_name=user_name or "",
+            birth_date=birth_date,
+            birth_time=birth_time,
+            birth_place=birth_place,
+            sun_sign=sun_sign,
+            moon_sign=moon_sign,
+            rising_sign=rising_sign,
+            mc_sign=mc_sign,
+            day_master=day_master,
+            dominant_element=dominant_element,
+            lacking_element=lacking_element,
+            chart_strength=chart_strength,
+        )
+
+    elif report_type == "wealth":
+        system_prompt, user_prompt = build_wealth_prompt(
+            user_name=user_name,
+            birth_date=birth_date,
+            birth_time=birth_time,
+            birth_place=birth_place,
+            sun_sign=sun_sign,
+            moon_sign=moon_sign,
+            rising_sign=rising_sign,
+            mc_sign=mc_sign,
+            day_master=day_master,
+            dominant_element=dominant_element,
+            lacking_element=lacking_element,
+            chart_strength=chart_strength,
+        )
+
     else:
-        # career / wealth / health — 프롬프트 파일 미완성
+        # health 등 — 프롬프트 파일 미완성
         system_prompt = "You are a professional astrologer and saju reader."
         user_prompt = (
             f"Write a {report_type} reading in Korean for someone born on "

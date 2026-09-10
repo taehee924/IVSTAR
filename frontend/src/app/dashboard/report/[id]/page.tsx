@@ -41,6 +41,8 @@ const REPORT_SECTION_EMOJIS: Record<string, string[]> = {
   ex:            ["🌊","✨", "💫","🏠","🔍","⚡", "💞", "🧭", "🔮"],
   situationship: ["👀", "🫧", "💞", "💌", "🚩", "💕", "🔮"],
   love:          ["🌌", "✨", "💞", "⚡", "💡", "🔮"],
+  career:        ["💡", "🌍", "🤝", "💰", "🔋", "🌟", "🔮"],
+  wealth:        ["💎", "💸", "🛡", "📈"],
 };
 
 interface ParsedSection {

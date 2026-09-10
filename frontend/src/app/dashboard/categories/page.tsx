@@ -15,8 +15,8 @@ const REPORT_TYPES = [
   { type: "crush", label: "Crush", description: "", price: "1 Star", category: "love" },
   { type: "ex", label: "Ex", description: "", price: "1 Star", category: "love" },
   { type: "situationship", label: "Situationship", description: "", price: "1 Star", category: "love" },
-  { type: "career", label: "Career", description: "", price: "Coming Soon", category: "money" },
-  { type: "wealth", label: "Wealth", description: "", price: "Coming Soon", category: "money" },
+  { type: "career", label: "Career", description: "", price: "1 Star", category: "money" },
+  { type: "wealth", label: "Wealth", description: "", price: "1 Star", category: "money" },
 ];
 
 const TABS = [
@@ -116,13 +116,6 @@ export default function CategoriesPage() {
                 <div className="relative aspect-[3/4] w-full">
                   {r.type === "daily" && <StarburstBadge text="Best" />}
                   {r.type === "ex" && <StarburstBadge text="Hot" />}
-                  {(r.type === "career" || r.type === "wealth") && (
-                    <div className="absolute inset-0 z-10 flex items-center justify-center">
-                      <span className="border-2 border-[#992222] bg-[#C62F2F] px-3 py-1.5 text-[12px] font-extrabold uppercase tracking-tight text-white drop-shadow-md">
-                        Coming Soon
-                      </span>
-                    </div>
-                  )}
                   <Image
                     src={
                       r.type === "daily" ? "/horoscope.png" :
