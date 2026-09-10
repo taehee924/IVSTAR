@@ -115,14 +115,14 @@ export default function CategoriesPage() {
             onClick={() => !checkingProfile && handleCardClick("daily_free")}
             className={`rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition-shadow ${checkingProfile ? "opacity-60 pointer-events-none" : ""}`}
           >
-            {/* 21:9 배너 — TODO: <Image src="/daily.png" alt="Daily Free" fill style={{ objectFit: "cover" }} /> */}
-            <div className="relative w-full aspect-[21/9] bg-[#1c1206] flex items-center justify-center">
+            {/* 42:9 배너 — TODO: <Image src="/daily.png" alt="Daily Free" fill style={{ objectFit: "cover" }} /> */}
+            <div className="relative w-full aspect-[42/9] bg-[#1c1206] flex items-center justify-center">
               <span className="font-crimson text-2xl uppercase tracking-[0.3em] text-[#C9A84C]">
                 Daily Free
               </span>
             </div>
             <div className="bg-[#EDE8DC] p-3 flex items-center justify-between">
-              <p className="font-medium text-sm text-gray-800">Daily</p>
+              <p className="font-medium text-sm text-gray-800">Daily Horoscope</p>
               <p className="shrink-0 text-xs font-semibold text-gray-700">Free</p>
             </div>
           </div>
