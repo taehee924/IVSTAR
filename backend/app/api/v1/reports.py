@@ -366,6 +366,67 @@ async def create_free_preview(
     return format_report(report, db)
 
 
+class DailyFreeRequest(BaseModel):
+    birth_profile_id: int
+
+
+@router.post("/daily")
+async def create_daily_free(
+    body: DailyFreeRequest,
+    background_tasks: BackgroundTasks,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """무료 데일리 운세 생성 (별/결제 없음).
+
+    하루 1회 원칙: 오늘(KST) 이미 생성한 데일리가 있으면 그것을 그대로 반환한다.
+    (무료 반복 생성으로 인한 API 비용 남용 방지)
+    """
+    profile = db.query(BirthProfile).filter(
+        BirthProfile.id == body.birth_profile_id,
+        BirthProfile.user_id == current_user.id,
+    ).first()
+    if not profile:
+        raise HTTPException(status_code=404, detail="Birth profile not found")
+
+    # 오늘(KST) 이미 만든 데일리가 있으면 재사용 (failed 제외)
+    kst = timezone(timedelta(hours=9))
+    today_start = datetime.now(kst).replace(hour=0, minute=0, second=0, microsecond=0)
+    existing = (
+        db.query(Report)
+        .filter(
+            Report.user_id == current_user.id,
+            Report.report_type == ReportType.daily_free,
+            Report.created_at >= today_start.astimezone(timezone.utc),
+            Report.status != "failed",
+        )
+        .order_by(Report.created_at.desc())
+        .first()
+    )
+    if existing:
+        return format_report(existing, db)
+
+    report = Report(
+        user_id=current_user.id,
+        birth_profile_id=profile.id,
+        report_type=ReportType.daily_free,
+        content="",
+        price=0.00,
+        status="generating",
+    )
+    db.add(report)
+    db.commit()
+    db.refresh(report)
+
+    gen_kwargs = dict(
+        report_type="daily_free",
+        user_name=current_user.name,
+        **_profile_kwargs(profile),
+    )
+    background_tasks.add_task(_run_generation, report.id, False, gen_kwargs, 0)
+    return format_report(report, db)
+
+
 @router.post("/full")
 async def create_full_report(
     body: ReportCreateRequest,

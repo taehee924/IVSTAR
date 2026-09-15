@@ -12,6 +12,7 @@ class ReportType(str, enum.Enum):
     life_cycle = "life_cycle"
     year_ahead = "year_ahead"
     daily = "daily"
+    daily_free = "daily_free"
     love = "love"
     crush = "crush"
     ex = "ex"

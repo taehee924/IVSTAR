@@ -11,6 +11,7 @@ from app.core.prompts.Ex import build_ex_prompt
 from app.core.prompts.Couple import build_couple_prompt
 from app.core.prompts.career import build_career_prompt
 from app.core.prompts.wealth import build_wealth_prompt
+from app.core.prompts.daily import build_daily_horoscope_prompt
 
 _RETRY_DELAYS = [3, 7, 15, 30]  # seconds between retries
 
@@ -177,6 +178,24 @@ async def generate_report(
             dominant_element=dominant_element,
             lacking_element=lacking_element,
             chart_strength=chart_strength,
+        )
+
+    elif report_type == "daily_free":
+        system_prompt, user_prompt = build_daily_horoscope_prompt(
+            user_name=user_name,
+            birth_date=birth_date,
+            birth_time=birth_time,
+            birth_place=birth_place,
+            gender=gender,
+            sun_sign=sun_sign,
+            moon_sign=moon_sign,
+            rising_sign=rising_sign,
+            mc_sign=mc_sign,
+            day_master=day_master,
+            dominant_element=dominant_element,
+            lacking_element=lacking_element,
+            chart_strength=chart_strength,
+            # 오늘 일진(today_day_pillar)은 추후 manseryeok 연결 예정 — 지금은 미지정(빌더가 오늘 날짜 자동 계산)
         )
 
     elif report_type == "wealth":

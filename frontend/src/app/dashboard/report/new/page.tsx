@@ -10,6 +10,7 @@ const REPORT_LABELS: Record<string, string> = {
   life_cycle: "Life Cycle",
   year_ahead: "Your Year Ahead",
   daily: "2026 Horoscope",
+  daily_free: "Daily Horoscope",
   love: "Couple",
   crush: "Crush",
   ex: "Ex",
@@ -22,6 +23,12 @@ const REPORT_LABELS: Record<string, string> = {
 const PAIR_TYPES = new Set(["crush", "ex", "situationship", "love"]);
 
 const WHAT_INSIDE: Record<string, string[]> = {
+  daily_free: [
+    "Your headline energy for today",
+    "Love, career, money, and health scores",
+    "Your lucky color, number, and item",
+    "Today's driving planet and Saju day energy",
+  ],
   daily: [
     "Your energy and mood month by month",
     "Key turning points and important timing",
@@ -177,6 +184,44 @@ function NewReportContent() {
     }
   };
 
+  // 무료 데일리 운세 — 별/결제 없이 즉시 생성
+  const handleDailyFree = async () => {
+    if (!session) { router.push("/login"); return; }
+    setLoading(true);
+    setError("");
+    try {
+      const profileRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`,
+        { headers: { Authorization: `Bearer ${(session as any)?.id_token}` } }
+      );
+      if (!profileRes.ok) throw new Error("Failed to load birth profiles.");
+      const profiles = await profileRes.json();
+      if (profiles.length === 0) {
+        router.push(`/onboarding?redirect=/dashboard/report/new?type=${type}`);
+        return;
+      }
+      const profile = profiles[0];
+      const reportRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/reports/daily`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${(session as any)?.id_token}` },
+          body: JSON.stringify({ birth_profile_id: profile.id }),
+        }
+      );
+      if (!reportRes.ok) {
+        const errData = await reportRes.json().catch(() => ({}));
+        if (reportRes.status === 503) throw new Error("Please try again in a minute or two.");
+        throw new Error(errData.detail ?? "Failed to create reading.");
+      }
+      const report = await reportRes.json();
+      router.push(`/dashboard/report/${report.id}`);
+    } catch (e: any) {
+      setError(e.message ?? "Error");
+      setLoading(false);
+    }
+  };
+
   const handleCreate = async () => {
     if (!session) { router.push("/login"); return; }
 
@@ -264,20 +309,35 @@ function NewReportContent() {
           <p className="text-sm text-red-500 font-crimson">{error}</p>
         )}
 
-        <div className="space-y-2">
-          <button
-            onClick={starBalance >= STAR_COST ? handleUseStar : () => router.push("/dashboard/store")}
-            disabled={loading}
-            className="w-full rounded-lg bg-gray-900 py-3 text-base font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700 font-crimson"
-          >
-            {loading ? "Generating..." : `✦ Use ${STAR_COST} ${STAR_COST === 1 ? "Star" : "Stars"}`}
-          </button>
-          <p className="text-sm text-center text-gray-400 font-crimson">
-            {starBalance >= STAR_COST
-              ? `${starBalance} ${starBalance === 1 ? "star" : "stars"} remaining`
-              : `${STAR_COST} ${STAR_COST === 1 ? "star" : "stars"} needed — buy more in the store`}
-          </p>
-        </div>
+        {type === "daily_free" ? (
+          <div className="space-y-2">
+            <button
+              onClick={handleDailyFree}
+              disabled={loading}
+              className="w-full rounded-lg bg-gray-900 py-3 text-base font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700 font-crimson"
+            >
+              {loading ? "Generating..." : "✦ Get Free Reading"}
+            </button>
+            <p className="text-sm text-center text-gray-400 font-crimson">
+              Free · once a day
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <button
+              onClick={starBalance >= STAR_COST ? handleUseStar : () => router.push("/dashboard/store")}
+              disabled={loading}
+              className="w-full rounded-lg bg-gray-900 py-3 text-base font-semibold text-white transition-opacity disabled:opacity-50 hover:bg-gray-700 font-crimson"
+            >
+              {loading ? "Generating..." : `✦ Use ${STAR_COST} ${STAR_COST === 1 ? "Star" : "Stars"}`}
+            </button>
+            <p className="text-sm text-center text-gray-400 font-crimson">
+              {starBalance >= STAR_COST
+                ? `${starBalance} ${starBalance === 1 ? "star" : "stars"} remaining`
+                : `${STAR_COST} ${STAR_COST === 1 ? "star" : "stars"} needed — buy more in the store`}
+            </p>
+          </div>
+        )}
 
         <button
           onClick={() => router.back()}
