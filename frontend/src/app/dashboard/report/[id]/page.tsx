@@ -7,6 +7,7 @@ import ReactMarkdown, { Components } from "react-markdown";
 import Header from "@/components/layout/Header";
 import ConstellationLoader from "@/components/ConstellationLoader";
 import { enlargePercent } from "@/lib/enlargePercent";
+import DailyHoroscopeCard, { parseDailyHoroscope } from "@/components/DailyHoroscopeCard";
 
 interface Report {
   id: number;
@@ -582,7 +583,12 @@ export default function ReportDetailPage({ params }: { params: Promise<{ id: str
         {report.is_unlocked && (
           <>
             <div ref={reportRef}>
-              {(REPORT_SECTION_EMOJIS[report.report_type] || report.report_type === "daily") ? (
+              {report.report_type === "daily_free" && parseDailyHoroscope(report.content) ? (
+                <DailyHoroscopeCard
+                  locale={/[가-힣]/.test(report.content) ? "ko" : "en"}
+                  data={parseDailyHoroscope(report.content)!}
+                />
+              ) : (REPORT_SECTION_EMOJIS[report.report_type] || report.report_type === "daily") ? (
                 <ReportAccordion
                   content={report.content}
                   reportType={report.report_type}
