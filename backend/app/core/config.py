@@ -19,8 +19,16 @@ class Settings(BaseSettings):
 
     REDIS_URL: str | None = None
 
+    # ── Email (Resend) ──
+    RESEND_API_KEY: str | None = None
+    EMAIL_FROM: str = "IVSTAR <daily@4fourstar.com>"
+    # 데일리 이메일 cron 엔드포인트 보호용 시크릿 (Railway cron이 헤더로 전달)
+    CRON_SECRET: str | None = None
+
     ENV: str = "local"  # "local" | "production"
     FRONTEND_URL: str = "https://www.4fourstar.com"
+    # 이메일 unsubscribe 링크 등 백엔드 절대경로 생성용
+    BACKEND_URL: str = "https://ivstar-production.up.railway.app"
 
     PROMO_CODE: str = "THANKS4USING"
 

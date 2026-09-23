@@ -2,6 +2,8 @@
 #PATCH /api/v1/users/me - 내 프로필 수정
 #DELETE /api/v1/users/me - 회원 탈퇴
 
+import secrets
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -26,6 +28,7 @@ class UserResponse(BaseModel):
     role: str
     stars: int
     created_at: str
+    daily_email_opt_in: bool | None = None
 
     class Config:
         from_attributes = True
@@ -37,20 +40,29 @@ class UserUpdateRequest(BaseModel):
     profile_image: str | None = None
 
 
+class DailyEmailPrefRequest(BaseModel):
+    opt_in: bool
+
+
+def _user_dict(user: User) -> dict:
+    return {
+        "id": user.id,
+        "email": user.email,
+        "name": user.name,
+        "profile_image": user.profile_image,
+        "role": user.role.value,
+        "stars": user.stars,
+        "created_at": str(user.created_at),
+        "daily_email_opt_in": user.daily_email_opt_in,
+    }
+
+
 @router.get("/me", response_model=UserResponse)
 def get_my_profile(
     current_user: User = Depends(get_current_user),
 ):
     """내 프로필 조회"""
-    return {
-        "id": current_user.id,
-        "email": current_user.email,
-        "name": current_user.name,
-        "profile_image": current_user.profile_image,
-        "role": current_user.role.value,
-        "stars": current_user.stars,
-        "created_at": str(current_user.created_at),
-    }
+    return _user_dict(current_user)
 
 
 @router.patch("/me", response_model=UserResponse)
@@ -68,15 +80,26 @@ def update_my_profile(
     db.commit()
     db.refresh(current_user)
 
-    return {
-        "id": current_user.id,
-        "email": current_user.email,
-        "name": current_user.name,
-        "profile_image": current_user.profile_image,
-        "role": current_user.role.value,
-        "stars": current_user.stars,
-        "created_at": str(current_user.created_at),
-    }
+    return _user_dict(current_user)
+
+
+@router.post("/me/daily-email", response_model=UserResponse)
+def set_daily_email_pref(
+    body: DailyEmailPrefRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """데일리 리딩 이메일 수신 동의/해제 (회원가입 팝업 및 대시보드 설정에서 호출)."""
+    from datetime import datetime, timezone
+
+    current_user.daily_email_opt_in = body.opt_in
+    if body.opt_in:
+        current_user.daily_email_opt_in_at = datetime.now(timezone.utc)
+        if not current_user.unsubscribe_token:
+            current_user.unsubscribe_token = secrets.token_urlsafe(32)
+    db.commit()
+    db.refresh(current_user)
+    return _user_dict(current_user)
 
 
 @router.delete("/me", status_code=status.HTTP_204_NO_CONTENT)

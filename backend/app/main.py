@@ -9,6 +9,7 @@ from app.api.v1.birth_profiles import router as birth_profiles_router
 from app.api.v1.reports import router as reports_router
 from app.api.v1.payments import router as payments_router
 from app.api.v1.compatibility import router as compatibility_router
+from app.api.v1.emails import router as emails_router
 
 app = FastAPI(title="Spirit Tech API", version="0.1.0")
 
@@ -32,6 +33,7 @@ app.include_router(birth_profiles_router, prefix="/api/v1")
 app.include_router(reports_router, prefix="/api/v1")
 app.include_router(payments_router, prefix="/api/v1")
 app.include_router(compatibility_router, prefix="/api/v1")
+app.include_router(emails_router, prefix="/api/v1")
 
 
 @app.on_event("startup")

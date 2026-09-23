@@ -1,6 +1,6 @@
 import enum
 
-from sqlalchemy import Column, DateTime, Enum, Integer, String
+from sqlalchemy import Boolean, Column, DateTime, Enum, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -23,6 +23,13 @@ class User(Base):
 
     role = Column(Enum(UserRole), default=UserRole.user, nullable=False)
     stars = Column(Integer, default=0, nullable=False, server_default="0")
+
+    # 데일리 리딩 이메일 수신 동의.
+    # NULL = 아직 안 물어봄(팝업 대상), True = 동의, False = 거절/구독취소
+    daily_email_opt_in = Column(Boolean, nullable=True)
+    daily_email_opt_in_at = Column(DateTime(timezone=True), nullable=True)
+    # 원클릭 구독취소 링크용 토큰 (동의 시 발급)
+    unsubscribe_token = Column(String(64), nullable=True, unique=True, index=True)
 
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), onupdate=func.now(), nullable=True)

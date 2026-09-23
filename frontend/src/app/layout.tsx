@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Analytics } from "@vercel/analytics/next";
 import WelcomePopup from "@/components/WelcomePopup";
+import DailyEmailConsentModal from "@/components/DailyEmailConsentModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -83,6 +84,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Providers>
           <WelcomePopup />
+          <DailyEmailConsentModal />
           {children}
         </Providers>
         <Analytics />
