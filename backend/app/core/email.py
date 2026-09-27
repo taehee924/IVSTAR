@@ -14,6 +14,9 @@ from app.core.config import settings
 
 RESEND_ENDPOINT = "https://api.resend.com/emails"
 
+# 이메일 전체 공통 serif 폰트 (영문 Georgia, 한글은 Noto Serif KR 폴백)
+SERIF = "Georgia, 'Times New Roman', 'Noto Serif KR', serif"
+
 
 async def send_email(to: str, subject: str, html: str) -> bool:
     """Resend로 이메일 1건 발송. 성공 True / 실패 False (예외를 삼켜 cron 루프가 멈추지 않게)."""
@@ -132,7 +135,7 @@ def build_daily_email_html(
     cat_rows = ""
     for c in summary.get("categories", [])[:4]:
         cat_rows += (
-            f'<tr><td style="padding:6px 0;font-size:16px;color:#3D3833;">'
+            f'<tr><td style="font-family:{SERIF};padding:6px 0;font-size:16px;color:#3D3833;">'
             f'{c["emoji"]} <span style="color:#5C5346;">{escape(c["label"])}</span>'
             f' — <strong style="color:#3D3833;">{c["score"]}</strong></td></tr>'
         )
@@ -140,27 +143,27 @@ def build_daily_email_html(
     return f"""\
 <!DOCTYPE html>
 <html>
-<body style="margin:0;padding:0;background:#F3EEE2;">
+<body style="margin:0;padding:0;background:#F3EEE2;font-family:{SERIF};">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F3EEE2;padding:32px 12px;">
     <tr><td align="center">
       <table role="presentation" width="480" cellpadding="0" cellspacing="0"
              style="max-width:480px;width:100%;background:#FBF8F0;border:1px solid #E8DFC8;border-radius:20px;overflow:hidden;">
-        <tr><td style="padding:30px 30px 8px;">
-          <div style="font-family:Georgia,'Times New Roman',serif;font-size:12px;letter-spacing:2px;color:#A08F6A;text-transform:uppercase;">IVSTAR</div>
-          <div style="font-family:Georgia,'Times New Roman',serif;font-size:22px;font-weight:700;color:#3D3833;margin-top:10px;">
+        <tr><td style="font-family:{SERIF};padding:30px 30px 8px;">
+          <div style="font-family:{SERIF};font-size:12px;letter-spacing:2px;color:#A08F6A;text-transform:uppercase;">IVSTAR</div>
+          <div style="font-family:{SERIF};font-size:22px;font-weight:700;color:#3D3833;margin-top:10px;">
             ✨ Your {escape(weekday)} reading is ready
           </div>
         </td></tr>
 
-        <tr><td style="padding:18px 30px 4px;">
-          <div style="font-size:12px;letter-spacing:1px;color:#9A8F7A;text-transform:uppercase;">Your day</div>
-          <div style="font-size:26px;color:#8B1E3F;margin-top:6px;letter-spacing:2px;">
-            {stars} <span style="font-family:Georgia,serif;color:#3D3833;">{overall}/100</span>
+        <tr><td style="font-family:{SERIF};padding:18px 30px 4px;">
+          <div style="font-family:{SERIF};font-size:12px;letter-spacing:1px;color:#9A8F7A;text-transform:uppercase;">Your day</div>
+          <div style="font-family:{SERIF};font-size:26px;color:#8B1E3F;margin-top:6px;letter-spacing:2px;">
+            {stars} <span style="font-family:{SERIF};color:#3D3833;">{overall}/100</span>
           </div>
         </td></tr>
 
-        <tr><td style="padding:14px 30px 6px;">
-          <p style="font-size:15px;line-height:1.6;color:#5C5346;margin:0;">{headline}</p>
+        <tr><td style="font-family:{SERIF};padding:14px 30px 6px;">
+          <p style="font-family:{SERIF};font-size:15px;line-height:1.6;color:#5C5346;margin:0;">{headline}</p>
         </td></tr>
 
         <tr><td style="padding:10px 30px 6px;">
@@ -170,7 +173,7 @@ def build_daily_email_html(
         <tr><td align="center" style="padding:22px 30px 26px;">
           <a href="{report_url}"
              style="display:inline-block;background:#0B1B33;color:#FBF8F0;text-decoration:none;
-                    font-family:Georgia,serif;font-size:15px;font-weight:600;padding:14px 34px;border-radius:10px;">
+                    font-family:{SERIF};font-size:15px;font-weight:600;padding:14px 34px;border-radius:10px;">
             ✦ See Your Full Reading →
           </a>
         </td></tr>
@@ -178,14 +181,14 @@ def build_daily_email_html(
         <tr><td style="padding:0 30px;"><div style="height:1px;background:#EDE3CC;"></div></td></tr>
 
         <tr><td align="center" style="padding:22px 30px 8px;">
-          <div style="font-family:Georgia,serif;font-size:14px;color:#5C5346;">Two ancient systems. One complete picture.</div>
-          <div style="font-family:Georgia,serif;font-size:16px;font-weight:700;color:#3D3833;margin-top:8px;letter-spacing:1px;">IVSTAR</div>
-          <div style="font-size:12px;color:#A08F6A;margin-top:4px;">Western Astrology × Eastern Four Pillars</div>
+          <div style="font-family:{SERIF};font-size:14px;color:#5C5346;">Two ancient systems. One complete picture.</div>
+          <div style="font-family:{SERIF};font-size:16px;font-weight:700;color:#3D3833;margin-top:8px;letter-spacing:1px;">IVSTAR</div>
+          <div style="font-family:{SERIF};font-size:12px;color:#A08F6A;margin-top:4px;">Western Astrology × Eastern Four Pillars</div>
         </td></tr>
 
         <tr><td align="center" style="padding:16px 30px 28px;">
-          <a href="{unsubscribe_url}" style="font-size:11px;color:#9A8F7A;text-decoration:underline;">Unsubscribe</a>
-          <div style="font-size:11px;color:#B3A88F;margin-top:8px;">© 2026 IVSTAR · <a href="{settings.FRONTEND_URL}/dashboard" style="color:#B3A88F;text-decoration:none;">4fourstar.com</a></div>
+          <a href="{unsubscribe_url}" style="font-family:{SERIF};font-size:11px;color:#9A8F7A;text-decoration:underline;">Unsubscribe</a>
+          <div style="font-family:{SERIF};font-size:11px;color:#B3A88F;margin-top:8px;">© 2026 IVSTAR · <a href="{settings.FRONTEND_URL}/dashboard" style="color:#B3A88F;text-decoration:none;">4fourstar.com</a></div>
         </td></tr>
       </table>
     </td></tr>
