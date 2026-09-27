@@ -97,6 +97,15 @@ export default function MePage() {
         if (userRes.ok) {
           const data = await userRes.json();
           setStars(data.stars ?? 0);
+          // 백엔드에 저장된 이름을 진실의 원천으로 사용 (수정한 이름 반영)
+          if (data.name) {
+            setDisplayName(data.name);
+            try {
+              localStorage.setItem(NAME_KEY, data.name);
+            } catch {
+              /* ignore */
+            }
+          }
         }
       } catch (e) {
         console.error(e);

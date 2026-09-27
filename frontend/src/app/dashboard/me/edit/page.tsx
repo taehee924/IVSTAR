@@ -123,6 +123,20 @@ export default function EditProfilePage() {
 
     const fetchProfile = async () => {
       try {
+        // 이름: 백엔드에 저장된 값을 우선 사용 (수정한 이름 반영), 없으면 로컬/구글
+        try {
+          const userRes = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/users/me`,
+            { headers: { Authorization: `Bearer ${(session as any)?.id_token}` } }
+          );
+          if (userRes.ok) {
+            const u = await userRes.json();
+            setEditName(u.name ?? localStorage.getItem(NAME_KEY) ?? session?.user?.name ?? "");
+          }
+        } catch {
+          setEditName(localStorage.getItem(NAME_KEY) ?? session?.user?.name ?? "");
+        }
+
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/birth-profiles/`,
           { headers: { Authorization: `Bearer ${(session as any)?.id_token}` } }
@@ -132,9 +146,6 @@ export default function EditProfilePage() {
           if (data.length > 0) {
             const p: BirthProfile = data[0];
             setProfile(p);
-
-            const savedName = localStorage.getItem(NAME_KEY);
-            setEditName(savedName ?? session?.user?.name ?? "");
 
             const [y, m, d] = (p.birth_date ?? "").split("-");
             setEditYear(y ?? "");
@@ -186,7 +197,7 @@ export default function EditProfilePage() {
         birthTime = `${String(parseInt(editHour)).padStart(2, "0")}:${editMinute}`;
       }
 
-      const birthPlace = editCity && editCountry ? `${editCity}, ${editCountry}` : null;
+      const birthPlace = [editCity.trim(), editCountry].filter(Boolean).join(", ") || null;
 
       let sajuPayload = {};
       if (birthDate) {

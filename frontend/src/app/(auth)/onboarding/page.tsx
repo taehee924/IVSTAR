@@ -100,10 +100,11 @@ function OnboardingContent() {
     ? Array.from({ length: getDaysInMonth(Number(year), Number(month)) }, (_, i) => i + 1)
     : Array.from({ length: 31 }, (_, i) => i + 1);
 
+  // 출생 시간·도시는 선택 사항 (시간은 "I don't know" 체크로, 도시는 미입력 허용)
   const isValid =
     name.trim() !== "" &&
     year !== "" && month !== "" && day !== "" &&
-    country !== "" && city !== "" &&
+    country !== "" &&
     gender !== "";
 
   const handleSubmit = async () => {
@@ -122,7 +123,7 @@ function OnboardingContent() {
         birthTime = `${String(h).padStart(2, "0")}:${minute}`;
       }
 
-      const birthPlace = `${city}, ${country}`;
+      const birthPlace = [city.trim(), country].filter(Boolean).join(", ") || null;
       const [y, m, d] = birthDate.split("-").map(Number);
       const h = birthTime ? parseInt(birthTime.split(":")[0]) : 12;
       const min = birthTime ? parseInt(birthTime.split(":")[1]) : 0;
